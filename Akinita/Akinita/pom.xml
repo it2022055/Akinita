@@ -8,11 +8,11 @@
 		<version>3.4.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>Akinita.project.hua</groupId>
+	<groupId>Akinita.project</groupId>
 	<artifactId>Akinita</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Akinita</name>
-	<description>Εργασία κατανεμημένα συστήματα 2024-2025</description>
+	<description>Εργασία &quot;Ακίνητα&quot; κατανεμημένα συστήματα</description>
 	<url/>
 	<licenses>
 		<license/>

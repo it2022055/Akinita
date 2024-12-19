@@ -1,4 +1,4 @@
-package Akinita.project.hua.Akinita;
+package Akinita.project.Akinita;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
