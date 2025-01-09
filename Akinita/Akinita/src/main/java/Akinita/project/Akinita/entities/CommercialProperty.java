@@ -1,11 +1,73 @@
 package Akinita.project.Akinita.entities;
 
-public class CommercialProperty extends RealEstate{
+import Akinita.project.Akinita.Interfaces.RealEstate;
+import jakarta.persistence.*;
 
-    protected String[][] facilities;
-    protected boolean buildingFees;
+import java.util.Date;
 
-    public CommercialProperty(int id, String estateName, String location, int price, int constructionDate, String description) {
-        super(id, estateName, location, price, constructionDate, description);
+
+public class CommercialProperty implements RealEstate {
+    @Override
+    public int getId() {
+        return 0;
     }
+
+    @Override
+    public void setId(int id) {
+
+    }
+
+    @Override
+    public String getEstateName() {
+        return "";
+    }
+
+    @Override
+    public void setEstateName(String estateName) {
+
+    }
+
+    @Override
+    public String getLocation() {
+        return "";
+    }
+
+    @Override
+    public void setLocation(String location) {
+
+    }
+
+    @Override
+    public int getPrice() {
+        return 0;
+    }
+
+    @Override
+    public void setPrice(int price) {
+
+    }
+
+    @Override
+    public Date getConstructionDate() {
+        return null;
+    }
+
+    @Override
+    public void setConstructionDate(Date constructionDate) {
+
+    }
+
+    @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
+    public void setDescription(String description) {
+
+    }
+
+    //protected String[][] facilities;
+    //protected boolean buildingFees;
+
 }
