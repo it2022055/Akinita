@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "parking")
 public class Parking implements RealEstate {
 
     @Id
