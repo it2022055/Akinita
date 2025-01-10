@@ -15,16 +15,16 @@ public class House implements RealEstate {
     @Column(name = "estate_name") // Προαιρετικά, αν θέλεις να ορίσεις το όνομα της στήλης
     private String estateName;
 
-    @Column(name = "location")
+    @Column
     private String location;
 
-    @Column(name = "price")
+    @Column
     private int price;
 
     @Column(name = "construction_date")
     private Date constructionDate;
 
-    @Column(name = "description")
+    @Column
     private String description;
 
     @Column(name = "building_fees")

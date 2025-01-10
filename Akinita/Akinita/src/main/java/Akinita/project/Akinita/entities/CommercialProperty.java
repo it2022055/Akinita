@@ -15,20 +15,24 @@ public class CommercialProperty implements RealEstate {
     @Column(name = "estate_name") // Προαιρετικά, αν θέλεις να ορίσεις το όνομα της στήλης
     private String estateName;
 
-    @Column(name = "location")
+    @Column
     private String location;
 
-    @Column(name = "price")
+    @Column
     private int price;
 
     @Column(name = "construction_date")
     private Date constructionDate;
 
-    @Column(name = "description")
+    @Column
     private String description;
 
     @Column(name = "building_fees")
     private boolean buildingFees;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    private Owner owner;
 
     @Override
     public int getId() {
