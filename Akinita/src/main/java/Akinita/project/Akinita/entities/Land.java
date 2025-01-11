@@ -21,9 +21,6 @@ public class Land implements RealEstate {
     @Column(name = "price")
     private int price;
 
-    @Column(name = "construction_date")
-    private Date constructionDate;
-
     @Column
     private String description;
 
@@ -70,16 +67,6 @@ public class Land implements RealEstate {
     @Override
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    @Override
-    public Date getConstructionDate() {
-        return constructionDate;
-    }
-
-    @Override
-    public void setConstructionDate(Date constructionDate) {
-        this.constructionDate = constructionDate;
     }
 
     @Override
