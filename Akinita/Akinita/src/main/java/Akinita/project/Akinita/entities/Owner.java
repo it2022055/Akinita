@@ -31,10 +31,7 @@ public class Owner {
     public Owner() {
 
     }
-
-
-
-
+    
     public Integer getId() {
         return Id;
     }
