@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ds-lab-2024" />
+        <module name="Akinita" />
       </profile>
     </annotationProcessing>
   </component>
