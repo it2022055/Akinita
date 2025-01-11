@@ -33,12 +33,6 @@ public interface RealEstate {
 
     void setPrice(@NotBlank(message = "Price is required") @Size(max = 10) int price);
 
-    @NotBlank(message = "Construction Date is required")
-    @Size(max = 10)
-    Date getConstructionDate();
-
-    void setConstructionDate(@NotBlank(message = "Construction Date is required") @Size(max = 10) Date constructionDate);
-
     @NotBlank(message = "Description is required")
     String getDescription();
 

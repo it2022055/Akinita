@@ -72,12 +72,10 @@ public class Land implements RealEstate {
         this.price = price;
     }
 
-    @Override
     public Date getConstructionDate() {
         return constructionDate;
     }
 
-    @Override
     public void setConstructionDate(Date constructionDate) {
         this.constructionDate = constructionDate;
     }
