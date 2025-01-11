@@ -1,4 +1,6 @@
 package Akinita.project.Akinita.Repositories;
 
-public class ParkingRepository {
+import Akinita.project.Akinita.entities.Parking;
+
+public interface ParkingRepository extends RealEstateRepository<Parking,Integer> {
 }
