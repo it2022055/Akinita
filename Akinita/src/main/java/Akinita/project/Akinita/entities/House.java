@@ -93,6 +93,9 @@ public class House implements RealEstate {
     public boolean isBuildingFees() {
         return buildingFees;
     }
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    private Owner owner;
 
     public void setBuildingFees(boolean buildingFees) {
         this.buildingFees = buildingFees;
