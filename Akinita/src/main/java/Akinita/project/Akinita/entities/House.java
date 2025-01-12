@@ -1,34 +1,58 @@
 package Akinita.project.Akinita.entities;
 
+import Akinita.project.Akinita.Interfaces.LimitedMethods.BuildingFees;
+import Akinita.project.Akinita.Interfaces.LimitedMethods.ConstructionDate;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 
 @Entity
-public class House implements RealEstate {
+public class House implements RealEstate, ConstructionDate, BuildingFees {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "estate_name") // Προαιρετικά, αν θέλεις να ορίσεις το όνομα της στήλης
+    @NotBlank(message = "Estate name is required")
+    @Size(max = 50)
+    @Column(name = "estate_name")
     private String estateName;
 
+    @NotBlank(message = "Location is required")
+    @Size(max = 50)
     @Column
     private String location;
 
+    @NotBlank(message = "Price is required")
+    @Size(max = 10)
     @Column
     private int price;
 
+    @Past(message = "The construction date must be in the past")
+    @Temporal(TemporalType.DATE)                                       // Date is saved without 'hours'
     @Column(name = "construction_date")
     private Date constructionDate;
 
+    @NotBlank(message = "Description is required")
     @Column
     private String description;
 
+    @NotBlank(message = "Building fees are required")
     @Column(name = "building_fees")
     private boolean buildingFees;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    private Owner owner;
+
+    @NotBlank(message = "Availability for Sale is required")
+    @Column(name = "availability")
+    private boolean availability;
+
 
     @Override
     public int getId() {
@@ -90,14 +114,34 @@ public class House implements RealEstate {
         this.description = description;
     }
 
-    public boolean isBuildingFees() {
+    @Override
+    public boolean isAvailableForSale() {
+        return false;
+    }
+
+    @Override
+    public void setAvailableForSale(Boolean availability) {
+        this.availability = availability;
+    }
+
+    @Override
+    public Owner whoIsOwner() {
+        return owner;
+    }
+
+    @Override
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+
+    @Override
+    public boolean getBuildingFees() {
         return buildingFees;
     }
-    @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
-    private Owner owner;
 
+    @Override
     public void setBuildingFees(boolean buildingFees) {
         this.buildingFees = buildingFees;
     }
+
 }
