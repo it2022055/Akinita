@@ -1,40 +1,35 @@
 package Akinita.project.Akinita.Interfaces;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import java.util.Date;
+import Akinita.project.Akinita.entities.Owner;
 
 public interface RealEstate {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // Id
     int getId();
-
     void setId(int id);
 
-    @NotBlank(message = "Title is required")
-    @Size(max = 50)
+    // Estate Name
     String getEstateName();
+    void setEstateName(String estateName);
 
-    void setEstateName(@NotBlank(message = "Title is required") @Size(max = 50) String estateName);
-
-    @NotBlank(message = "Location is required")
-    @Size(max = 50)
+    // Location
     String getLocation();
+    void setLocation(String location);
 
-    void setLocation(@NotBlank(message = "Location is required") @Size(max = 50) String location);
-
-    @NotBlank(message = "Price is required")
-    @Size(max = 10)
+    // Price
     int getPrice();
+    void setPrice(int price);
 
-    void setPrice(@NotBlank(message = "Price is required") @Size(max = 10) int price);
-
-    @NotBlank(message = "Description is required")
+    // Description
     String getDescription();
+    void setDescription(String description);
 
-    void setDescription(@NotBlank(message = "Description is required") String description);
+    // Sale Availability
+    boolean isAvailableForSale();
+    void setAvailableForSale(Boolean availability);
+
+    // Owner
+    Owner whoIsOwner();
+    void setOwner(Owner owner);
+
 }
