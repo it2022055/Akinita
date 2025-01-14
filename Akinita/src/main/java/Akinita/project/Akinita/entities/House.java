@@ -116,17 +116,12 @@ public class House implements RealEstate, ConstructionDate, BuildingFees {
 
     @Override
     public boolean isAvailableForSale() {
-        return false;
+        return availability;
     }
 
     @Override
-    public void setAvailableForSale(Boolean availability) {
+    public void setAvailability(Boolean availability) {
         this.availability = availability;
-    }
-
-    @Override
-    public Owner whoIsOwner() {
-        return owner;
     }
 
     @Override

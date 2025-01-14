@@ -115,13 +115,8 @@ public class Parking implements RealEstate, ConstructionDate {
     }
 
     @Override
-    public void setAvailableForSale(Boolean availability) {
+    public void setAvailability(Boolean availability) {
         this.availability = availability;
-    }
-
-    @Override
-    public Owner whoIsOwner() {
-        return owner;
     }
 
     @Override
