@@ -18,9 +18,13 @@ public class AuthController {
     @PostConstruct
     public void setup() {
         Role role_user = new Role("ROLE_USER");
+        Role role_owner = new Role("ROLE_OWNER");
+        Role role_renter = new Role("ROLE_RENTER");
         Role role_admin = new Role("ROLE_ADMIN");
 
         roleRepository.updateOrInsert(role_user);
+        roleRepository.updateOrInsert(role_owner);
+        roleRepository.updateOrInsert(role_renter);
         roleRepository.updateOrInsert(role_admin);
     }
 

@@ -21,16 +21,24 @@ public class Owner {
     @Column
     private String email;
 
-    public Owner(Integer id, String firstName, String lastName, String email) {
+    @Column
+    private long telephoneNumber;
+
+    public Owner(Integer id, String firstName, String lastName, String email, long telephoneNumber) {
         Id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.telephoneNumber = telephoneNumber;
     }
 
     public Owner() {
 
     }
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
     
     public Integer getId() {
         return Id;
@@ -53,17 +61,7 @@ public class Owner {
     }
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CommercialProperty> properties = new ArrayList<>();
-
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<House> houses = new ArrayList<>();
-
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Land> Land = new ArrayList<>();
-
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Parking> parking = new ArrayList<>();
-
+    private List<Property> properties = new ArrayList<>();
 
     public void setLastName(String lastName) {
         this.lastName = lastName;

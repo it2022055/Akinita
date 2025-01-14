@@ -23,4 +23,5 @@ public interface RealEstateRepository<T,ID> extends JpaRepository<T, ID>{
 
     List<T> findByOwner(Owner owner);
 
+    List<T> findByOwnerId(Integer ownerId);
 }

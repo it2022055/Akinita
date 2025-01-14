@@ -35,7 +35,7 @@ public class UserContoller {
         Integer id = userService.saveUser(user);
         String message = "User '"+id+"' saved successfully !";
         model.addAttribute("msg", message);
-        return "index";
+        return "redirect:/roleselection";
     }
 
     @GetMapping("/users")
@@ -85,5 +85,10 @@ public class UserContoller {
         model.addAttribute("roles", roleRepository.findAll());
         return "auth/users";
 
+    }
+
+    @PostMapping("/user/{user_id}/roleselection")
+    public String showRoleSelection(Model model){
+        return "auth/roleselection";
     }
 }

@@ -20,11 +20,15 @@ public class Renter {
     @Column
     private String email;
 
-    public Renter(Integer id, String firstName, String lastName, String email) {
+    @Column
+    private long telephoneNumber;
+
+    public Renter(Integer id, String firstName, String lastName, String email, long telephoneNumber) {
         Id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.telephoneNumber = telephoneNumber;
     }
 
     public Renter() {
