@@ -4,7 +4,9 @@ import Akinita.project.Akinita.Repositories.RealEstate.CommercialPropertyReposit
 import Akinita.project.Akinita.Repositories.RealEstate.HouseRepository;
 import Akinita.project.Akinita.Repositories.RealEstate.LandRepository;
 import Akinita.project.Akinita.Repositories.RealEstate.ParkingRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RealEstateService {
 
     private HouseRepository houseRepository;
