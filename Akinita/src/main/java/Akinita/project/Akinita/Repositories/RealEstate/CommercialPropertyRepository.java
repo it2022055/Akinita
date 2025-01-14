@@ -6,5 +6,5 @@ import Akinita.project.Akinita.entities.CommercialProperty;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CommercialPropertyRepository extends RealEstateRepository<CommercialProperty, Integer>, ConstructionDate<CommercialProperty, Integer>, BuildingFees<CommercialProperty, Integer> {
+public interface CommercialPropertyRepository extends PropertyRepository<CommercialProperty, Integer>, ConstructionDate<CommercialProperty, Integer>, BuildingFees<CommercialProperty, Integer> {
 }

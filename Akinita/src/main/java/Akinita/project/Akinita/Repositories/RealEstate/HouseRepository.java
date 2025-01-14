@@ -6,5 +6,5 @@ import Akinita.project.Akinita.entities.House;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface HouseRepository extends RealEstateRepository<House, Integer>, ConstructionDate<House, Integer>, BuildingFees<House, Integer> {
+public interface HouseRepository extends PropertyRepository<House, Integer>, ConstructionDate<House, Integer>, BuildingFees<House, Integer> {
 }

@@ -129,7 +129,7 @@
         You have been logged out.
     </div>
     <!-- Begin custom form -->
-    <form class="form">
+    <form class="form" th:action="@{/login}" method="post">
         <p id="heading">Login</p>
         <div class="field">
             <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -147,18 +147,6 @@
             <button class="button1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
             <button class="button2">Sign Up</button>
         </div>
-    </form>
-    <!-- End custom form -->
-    <form th:action="@{/login}" method="post">
-        <div class="form-group">
-            <label for="username"> User Name</label>
-            <input type="text" class="form-control"  name="username" id="username"/>
-        </div>
-        <div class="form-group">
-            <label for="password"> Password </label>
-            <input type="password" class="form-control"  id="password" name="password"/>
-        </div>
-        <div><input type="submit" class="btn btn-primary" value="Sign In"/></div>
     </form>
 </div>
 </body>

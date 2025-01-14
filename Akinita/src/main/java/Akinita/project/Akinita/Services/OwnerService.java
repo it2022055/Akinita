@@ -1,9 +1,9 @@
 package Akinita.project.Akinita.Services;
 
 import Akinita.project.Akinita.Interfaces.RealEstate;
-import Akinita.project.Akinita.Repositories.OwnerRepository;
+import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
+import Akinita.project.Akinita.Repositories.User.OwnerRepository;
 import Akinita.project.Akinita.Repositories.RealEstate.*;
-import Akinita.project.Akinita.Repositories.User.UserRepository;
 import Akinita.project.Akinita.entities.Owner;
 import Akinita.project.Akinita.entities.RentalApplication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,8 @@ public class OwnerService {
     private CommercialPropertyRepository commercialPropertyRepository;
     @Autowired
     private OwnerRepository ownerRepository;
+    @Autowired
+    private RentalApplicationRepository rentalApplicationRepository;
 
     // Μέθοδος που επιστρέφει τα ακίνητα του ιδιοκτήτη
     public List<RealEstate> getOwnerProperties(int ownerId) {
@@ -38,8 +40,14 @@ public class OwnerService {
         return ownerProperties;
     }
 
-    //public Integer findOwnerIdByUsername(String username) {
-        //Owner owner = ownerRepository.findByUsername(username);
-        //return owner != null ? owner.getId() : null;
-    //}
+    public Integer findOwnerIdByUsername(String username) {
+        Owner owner = ownerRepository.findByUsername(username);
+        return owner != null ? owner.getId() : null;
+    }
+
+    public List<RentalApplication> getOwnerRentalApplications(int ownerId) {
+        List<RentalApplication> ownerRentalApplications = new ArrayList<>();
+        ownerRentalApplications.addAll(rentalApplicationRepository.findByOwnerId(ownerId));
+        return ownerRentalApplications;
+    }
 }

@@ -2,6 +2,7 @@ package Akinita.project.Akinita.Controllers;
 
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import Akinita.project.Akinita.Services.OwnerService;
+import Akinita.project.Akinita.Services.PropertyService;
 import Akinita.project.Akinita.entities.CommercialProperty;
 import Akinita.project.Akinita.entities.House;
 import Akinita.project.Akinita.entities.Land;
@@ -17,6 +18,8 @@ import java.security.Principal;
 @RequestMapping("Owner")
 public class OwnerController {
     @Autowired
+    private PropertyService propertyService;
+
     private OwnerService ownerService;
 
     @GetMapping("/submitProperty")
@@ -45,9 +48,9 @@ public class OwnerController {
             default:
                 throw new IllegalArgumentException("Invalid property type");
         }
-        //Integer id = RealEstateService.saveProperty(newProperty);
-        //String message = "Property '"+id+"' saved successfully !";
-        //model.addAttribute("msg", message);
+        Integer id = propertyService.SaveProperty(newProperty);
+        String message = "Property '"+id+"' saved successfully !";
+        model.addAttribute("msg", message);
         return "redirect:/index";
     }
 
@@ -55,8 +58,8 @@ public class OwnerController {
     @GetMapping("/Listings")
     public String ownerListings(Model model, Principal principal) {
         String username = principal.getName();
-        //Integer ownerId = ownerService.findOwnerIdByUsername(username);
-        //model.addAttribute("Listings", ownerService.getOwnerProperties(ownerId));
+        Integer ownerId = ownerService.findOwnerIdByUsername(username);
+        model.addAttribute("Listings", ownerService.getOwnerProperties(ownerId));
         return "properties/ownerListings";
     }
 
@@ -64,14 +67,14 @@ public class OwnerController {
     @GetMapping("/manageApplications/{propertyId}")
     public String manageApplications(@PathVariable String propertyId, Model model, Principal principal) {
         String username = principal.getName();
-        //Integer ownerId = ownerService.findOwnerIdByUsername(username);
-        //model.addAttribute("Applications", ownerService.getOwnerApplications(ownerId));
+        Integer ownerId = ownerService.findOwnerIdByUsername(username);
+        model.addAttribute("Applications", ownerService.getOwnerRentalApplications(ownerId));
         return "properties/manageApplications";
     }
 
     @GetMapping("/searchProperties")
     public String searchProperties(Model model) {
-        //model.addAttribute("teachers", RealEstateService.getProperties());
+        model.addAttribute("Properties", propertyService.findAllProperties());
         return "properties/searchProperties";
     }
 
