@@ -19,7 +19,7 @@ import java.security.Principal;
 public class OwnerController {
     @Autowired
     private PropertyService propertyService;
-
+    @Autowired
     private OwnerService ownerService;
 
     @GetMapping("/submitProperty")
@@ -70,12 +70,6 @@ public class OwnerController {
         Integer ownerId = ownerService.findOwnerIdByUsername(username);
         model.addAttribute("Applications", ownerService.getOwnerRentalApplications(ownerId));
         return "properties/manageApplications";
-    }
-
-    @GetMapping("/searchProperties")
-    public String searchProperties(Model model) {
-        model.addAttribute("Properties", propertyService.findAllProperties());
-        return "properties/searchProperties";
     }
 
 }

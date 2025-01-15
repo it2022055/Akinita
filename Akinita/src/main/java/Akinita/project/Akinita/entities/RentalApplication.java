@@ -12,17 +12,14 @@ public class RentalApplication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id") // Ξένο κλειδί προς τον πίνακα Owner
     private User owner; // Αναφορά στον ιδιοκτήτη
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "property_id", referencedColumnName = "id") // Ξένο κλειδί προς τον πίνακα Property
     private Property property; // Αναφορά στο ακίνητο
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "renter_id", referencedColumnName = "id") // Ξένο κλειδί προς τον πίνακα Renter
     private User renter; // Αναφορά στον ενοικιαστή
