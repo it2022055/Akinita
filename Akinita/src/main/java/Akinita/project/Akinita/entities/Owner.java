@@ -1,51 +1,62 @@
 package Akinita.project.Akinita.entities;
 
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Owner {
-    @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Integer Id;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column
-    private String email;
-
-    @Column
-    private long telephoneNumber;
-
-    public Owner(Integer id, String firstName, String lastName, String email, long telephoneNumber) {
-        Id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.telephoneNumber = telephoneNumber;
-    }
-
-    public Owner() {
-
-    }
+    @Id
+    @Column(name = "user_id")
+    private Integer userId;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @MapsId
     private User user;
-    
-    public Integer getId() {
-        return Id;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    @Column(name = "telephone_number", nullable = false)
+    private String telephoneNumber;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Property> properties = new ArrayList<>();
+
+    // Default constructor
+    public Owner() {
     }
 
-    public void setId(Integer id) {
-        Id = id;
+    // Constructor
+    public Owner(User user, String firstName, String lastName, String telephoneNumber) {
+        this.user = user;
+        this.userId = user.getId(); // Assign primary key from User
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    // Getters and Setters
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        this.userId = user.getId(); // Sync userId with User entity
     }
 
     public String getFirstName() {
@@ -60,36 +71,33 @@ public class Owner {
         return lastName;
     }
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Property> properties = new ArrayList<>();
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public long getTelephoneNumber() {
+    public String getTelephoneNumber() {
         return telephoneNumber;
     }
 
-    public void setTelephoneNumber(long telephoneNumber) {
+    public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
+    }
+
+    public List<Property> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(List<Property> properties) {
+        this.properties = properties;
     }
 
     @Override
     public String toString() {
-        return "Student{" +
-                "Id=" + Id +
+        return "Owner{" +
+                "userId=" + userId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
+                ", telephoneNumber='" + telephoneNumber + '\'' +
                 '}';
     }
 }

@@ -49,16 +49,16 @@ public class UserContoller {
 
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute User user, @RequestParam("role") String role,  @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname,Model model) {
+    public String saveUser(@ModelAttribute User user, @RequestParam("role") String role,  @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname,@RequestParam("telephone") String telephone, Model model) {
         System.out.println(firstname);
         System.out.println(lastname);
+        System.out.println(telephone);
         Integer id = userService.saveUser(user);
         if (role.equals("ROLE_OWNER")){
             Owner newOwner=new Owner();
             newOwner.setFirstName(firstname);
             newOwner.setLastName(lastname);
-            newOwner.setEmail(user.getEmail());
-            newOwner.setTelephoneNumber(user.getTelephone());
+            newOwner.setTelephoneNumber(telephone);
             ownerRepository.save(newOwner);
         }else{
             Renter newRenter=new Renter();

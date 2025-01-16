@@ -15,14 +15,14 @@ import java.util.List;
 @Service
 public class OwnerService {
 
-    @Autowired
-    private HouseRepository houseRepository;
-    @Autowired
-    private LandRepository landRepository;
-    @Autowired
-    private ParkingRepository parkingRepository;
-    @Autowired
-    private CommercialPropertyRepository commercialPropertyRepository;
+    //@Autowired
+    //private HouseRepository houseRepository;
+    //@Autowired
+    //private LandRepository landRepository;
+    //@Autowired
+    //private ParkingRepository parkingRepository;
+   // @Autowired
+    //private CommercialPropertyRepository commercialPropertyRepository;
     @Autowired
     private OwnerRepository ownerRepository;
     @Autowired
@@ -33,16 +33,16 @@ public class OwnerService {
         List<RealEstate> ownerProperties = new ArrayList<>();
 
         // Ανάκτηση ακινήτων για κάθε τύπο
-        ownerProperties.addAll(houseRepository.findByOwnerId(ownerId));
-        ownerProperties.addAll(landRepository.findByOwnerId(ownerId));
-        ownerProperties.addAll(parkingRepository.findByOwnerId(ownerId));
-        ownerProperties.addAll(commercialPropertyRepository.findByOwnerId(ownerId));
+        //ownerProperties.addAll(houseRepository.findByOwnerId(ownerId));
+        //ownerProperties.addAll(landRepository.findByOwnerId(ownerId));
+        //ownerProperties.addAll(parkingRepository.findByOwnerId(ownerId));
+        //ownerProperties.addAll(commercialPropertyRepository.findByOwnerId(ownerId));
         return ownerProperties;
     }
 
     public Integer findOwnerIdByUsername(String username) {
         Owner owner = ownerRepository.findByUsername(username);
-        return owner != null ? owner.getId() : null;
+        return owner != null ? owner.getUserId() : null;
     }
 
     public List<RentalApplication> getOwnerRentalApplications(int ownerId) {
