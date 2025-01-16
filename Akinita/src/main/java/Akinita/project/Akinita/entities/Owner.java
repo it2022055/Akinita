@@ -75,6 +75,14 @@ public class Owner {
         this.email = email;
     }
 
+    public long getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(long telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
     @Override
     public String toString() {
         return "Student{" +

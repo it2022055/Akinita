@@ -1,7 +1,11 @@
 package Akinita.project.Akinita.Controllers;
 
+import Akinita.project.Akinita.Repositories.User.OwnerRepository;
+import Akinita.project.Akinita.Repositories.User.RenterRepository;
 import Akinita.project.Akinita.Repositories.User.RoleRepository;
 import Akinita.project.Akinita.Services.UserService;
+import Akinita.project.Akinita.entities.Owner;
+import Akinita.project.Akinita.entities.Renter;
 import Akinita.project.Akinita.entities.Role;
 import Akinita.project.Akinita.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,27 +21,55 @@ public class UserContoller {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private OwnerRepository ownerRepository;
+
+    @Autowired
+    private RenterRepository renterRepository;
+
+
     public UserContoller(UserService userService, RoleRepository roleRepository) {
         this.userService = userService;
         this.roleRepository = roleRepository;
     }
 
-    @GetMapping("/register")
-    public String register(Model model) {
+    @PostMapping("/register")
+    public String register(@RequestParam("role") String role, Model model) {
         User user = new User();
         model.addAttribute("user", user);
+        model.addAttribute("role", role); // Προώθηση του ρόλου στη φόρμα
+        System.out.println(role);
         return "auth/register";
     }
 
+    @GetMapping("/roleselection")
+    public String roleSelection() {
+        return "auth/roleselection";
+    }
+
+
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute User user, Model model,@RequestParam String role){
-        System.out.println("Selected role: " + role);
-        System.out.println("Roles: "+user.getRoles());
+    public String saveUser(@ModelAttribute User user, @RequestParam("role") String role,  @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname,Model model) {
+        System.out.println(firstname);
+        System.out.println(lastname);
         Integer id = userService.saveUser(user);
-        String message = "User '"+id+"' saved successfully !";
+        if (role.equals("ROLE_OWNER")){
+            Owner newOwner=new Owner();
+            newOwner.setFirstName(firstname);
+            newOwner.setLastName(lastname);
+            newOwner.setEmail(user.getEmail());
+            newOwner.setTelephoneNumber(user.getTelephone());
+            ownerRepository.save(newOwner);
+        }else{
+            Renter newRenter=new Renter();
+            renterRepository.save(newRenter);
+        }
+        String message = "User '" + id + "' saved successfully with role: " + role;
         model.addAttribute("msg", message);
+
         return "redirect:/login";
     }
+
 
     @GetMapping("/users")
     public String showUsers(Model model){

@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Role Selection</title>
+    <link th:href="@{/css/roleselection.css}" rel="stylesheet">
 </head>
 <body>
-
+<div layout:fragment="main-content">
+    <form class="form" th:action="@{/register}" method="post">
+        <p id="heading">Select Role</p>
+        <div class="btn">
+            <button class="button1" type="submit" name="role" value="ROLE_OWNER">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Owner&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+            <button class="button1" type="submit" name="role" value="ROLE_RENTER">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Renter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+        </div>
+    </form>
+</div>
 </body>
+
 </html>
