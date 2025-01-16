@@ -7,10 +7,7 @@ import Akinita.project.Akinita.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserContoller {
@@ -33,12 +30,13 @@ public class UserContoller {
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute User user, Model model){
+    public String saveUser(@ModelAttribute User user, Model model,@RequestParam String role){
+        System.out.println("Selected role: " + role);
         System.out.println("Roles: "+user.getRoles());
         Integer id = userService.saveUser(user);
         String message = "User '"+id+"' saved successfully !";
         model.addAttribute("msg", message);
-        return "redirect:/roleselection";
+        return "redirect:/login";
     }
 
     @GetMapping("/users")

@@ -27,8 +27,14 @@ a:hover {
 html,
 body {
     height: 100%;
-    background-color: #333;
+    margin: 0;
+    background-image: url('../images/pixelcut-export.jpeg'); /* Αντικατάστησε με το μονοπάτι της εικόνας */
+    background-size: cover; /* Η εικόνα να καλύπτει ολόκληρη τη σελίδα */
+    background-repeat: no-repeat; /* Η εικόνα να μην επαναλαμβάνεται */
+    background-position: center; /* Κεντράρισμα της εικόνας */
+    background-attachment: fixed; /* Το φόντο παραμένει σταθερό κατά την κύλιση */
 }
+
 
 body {
     display: -ms-flexbox;

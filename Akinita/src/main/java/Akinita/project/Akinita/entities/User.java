@@ -94,6 +94,12 @@ public class User {
         this.roles = roles;
     }
 
+    public long getTelephone() {return telephone;
+    }
+
+    public void setTelephone(long telephone) {this.telephone = telephone;
+    }
+
     @Override
     public String toString() {
         return username;
