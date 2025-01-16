@@ -26,10 +26,9 @@ public interface RealEstate {
 
     // Sale Availability
     boolean isAvailableForSale();
-    void setAvailableForSale(Boolean availability);
+    void setAvailability(Boolean availability);
 
     // Owner
-    Owner whoIsOwner();
     void setOwner(Owner owner);
 
 }

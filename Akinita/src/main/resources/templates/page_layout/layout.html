@@ -24,7 +24,7 @@
 
 <body class="text-center">
 <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-    <header class="masthead mb-auto" th:replace="page_layout/header :: header">
+    <header class="masthead mb-auto" th:replace="~{page_layout/header :: header}">
         <div class="inner">
             <h3 class="masthead-brand">Cover</h3>
             <nav class="nav nav-masthead justify-content-center">
@@ -52,7 +52,7 @@
         <h1> This is main content which will be decorated by actual page returned in the controller </h1>
     </main>
 
-    <footer class="mastfoot mt-auto" th:replace="page_layout/footer :: footer">
+    <footer class="mastfoot mt-auto" th:replace="~{page_layout/footer :: footer}">
         <div class="inner">
             <p>Footer will be replaced</p>
         </div>

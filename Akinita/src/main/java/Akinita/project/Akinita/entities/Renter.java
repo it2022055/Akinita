@@ -18,13 +18,13 @@ public class Renter {
     private String lastName;
 
     @Column
-    private String email;
+    private String telephoneNumber;
 
-    public Renter(Integer id, String firstName, String lastName, String email) {
+    public Renter(Integer id, String firstName, String lastName, String email, String telephoneNumber) {
         Id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.telephoneNumber = telephoneNumber;
     }
 
     public Renter() {
@@ -54,12 +54,12 @@ public class Renter {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getTelephoneNumber() {
+        return telephoneNumber;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
     }
 
     @Override
@@ -68,7 +68,6 @@ public class Renter {
                 "Id=" + Id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
                 '}';
     }
 }

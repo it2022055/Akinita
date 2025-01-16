@@ -4,5 +4,5 @@ import Akinita.project.Akinita.entities.Land;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LandRepository extends RealEstateRepository<Land, Integer> {
+public interface LandRepository extends PropertyRepository<Land, Integer> {
 }

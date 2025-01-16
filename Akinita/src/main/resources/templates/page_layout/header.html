@@ -18,13 +18,13 @@
             </a>
             <a sec:authorize="!isAuthenticated()"  class="nav-link">
                 <a  class="nav-link" href="/login">Login</a>
-                <a  class="nav-link" href="/register">Register</a>
+                <a  class="nav-link" href="/roleselection">Register</a>
             </a>
             <a sec:authorize="isAuthenticated()"  class="nav-link">
                 <form th:action="@{/logout}" method="post">
                     <input type="submit"  class="btn btn-primary" value="Sign Out"/>
                 </form>
-                <a sec:authorize="hasRole('ROLE_USER')" class="nav-link" href="/Owner/searchProperties">Search Properties</a>
+                <a sec:authorize="hasRole('ROLE_USER')" class="nav-link" href="/Property/searchProperties">Search Properties</a> //να φτιαχτει
                 <a sec:authorize="hasRole('ROLE_OWNER')" class="nav-link" href="/Owner/submitProperty">Add Listing</a>
                 <a sec:authorize="hasRole('ROLE_OWNER')" class="nav-link" href="/Owner/Listings">View Listings</a>
                 <a sec:authorize="hasRole('ROLE_OWNER')" class="nav-link" href="/Owner/manageApplications/">Applications</a>

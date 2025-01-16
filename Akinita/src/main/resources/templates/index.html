@@ -6,97 +6,25 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Akinita</title>
+    <link th:href="@{/css/index.css}" rel="stylesheet">
 </head>
-<style>
-    /* Basic styles for layout and design */
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.thechaosdiaries.com%2Facropolis-of-athens-things-you-need-to-know%2F&psig=AOvVaw10ret010hMSDsrKFSa7eyo&ust=1737041828787000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCIDOvJiH-IoDFQAAAAAdAAAAABAK') no-repeat center center fixed;
-        background-size: cover;
-    }
-
-    .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 50px;
-        background-color: rgba(0, 0, 0, 0.7);
-    }
-
-    .navbar .logo {
-        color: #fff;
-        font-size: 1.5em;
-        font-weight: bold;
-    }
-
-    .navbar ul {
-        list-style: none;
-        display: flex;
-        margin: 0;
-        padding: 0;
-    }
-
-    .navbar ul li {
-        margin: 0 10px;
-    }
-
-    .navbar ul li a {
-        color: #fff;
-        text-decoration: none;
-        font-size: 1em;
-    }
-
-    .search-buttons button {
-        margin: 10px;
-        padding: 10px 20px;
-        font-size: 1.2em;
-        color: #fff;
-        background-color: #0066cc;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-
-    .search-buttons button:hover {
-        background-color: #004da3;
-    }
-
-    .search-form {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-    }
-
-    .search-form input, .search-form select {
-        margin: 5px;
-        padding: 10px;
-        font-size: 1em;
-    }
-
-    .search-form button {
-        padding: 10px 20px;
-        font-size: 1em;
-        color: #fff;
-        background-color: #0066cc;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-</style>
 <body>
-<div layout:fragment="main-content">
-    <form class="search-form">
-        <input type="text" placeholder="Πληκτρολογήστε την περιοχή αναζήτησης" />
-        <select>
-            <option>Σπίτι</option>
-            <option>Επαγγελματικός χώρος</option>
-            <option>Πάρκινγκ</option>
-            <option>Οικόπεδα</option>
-        </select>
-        <button>Αναζήτηση</button>
+<div layout:fragment="main-content" th:action="@{/searchProperties} " class="container">
+    <form class="form">
+        <div class="field">
+            <input autocomplete="off" placeholder="Περιοχή" class="input-field" type="text">
+        </div>
+        <div class="rolefield">
+            <p>Τύπος Ακινήτου:</p>
+            <select class="roleddlist">
+                <option value="House">Σπίτι</option>
+                <option value="CommercialProperty">Επαγγελματικός χώρος</option>
+                <option value="Parking">Πάρκινγκ</option>
+                <option value="Land">Οικόπεδο</option>
+            </select>
+        </div>
+        <button class="button1">Αναζήτηση</button>
     </form>
 </div>
 </body>
