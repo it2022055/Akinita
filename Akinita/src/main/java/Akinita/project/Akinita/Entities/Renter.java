@@ -1,4 +1,4 @@
-package Akinita.project.Akinita.entities;
+package Akinita.project.Akinita.Entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

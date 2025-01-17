@@ -2,7 +2,7 @@ package Akinita.project.Akinita.Services;
 
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import Akinita.project.Akinita.Repositories.RealEstate.*;
-import Akinita.project.Akinita.entities.*;
+import Akinita.project.Akinita.Entities.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

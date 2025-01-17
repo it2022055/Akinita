@@ -1,4 +1,4 @@
-package Akinita.project.Akinita.entities;
+package Akinita.project.Akinita.Entities;
 
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import jakarta.persistence.*;

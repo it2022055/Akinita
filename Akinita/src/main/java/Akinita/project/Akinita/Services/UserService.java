@@ -2,8 +2,8 @@ package Akinita.project.Akinita.Services;
 
 import Akinita.project.Akinita.Repositories.User.RoleRepository;
 import Akinita.project.Akinita.Repositories.User.UserRepository;
-import Akinita.project.Akinita.entities.Role;
-import Akinita.project.Akinita.entities.User;
+import Akinita.project.Akinita.Entities.Role;
+import Akinita.project.Akinita.Entities.User;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,19 +31,20 @@ public class UserService {
     }
 
     @Transactional
-    public Integer saveUser(User user) {
+    public User saveUser(User user, String assignedrole) {
         String passwd= user.getPassword();
         String encodedPassword = passwordEncoder.encode(passwd);
         user.setPassword(encodedPassword);
 
         Role role = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        Role role1 = roleRepository.findByName(assignedrole)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         Set<Role> roles = new HashSet<>();
         roles.add(role);
+        roles.add(role1);
         user.setRoles(roles);
-
-        user = userRepository.save(user);
-        return user.getId();
+        return userRepository.save(user);
     }
 
     @Transactional

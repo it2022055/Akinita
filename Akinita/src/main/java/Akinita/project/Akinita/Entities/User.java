@@ -1,4 +1,4 @@
-package Akinita.project.Akinita.entities;
+package Akinita.project.Akinita.Entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -25,6 +25,8 @@ public class User {
     @NotBlank
     @Size(max = 120)
     private String password;
+
+    @NotBlank
     @Column
     private String email;
 
@@ -37,11 +39,13 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String username, String email, long telephone, String password) {
+    public User(Integer id, String username, String email, String password) {
         this.id = id;
         this.username = username;
+        this.email = email;
         this.password = password;
     }
+
 
     public Integer getId() {
         return id;

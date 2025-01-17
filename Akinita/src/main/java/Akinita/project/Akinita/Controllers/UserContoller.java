@@ -1,13 +1,13 @@
 package Akinita.project.Akinita.Controllers;
 
-import Akinita.project.Akinita.Repositories.User.OwnerRepository;
 import Akinita.project.Akinita.Repositories.User.RenterRepository;
 import Akinita.project.Akinita.Repositories.User.RoleRepository;
+import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.UserService;
-import Akinita.project.Akinita.entities.Owner;
-import Akinita.project.Akinita.entities.Renter;
-import Akinita.project.Akinita.entities.Role;
-import Akinita.project.Akinita.entities.User;
+import Akinita.project.Akinita.Entities.Owner;
+import Akinita.project.Akinita.Entities.Renter;
+import Akinita.project.Akinita.Entities.Role;
+import Akinita.project.Akinita.Entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +19,10 @@ public class UserContoller {
     private UserService userService;
 
     @Autowired
-    private RoleRepository roleRepository;
+    private OwnerService ownerService;
 
     @Autowired
-    private OwnerRepository ownerRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
     private RenterRepository renterRepository;
@@ -50,21 +50,15 @@ public class UserContoller {
 
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute User user, @RequestParam("role") String role,  @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname,@RequestParam("telephone") String telephone, Model model) {
-        System.out.println(firstname);
-        System.out.println(lastname);
-        System.out.println(telephone);
-        Integer id = userService.saveUser(user);
+        User saveduser = userService.saveUser(user, role);
         if (role.equals("ROLE_OWNER")){
-            Owner newOwner=new Owner();
-            newOwner.setFirstName(firstname);
-            newOwner.setLastName(lastname);
-            newOwner.setTelephoneNumber(telephone);
-            ownerRepository.save(newOwner);
+            Owner newOwner=new Owner(saveduser,firstname,lastname,telephone);
+            ownerService.save(newOwner);
         }else{
             Renter newRenter=new Renter();
             renterRepository.save(newRenter);
         }
-        String message = "User '" + id + "' saved successfully with role: " + role;
+        String message = "User '" + saveduser.getId() + "' saved successfully with role: " + role;
         model.addAttribute("msg", message);
 
         return "redirect:/login";

@@ -1,6 +1,6 @@
 package Akinita.project.Akinita.Interfaces;
 
-import Akinita.project.Akinita.entities.Owner;
+import Akinita.project.Akinita.Entities.Owner;
 
 public interface RealEstate {
 

@@ -1,6 +1,6 @@
 package Akinita.project.Akinita.Repositories.RealEstate;
 
-import Akinita.project.Akinita.entities.Land;
+import Akinita.project.Akinita.Entities.Land;
 import org.springframework.stereotype.Repository;
 
 @Repository

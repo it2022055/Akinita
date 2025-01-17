@@ -1,6 +1,6 @@
 package Akinita.project.Akinita.Repositories.User;
 
-import Akinita.project.Akinita.entities.User;
+import Akinita.project.Akinita.Entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,11 +1,11 @@
 package Akinita.project.Akinita.Services;
 
+import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
 import Akinita.project.Akinita.Repositories.User.OwnerRepository;
-import Akinita.project.Akinita.Repositories.RealEstate.*;
-import Akinita.project.Akinita.entities.Owner;
-import Akinita.project.Akinita.entities.RentalApplication;
+import Akinita.project.Akinita.Entities.Owner;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +21,9 @@ public class OwnerService {
     //private LandRepository landRepository;
     //@Autowired
     //private ParkingRepository parkingRepository;
-   // @Autowired
+    //@Autowired
     //private CommercialPropertyRepository commercialPropertyRepository;
-    @Autowired
+   @Autowired
     private OwnerRepository ownerRepository;
     @Autowired
     private RentalApplicationRepository rentalApplicationRepository;
@@ -32,7 +32,7 @@ public class OwnerService {
     public List<RealEstate> getOwnerProperties(int ownerId) {
         List<RealEstate> ownerProperties = new ArrayList<>();
 
-        // Ανάκτηση ακινήτων για κάθε τύπο
+        //Ανάκτηση ακινήτων για κάθε τύπο
         //ownerProperties.addAll(houseRepository.findByOwnerId(ownerId));
         //ownerProperties.addAll(landRepository.findByOwnerId(ownerId));
         //ownerProperties.addAll(parkingRepository.findByOwnerId(ownerId));
@@ -46,8 +46,11 @@ public class OwnerService {
     }
 
     public List<RentalApplication> getOwnerRentalApplications(int ownerId) {
-        List<RentalApplication> ownerRentalApplications = new ArrayList<>();
-        ownerRentalApplications.addAll(rentalApplicationRepository.findByOwnerId(ownerId));
-        return ownerRentalApplications;
+        return new ArrayList<>(rentalApplicationRepository.findByOwnerId(ownerId));
+    }
+
+    @Transactional
+    public void save(Owner newowner){
+        ownerRepository.saveOwnerCustom(newowner.getUserId(), newowner.getFirstName(), newowner.getLastName(), newowner.getTelephoneNumber());
     }
 }

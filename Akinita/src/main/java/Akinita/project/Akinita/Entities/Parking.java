@@ -1,11 +1,8 @@
-package Akinita.project.Akinita.entities;
+package Akinita.project.Akinita.Entities;
 
 import Akinita.project.Akinita.Interfaces.LimitedMethods.ConstructionDate;
-import Akinita.project.Akinita.Interfaces.RealEstate;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 
