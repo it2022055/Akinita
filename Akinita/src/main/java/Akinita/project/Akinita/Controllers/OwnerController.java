@@ -57,8 +57,8 @@ public class OwnerController {
 
     @GetMapping("/Listings")
     public String ownerListings(Model model, Principal principal) {
-        String username = principal.getName();
-        Integer ownerId = ownerService.findOwnerIdByUsername(username);
+        String email = principal.getName();
+        Integer ownerId = ownerService.findOwnerIdByEmail(email);
         model.addAttribute("Listings", ownerService.getOwnerProperties(ownerId));
         return "properties/ownerListings";
     }
@@ -66,8 +66,8 @@ public class OwnerController {
 
     @GetMapping("/manageApplications/{propertyId}")
     public String manageApplications(@PathVariable String propertyId, Model model, Principal principal) {
-        String username = principal.getName();
-        Integer ownerId = ownerService.findOwnerIdByUsername(username);
+        String email = principal.getName();
+        Integer ownerId = ownerService.findOwnerIdByEmail(email);
         model.addAttribute("Applications", ownerService.getOwnerRentalApplications(ownerId));
         return "properties/manageApplications";
     }

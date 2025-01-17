@@ -2,6 +2,10 @@ package Akinita.project.Akinita.Services;
 
 import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Interfaces.RealEstate;
+import Akinita.project.Akinita.Repositories.RealEstate.CommercialPropertyRepository;
+import Akinita.project.Akinita.Repositories.RealEstate.HouseRepository;
+import Akinita.project.Akinita.Repositories.RealEstate.LandRepository;
+import Akinita.project.Akinita.Repositories.RealEstate.ParkingRepository;
 import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
 import Akinita.project.Akinita.Repositories.User.OwnerRepository;
 import Akinita.project.Akinita.Entities.Owner;
@@ -15,14 +19,14 @@ import java.util.List;
 @Service
 public class OwnerService {
 
-    //@Autowired
-    //private HouseRepository houseRepository;
-    //@Autowired
-    //private LandRepository landRepository;
-    //@Autowired
-    //private ParkingRepository parkingRepository;
-    //@Autowired
-    //private CommercialPropertyRepository commercialPropertyRepository;
+    @Autowired
+    private HouseRepository houseRepository;
+    @Autowired
+    private LandRepository landRepository;
+    @Autowired
+    private ParkingRepository parkingRepository;
+    @Autowired
+    private CommercialPropertyRepository commercialPropertyRepository;
    @Autowired
     private OwnerRepository ownerRepository;
     @Autowired
@@ -33,15 +37,15 @@ public class OwnerService {
         List<RealEstate> ownerProperties = new ArrayList<>();
 
         //Ανάκτηση ακινήτων για κάθε τύπο
-        //ownerProperties.addAll(houseRepository.findByOwnerId(ownerId));
-        //ownerProperties.addAll(landRepository.findByOwnerId(ownerId));
-        //ownerProperties.addAll(parkingRepository.findByOwnerId(ownerId));
-        //ownerProperties.addAll(commercialPropertyRepository.findByOwnerId(ownerId));
+        ownerProperties.addAll(houseRepository.findByOwner_UserId(ownerId));
+        ownerProperties.addAll(landRepository.findByOwner_UserId(ownerId));
+        ownerProperties.addAll(parkingRepository.findByOwner_UserId(ownerId));
+        ownerProperties.addAll(commercialPropertyRepository.findByOwner_UserId(ownerId));
         return ownerProperties;
     }
 
-    public Integer findOwnerIdByUsername(String username) {
-        Owner owner = ownerRepository.findByUsername(username);
+    public Integer findOwnerIdByEmail(String email) {
+        Owner owner = ownerRepository.findByEmail(email);
         return owner != null ? owner.getUserId() : null;
     }
 

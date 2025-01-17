@@ -17,4 +17,7 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
     @Query(value = "INSERT INTO Owner (user_id, first_name, last_name, telephone_number) " +
             "VALUES (:userId, :firstName, :lastName, :telephoneNumber)", nativeQuery = true)
     void saveOwnerCustom(Integer userId, String firstName, String lastName, String telephoneNumber);
+
+    @Query("SELECT o FROM Owner o WHERE o.user.email = :email")
+    Owner findByEmail(String email);
 }

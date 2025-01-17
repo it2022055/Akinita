@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Akinita</title>
+    <link th:href="@{/css/ownerListings.css}" rel="stylesheet">
 </head>
 <body>
-
+<div layout:fragment="main-content" th:action="@{/searchProperties} " class="container">
+    <form class="form">
+    </form>
+</div>
 </body>
 </html>
