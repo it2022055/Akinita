@@ -1,6 +1,7 @@
 package Akinita.project.Akinita.Config;
 
 import Akinita.project.Akinita.Services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -23,6 +24,7 @@ public class SecurityConfig {
 
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
     public SecurityConfig(UserService userService, UserDetailsService userDetailsService, BCryptPasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.userDetailsService = userDetailsService;
