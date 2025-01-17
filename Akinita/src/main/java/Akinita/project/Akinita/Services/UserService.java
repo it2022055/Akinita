@@ -7,9 +7,11 @@ import Akinita.project.Akinita.Entities.User;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -17,11 +19,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
 
     private RoleRepository roleRepository;
+
+
 
     private BCryptPasswordEncoder passwordEncoder;
     public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
@@ -36,10 +40,13 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(passwd);
         user.setPassword(encodedPassword);
 
+        Role role = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         Role role1 = roleRepository.findByName(assignedrole)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         Set<Role> roles = new HashSet<>();
         roles.add(role1);
+        roles.add(role);
         user.setRoles(roles);
         return userRepository.save(user);
     }
@@ -50,6 +57,7 @@ public class UserService {
         return user.getId();
     }
 
+    @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> opt = userRepository.findByUsername(username);
