@@ -2,9 +2,10 @@ package Akinita.project.Akinita.Services;
 
 import Akinita.project.Akinita.Repositories.User.RoleRepository;
 import Akinita.project.Akinita.Repositories.User.UserRepository;
-import Akinita.project.Akinita.entities.Role;
-import Akinita.project.Akinita.entities.User;
+import Akinita.project.Akinita.Entities.Role;
+import Akinita.project.Akinita.Entities.User;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,11 +20,13 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -36,7 +39,7 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(passwd);
         user.setPassword(encodedPassword);
 
-        Role role = roleRepository.findByName("ROLE_USER")
+        Role role = roleRepository.findByName("ROLE_USER")                        // do we even need the role user? , pws tha baloyme polla roles an einai apla ena collum me mia timh?
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         Set<Role> roles = new HashSet<>();
         roles.add(role);
@@ -71,12 +74,28 @@ public class UserService {
         }
     }
 
-    @Transactional
+
+
     public Object getUsers() {
         return userRepository.findAll();
     }
 
     public Object getUser(Long userId) {
         return userRepository.findById(userId).get();
+    }
+
+    public Object getRoles() {
+        return roleRepository.findAll();
+    }
+
+    public Object getRole(Integer roleId) {
+        return roleRepository.findById(roleId).get();
+    }
+
+    public Integer findByUsername(String username) {
+
+        Optional<User> newUser;
+        newUser = userRepository.findByUsername(username);
+        return newUser.get().getId();
     }
 }

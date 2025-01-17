@@ -1,7 +1,7 @@
 package Akinita.project.Akinita.Controllers;
 
 import Akinita.project.Akinita.Repositories.User.RoleRepository;
-import Akinita.project.Akinita.entities.Role;
+import Akinita.project.Akinita.Entities.Role;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

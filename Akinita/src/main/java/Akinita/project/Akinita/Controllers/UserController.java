@@ -1,36 +1,31 @@
 package Akinita.project.Akinita.Controllers;
 
-import Akinita.project.Akinita.Repositories.User.OwnerRepository;
-import Akinita.project.Akinita.Repositories.User.RenterRepository;
-import Akinita.project.Akinita.Repositories.User.RoleRepository;
+import Akinita.project.Akinita.Services.OwnerService;
+import Akinita.project.Akinita.Services.RenterService;
 import Akinita.project.Akinita.Services.UserService;
-import Akinita.project.Akinita.entities.Owner;
-import Akinita.project.Akinita.entities.Renter;
-import Akinita.project.Akinita.entities.Role;
-import Akinita.project.Akinita.entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import Akinita.project.Akinita.Entities.Owner;
+import Akinita.project.Akinita.Entities.Renter;
+import Akinita.project.Akinita.Entities.Role;
+import Akinita.project.Akinita.Entities.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class UserContoller {
-    @Autowired
-    private UserService userService;
+public class UserController {
 
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private OwnerRepository ownerRepository;
-
-    @Autowired
-    private RenterRepository renterRepository;
+    private final UserService userService;
+    private final OwnerService ownerService;
+    private final RenterService renterService;
 
 
-    public UserContoller(UserService userService, RoleRepository roleRepository) {
+    // Direct access to Repositories is bad practice amd should be avoided in Controllers, only by Services
+
+
+    public UserController(UserService userService, OwnerService ownerService, RenterService renterService) {
         this.userService = userService;
-        this.roleRepository = roleRepository;
+        this.ownerService = ownerService;
+        this.renterService = renterService;
     }
 
     @PostMapping("/register")
@@ -47,7 +42,6 @@ public class UserContoller {
         return "auth/roleselection";
     }
 
-
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute User user, @RequestParam("role") String role,  @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname,@RequestParam("telephone") String telephone, Model model) {
         System.out.println(firstname);
@@ -55,15 +49,23 @@ public class UserContoller {
         System.out.println(telephone);
         Integer id = userService.saveUser(user);
         if (role.equals("ROLE_OWNER")){
-            Owner newOwner=new Owner();
+
+            Owner newOwner = new Owner();
             newOwner.setFirstName(firstname);
             newOwner.setLastName(lastname);
             newOwner.setTelephoneNumber(telephone);
-            ownerRepository.save(newOwner);
+            ownerService.saveOwner(id,newOwner);
+
         }else{
-            Renter newRenter=new Renter();
-            renterRepository.save(newRenter);
+
+            Renter newRenter = new Renter();
+            newRenter.setFirstName(firstname);
+            newRenter.setLastName(lastname);
+            newRenter.setTelephoneNumber(telephone);
+            renterService.saveRenter(id, newRenter);
+
         }
+
         String message = "User '" + id + "' saved successfully with role: " + role;
         model.addAttribute("msg", message);
 
@@ -74,7 +76,7 @@ public class UserContoller {
     @GetMapping("/users")
     public String showUsers(Model model){
         model.addAttribute("users", userService.getUsers());
-        model.addAttribute("roles", roleRepository.findAll());
+        model.addAttribute("roles", userService.getRoles());
         return "auth/users";
     }
 
@@ -97,12 +99,12 @@ public class UserContoller {
     @GetMapping("/user/role/delete/{user_id}/{role_id}")
     public String deleteRolefromUser(@PathVariable Long user_id, @PathVariable Integer role_id, Model model){
         User user = (User) userService.getUser(user_id);
-        Role role = roleRepository.findById(role_id).get();
+        Role role = (Role) userService.getRole(role_id);
         user.getRoles().remove(role);
         System.out.println("Roles: "+user.getRoles());
         userService.updateUser(user);
         model.addAttribute("users", userService.getUsers());
-        model.addAttribute("roles", roleRepository.findAll());
+        model.addAttribute("roles", userService.getRoles());
         return "auth/users";
 
     }
@@ -110,12 +112,12 @@ public class UserContoller {
     @GetMapping("/user/role/add/{user_id}/{role_id}")
     public String addRoletoUser(@PathVariable Long user_id, @PathVariable Integer role_id, Model model){
         User user = (User) userService.getUser(user_id);
-        Role role = roleRepository.findById(role_id).get();
+        Role role = (Role) userService.getRole(role_id);
         user.getRoles().add(role);
         System.out.println("Roles: "+user.getRoles());
         userService.updateUser(user);
         model.addAttribute("users", userService.getUsers());
-        model.addAttribute("roles", roleRepository.findAll());
+        model.addAttribute("roles", userService.getRoles());
         return "auth/users";
 
     }

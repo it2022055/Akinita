@@ -1,4 +1,4 @@
-package Akinita.project.Akinita.entities;
+package Akinita.project.Akinita.Entities;
 
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import jakarta.persistence.*;
@@ -33,6 +33,10 @@ public class Property implements RealEstate {
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
+
+    @ManyToOne
+    @JoinColumn(name = "renter_id")  // Εδώ προσθέτεις το πεδίο για τον renter
+    private Renter renter;
 
     @NotBlank(message = "Availability for Sale is required")
     @Column(name = "availability")

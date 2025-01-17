@@ -1,4 +1,4 @@
-package Akinita.project.Akinita.entities;
+package Akinita.project.Akinita.Entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -8,15 +8,14 @@ import java.util.Set;
 
 
 @Entity
-@Table(	name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
-        })
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email")
+})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    protected Integer id;
 
     @NotBlank
     @Size(max = 20)
@@ -32,12 +31,12 @@ public class User {
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    protected Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(Integer id, String username, String email, long telephone, String password) {
+    public User(Integer id, String username,String password) {
         this.id = id;
         this.username = username;
         this.password = password;

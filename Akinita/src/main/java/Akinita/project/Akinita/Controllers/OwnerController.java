@@ -1,12 +1,9 @@
 package Akinita.project.Akinita.Controllers;
 
-import Akinita.project.Akinita.Interfaces.RealEstate;
+import Akinita.project.Akinita.Entities.*;
 import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.PropertyService;
-import Akinita.project.Akinita.entities.CommercialProperty;
-import Akinita.project.Akinita.entities.House;
-import Akinita.project.Akinita.entities.Land;
-import Akinita.project.Akinita.entities.Parking;
+import Akinita.project.Akinita.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +14,20 @@ import java.security.Principal;
 @Controller
 @RequestMapping("Owner")
 public class OwnerController {
+
+    private final PropertyService propertyService;
+
+    private final OwnerService ownerService;
+
+    private final UserService userService;
+
+
     @Autowired
-    private PropertyService propertyService;
-    @Autowired
-    private OwnerService ownerService;
+    public OwnerController(PropertyService propertyService, OwnerService ownerService, UserService userService) {
+        this.propertyService = propertyService;
+        this.ownerService = ownerService;
+        this.userService = userService;
+    }
 
     @GetMapping("/submitProperty")
     public String submitProperty(Model model) {
@@ -29,26 +36,9 @@ public class OwnerController {
     }
 
     @PostMapping("/submitProperty")
-    public String submitProperty(@RequestParam String propertyType, @ModelAttribute RealEstate realEstate, Model model) {
-        RealEstate newProperty;
+    public String submitProperty(@RequestParam String propertyType, @ModelAttribute Property property, Model model) {      // RealEstate is interface
 
-        switch(propertyType) {
-            case "House":
-                newProperty = new House();
-                break;
-            case "Land":
-                newProperty = new Land();
-                break;
-            case "Parking":
-                newProperty = new Parking();
-                break;
-            case "CommercialProperty":
-                newProperty = new CommercialProperty();
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid property type");
-        }
-        Integer id = propertyService.SaveProperty(newProperty);
+        int id = propertyService.SaveProperty(propertyType, property);              // epeidh pername ena property object auto shmainei oti oi upoklaseis pou exoun parapanw dedomena tha ta xasoun , To Be fixed
         String message = "Property '"+id+"' saved successfully !";
         model.addAttribute("msg", message);
         return "redirect:/index";
@@ -58,7 +48,7 @@ public class OwnerController {
     @GetMapping("/Listings")
     public String ownerListings(Model model, Principal principal) {
         String username = principal.getName();
-        Integer ownerId = ownerService.findOwnerIdByUsername(username);
+        Integer ownerId = userService.findByUsername(username);                // check for null
         model.addAttribute("Listings", ownerService.getOwnerProperties(ownerId));
         return "properties/ownerListings";
     }
@@ -67,7 +57,7 @@ public class OwnerController {
     @GetMapping("/manageApplications/{propertyId}")
     public String manageApplications(@PathVariable String propertyId, Model model, Principal principal) {
         String username = principal.getName();
-        Integer ownerId = ownerService.findOwnerIdByUsername(username);
+        Integer ownerId = userService.findByUsername(username);                  // check for null
         model.addAttribute("Applications", ownerService.getOwnerRentalApplications(ownerId));
         return "properties/manageApplications";
     }

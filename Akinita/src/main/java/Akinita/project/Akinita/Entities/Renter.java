@@ -1,20 +1,15 @@
-package Akinita.project.Akinita.entities;
+package Akinita.project.Akinita.Entities;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Owner {
+public class Renter extends User{                // Το id του Renter θα είναι το ίδιο με του User
 
     @Id
-    @Column(name = "user_id")
-    private Integer userId;
+    int id;       // ftiaxe ta id connections kai ola tha ftiaxoun
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    @MapsId
-    private User user;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -25,38 +20,18 @@ public class Owner {
     @Column(name = "telephone_number", nullable = false)
     private String telephoneNumber;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "renter", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Property> properties = new ArrayList<>();
 
     // Default constructor
-    public Owner() {
+    public Renter() {
     }
 
     // Constructor
-    public Owner(User user, String firstName, String lastName, String telephoneNumber) {
-        this.user = user;
-        this.userId = user.getId(); // Assign primary key from User
+    public Renter(String firstName, String lastName, String telephoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephoneNumber = telephoneNumber;
-    }
-
-    // Getters and Setters
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-        this.userId = user.getId(); // Sync userId with User entity
     }
 
     public String getFirstName() {
@@ -93,8 +68,8 @@ public class Owner {
 
     @Override
     public String toString() {
-        return "Owner{" +
-                "userId=" + userId +
+        return "Renter{" +
+                "userId=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", telephoneNumber='" + telephoneNumber + '\'' +
