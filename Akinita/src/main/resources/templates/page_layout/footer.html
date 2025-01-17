@@ -10,10 +10,8 @@
 <footer class="mastfoot mt-auto" th:fragment="header">
     <div class="inner">
         <div sec:authorize="isAuthenticated()">
-            Authenticated username:
+            Authenticated email:
             <span sec:authentication="name"></span>
-            Authenticated user roles:
-            <span sec:authentication="principal.authorities"></span>
         </div>
 <<<<<<< HEAD
         <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>

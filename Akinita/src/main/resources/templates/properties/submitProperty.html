@@ -1,21 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Submit Property</title>
+    <link th:href="@{/css/submitProperty.css}" rel="stylesheet">
 </head>
 <body>
-<form method="post" action="/submitProperty">
-    <label for="propertyType">Property Type:</label>
-    <select name="propertyType" id="propertyType">
-        <option value="House">House</option>
-        <option value="Land">Land</option>
-        <option value="Parking">Parking</option>
-        <option value="CommercialProperty">Commercial Property</option>
-    </select>
-    <!-- Τα υπόλοιπα πεδία για τα properties -->
-    <input type="submit" value="Submit">
-</form>
-
+<div layout:fragment="main-content" th:action="@{/submitProperty} " class="container" th:object="${property}">
+    <form class="form">
+        <p id="heading">New Property Submission</p>
+        <div class="field">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            </svg>
+            <input autocomplete="off"placeholder="Estate Name" name="estatename"  class="input-field" type="text">
+        </div>
+        <div class="field">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            </svg>
+            <input autocomplete="off"placeholder="Location" name="location" class="input-field"  type="text">
+        </div>
+        <div class="field">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            </svg>
+            <input autocomplete="off"placeholder="Price" name="price" class="input-field"  type="text">
+        </div>
+        <div class="field">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            </svg>
+            <input autocomplete="off"placeholder="availability" name="availability" class="input-field"  type="text">
+        </div>
+    </form>
+</div>
 </body>
 </html>
