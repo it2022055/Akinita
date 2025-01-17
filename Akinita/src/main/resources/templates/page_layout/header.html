@@ -24,7 +24,7 @@
                 <form th:action="@{/logout}" method="post">
                     <input type="submit"  class="btn btn-primary" value="Sign Out"/>
                 </form>
-                <a sec:authorize="hasRole('ROLE_USER')" class="nav-link" href="/Property/searchProperties">Search Properties</a> //να φτιαχτει
+                <a sec:authorize="hasRole('ROLE_USER')" class="nav-link" href="/Property/searchProperties">Search Properties</a>
                 <a sec:authorize="hasRole('ROLE_OWNER')" class="nav-link" href="/Owner/submitProperty">Add Listing</a>
                 <a sec:authorize="hasRole('ROLE_OWNER')" class="nav-link" href="/Owner/Listings">View Listings</a>
                 <a sec:authorize="hasRole('ROLE_OWNER')" class="nav-link" href="/Owner/manageApplications/">Applications</a>

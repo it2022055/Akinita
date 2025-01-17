@@ -10,10 +10,8 @@
 <footer class="mastfoot mt-auto" th:fragment="header">
     <div class="inner">
         <div sec:authorize="isAuthenticated()">
-            Authenticated username:
+            Authenticated email:
             <span sec:authentication="name"></span>
-            Authenticated user roles:
-            <span sec:authentication="principal.authorities"></span>
         </div>
     </div>
 </footer>
