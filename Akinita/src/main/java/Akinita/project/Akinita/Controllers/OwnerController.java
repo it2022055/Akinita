@@ -1,12 +1,9 @@
 package Akinita.project.Akinita.Controllers;
 
+import Akinita.project.Akinita.Entities.*;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.PropertyService;
-import Akinita.project.Akinita.Entities.CommercialProperty;
-import Akinita.project.Akinita.Entities.House;
-import Akinita.project.Akinita.Entities.Land;
-import Akinita.project.Akinita.Entities.Parking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,35 +20,33 @@ public class OwnerController {
     private OwnerService ownerService;
 
     @GetMapping("/submitProperty")
-    public String submitProperty(Model model) {
-        model.addAttribute("propertyTypes", new String[]{"House", "Land", "Parking", "CommercialProperty"}); // Προσθήκη των τύπων ακινήτων στο μοντέλο
-        return "properties/submitProperty";
+    public String submitProperty() {
+        return "properties/propertyFacilities";
     }
 
-    @PostMapping("/submitProperty")
-    public String submitProperty(@RequestParam String propertyType, @ModelAttribute RealEstate realEstate, Model model) {
-        RealEstate newProperty;
-
-        switch(propertyType) {
-            case "House":
-                newProperty = new House();
-                break;
-            case "Land":
-                newProperty = new Land();
-                break;
-            case "Parking":
-                newProperty = new Parking();
-                break;
-            case "CommercialProperty":
-                newProperty = new CommercialProperty();
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid property type");
+    @PostMapping("/submitNewProperty")
+    public String submitProperty(@RequestParam("estatename") String estatename, @RequestParam("description") String description, @RequestParam("price") int price, @RequestParam("location") String location, @RequestParam("propertyType") String propertyType, @ModelAttribute RealEstate realEstate, Model model) {
+        Property property=new Property();
+        model.addAttribute("property", property);
+        model.addAttribute("estatename", estatename);
+        model.addAttribute("description", description);
+        model.addAttribute("price", price);
+        model.addAttribute("location", location);
+        if(!property.equals("Land")) {
+            return "properties/propertyFacilities";
+        }else{
+            return "redirect:/index";
         }
-        Integer id = propertyService.SaveProperty(newProperty);
-        String message = "Property '"+id+"' saved successfully !";
-        model.addAttribute("msg", message);
-        return "redirect:/index";
+        //RealEstate newProperty = switch (propertyType) {
+            //case "House" -> new House();
+            //case "Land" -> new Land();
+            //case "Parking" -> new Parking();
+            //case "CommercialProperty" -> new CommercialProperty();
+            //default -> throw new IllegalArgumentException("Invalid property type");
+        //};
+
+        //int id = propertyService.SaveProperty(newProperty);
+
     }
 
 

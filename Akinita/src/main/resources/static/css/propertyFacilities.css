@@ -1,14 +1,13 @@
 /* Βασική φόρμα */
 .form {
     display: flex;
-    flex-direction: column;
     gap: 20px; /* Μικρότερο κενό ανάμεσα στα πεδία */
     padding: 2em;
     background-color: rgba(255, 255, 255, 0.68);
     border-radius: 25px;
     align-items: center;
     justify-content: center;
-    max-width: 500px; /* Περιορίζει την πλάτος της φόρμας */
+    max-width: 700px; /* Περιορίζει την πλάτος της φόρμας */
     width: 90%; /* Responsive: προσαρμογή */
     max-height: 80%;
     position: absolute;
@@ -115,4 +114,31 @@
     .field, .roleddlist {
         max-width: 100%; /* Να προσαρμόζονται */
     }
+}
+.container {
+    cursor: pointer;
+}
+
+.container input {
+    display: none;
+}
+
+.container svg {
+    overflow: visible;
+}
+
+.path {
+    fill: none;
+    stroke: black;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+    stroke-dasharray: 241 9999999;
+    stroke-dashoffset: 0;
+}
+
+.container input:checked ~ svg .path {
+    stroke-dasharray: 70.5096664428711 9999999;
+    stroke-dashoffset: -262.2723388671875;
 }

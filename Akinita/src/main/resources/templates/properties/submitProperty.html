@@ -6,34 +6,49 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Submit Property</title>
+    <title>Submit new property</title>
     <link th:href="@{/css/submitProperty.css}" rel="stylesheet">
 </head>
 <body>
-<div layout:fragment="main-content" th:action="@{/submitProperty} " class="container" th:object="${property}">
-    <form class="form">
-        <p id="heading">New Property Submission</p>
+<div layout:fragment="main-content">
+    <form class="form" th:action="@{/submitNewProperty}" method="post" th:object="${property}">
+        <p id="heading">Property Submission</p>
         <div class="field">
-            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            </svg>
-            <input autocomplete="off"placeholder="Estate Name" name="estatename"  class="input-field" type="text">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"></svg>
+            <label>
+                <input autocomplete="off" placeholder="Estate Name" name="estatename" class="input-field" type="text">
+            </label>
         </div>
         <div class="field">
-            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            </svg>
-            <input autocomplete="off"placeholder="Location" name="location" class="input-field"  type="text">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"></svg>
+            <label>
+                <input autocomplete="off" placeholder="Location"  name="location"  class="input-field" type="text">
+            </label>
         </div>
         <div class="field">
-            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            </svg>
-            <input autocomplete="off"placeholder="Price" name="price" class="input-field"  type="text">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"></svg>
+            <label>
+                <input autocomplete="off" placeholder="Price" name="price" class="input-field"  type="number">
+            </label>
         </div>
         <div class="field">
-            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            </svg>
-            <input autocomplete="off"placeholder="availability" name="availability" class="input-field"  type="text">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"></svg>
+            <label>
+                <input autocomplete="off" placeholder="Description" name="description"  class="input-field" type="text">
+            </label>
         </div>
+        <div class="rolefield">
+            <p>Property Type:</p>
+            <select class="roleddlist" name="propertyType">
+                <option value="House">House</option>
+                <option value="CommercialProperty">Commercial Property</option>
+                <option value="Parking">Parking</option>
+                <option value="Land">Land</option>
+            </select>
+        </div>
+        <button class="button3">Submit</button>
     </form>
 </div>
 </body>
+
 </html>
