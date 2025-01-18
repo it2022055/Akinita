@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Property implements RealEstate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

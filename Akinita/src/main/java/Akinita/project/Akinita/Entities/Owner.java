@@ -1,17 +1,20 @@
 package Akinita.project.Akinita.Entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Owner {
 
     @Id
-    int id;                  /// Ftiaxe ta id connections kai ola tha ftiaxoun
+    @Column(name = "user_id")
+    private Integer userId;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @MapsId
+    private User user;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -25,21 +28,35 @@ public class Owner {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Property> properties = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(	name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    protected Set<Role> roles = new HashSet<>();
-
     // Default constructor
     public Owner() {
     }
 
     // Constructor
-    public Owner(String firstName, String lastName, String telephoneNumber) {
+    public Owner(User user, String firstName, String lastName, String telephoneNumber) {
+        this.user = user;
+        this.userId = user.getId(); // Assign primary key from User
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephoneNumber = telephoneNumber;
+    }
+
+    // Getters and Setters
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        this.userId = user.getId(); // Sync userId with User entity
     }
 
     public String getFirstName() {
@@ -74,26 +91,10 @@ public class Owner {
         this.properties = properties;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
     @Override
     public String toString() {
         return "Owner{" +
-                "userId=" + id +
+                "userId=" + userId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", telephoneNumber='" + telephoneNumber + '\'' +

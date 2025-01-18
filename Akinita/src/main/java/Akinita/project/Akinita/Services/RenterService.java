@@ -1,62 +1,43 @@
 package Akinita.project.Akinita.Services;
 
-import Akinita.project.Akinita.Entities.Renter;
-import Akinita.project.Akinita.Entities.Role;
-import Akinita.project.Akinita.Repositories.RealEstate.CommercialPropertyRepository;
-import Akinita.project.Akinita.Repositories.RealEstate.HouseRepository;
-import Akinita.project.Akinita.Repositories.RealEstate.LandRepository;
-import Akinita.project.Akinita.Repositories.RealEstate.ParkingRepository;
+import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
+import Akinita.project.Akinita.Entities.Renter;
 import Akinita.project.Akinita.Repositories.User.RenterRepository;
-import Akinita.project.Akinita.Repositories.User.RoleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RenterService {
 
-    private final HouseRepository houseRepository;
-
-    private final LandRepository landRepository;
-
-    private final ParkingRepository parkingRepository;
-
-    private final CommercialPropertyRepository commercialPropertyRepository;
-
-    private final RenterRepository renterRepository;
-
-    private final RoleRepository roleRepository;
-
-    private final RentalApplicationRepository rentalApplicationRepository;
-
     @Autowired
-    public RenterService(HouseRepository houseRepository, LandRepository landRepository, ParkingRepository parkingRepository,
-                         CommercialPropertyRepository commercialPropertyRepository, RenterRepository renterRepository,
-                         RoleRepository roleRepository, RentalApplicationRepository rentalApplicationRepository) {
-        this.houseRepository = houseRepository;
-        this.landRepository = landRepository;
-        this.parkingRepository = parkingRepository;
-        this.commercialPropertyRepository = commercialPropertyRepository;
-        this.renterRepository = renterRepository;
-        this.roleRepository = roleRepository;
-        this.rentalApplicationRepository = rentalApplicationRepository;
+    private RenterRepository renterRepository;
+    @Autowired
+    private ApplicationService applicationService;
+
+    public Integer findRenterIdByEmail(String email) {
+        Renter renter = renterRepository.findByEmail(email);
+        return renter != null ? renter.getUserId() : null;
+    }
+
+    public List<RentalApplication> getRenterRentalApplications(int renterId) {
+        return new ArrayList<>(applicationService.findByRenter(renterId));
+    }
+
+    public RentalApplication saveApplication(RentalApplication rentalApplication) {
+        return applicationService.save(rentalApplication);
+    }
+
+    public Renter getRenterById(Integer renterId) {
+        return renterRepository.findByUserId(renterId);
     }
 
     @Transactional
-    public void saveRenter(Integer userId, Renter renter) {
-
-        renter.setId(userId);
-
-        Role role = roleRepository.findByName("ROLE_RENTER")
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        renter.setRoles(roles);
-
-        renterRepository.save(renter);
+    public void save(Renter newRenter){
+        renterRepository.saveRenterCustom(newRenter.getUserId(), newRenter.getFirstName(), newRenter.getLastName(), newRenter.getTelephoneNumber());
     }
 }

@@ -12,4 +12,9 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
 
     List<RentalApplication> findByOwnerId(int ownerId);
 
+    List<RentalApplication> findByRenterId(int renterId);
+
+    List<RentalApplication> findByPropertyId(int propertyId);
+
+
 }

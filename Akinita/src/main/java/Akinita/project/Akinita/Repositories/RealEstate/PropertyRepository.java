@@ -14,7 +14,8 @@ public interface PropertyRepository<T,ID> extends JpaRepository<T, ID>{
 
     List<T> findByEstateName(String estateName);
 
-    List<T> findByLocation(String location);
+    @Query("SELECT p FROM Property p WHERE p.availability = true AND p.location = :location")
+    List<Property> findByLocation(@Param("location") String location);
 
     List<T> findByPriceGreaterThanEqual(int price);
 
@@ -28,7 +29,11 @@ public interface PropertyRepository<T,ID> extends JpaRepository<T, ID>{
 
     List<Property> findByOwner_UserId(Integer userId);
 
+    Property findPropertyById(Integer propertyId);
+
     @Query("SELECT p.id FROM Property p WHERE p = :property")
     int findIdByProperty(@Param("property") T property);
+
+
 
 }
