@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OwnerService {
@@ -46,6 +47,11 @@ public class OwnerService {
     public Integer findOwnerIdByEmail(String email) {
         Owner owner = ownerRepository.findByEmail(email);
         return owner != null ? owner.getUserId() : null;
+    }
+
+    public Owner findById(int ownerId) {
+        Optional<Owner> optionalOwner = ownerRepository.findById(ownerId);
+        return optionalOwner.orElse(null);
     }
 
     public List<RentalApplication> getOwnerRentalApplications(int ownerId) {

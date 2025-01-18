@@ -35,10 +35,6 @@ public class Property implements RealEstate {
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
 
-    @ManyToOne
-    @JoinColumn(name = "renter_id")  // Εδώ προσθέτεις το πεδίο για τον renter
-    private Renter renter;
-
     @NotBlank(message = "Availability for Sale is required")
     @Column(name = "availability")
     private boolean availability;
@@ -141,4 +137,6 @@ public class Property implements RealEstate {
     public void setOwner(Owner owner) {
         this.owner = owner;
     }
+
+
 }

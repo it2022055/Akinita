@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("Owner")
@@ -21,22 +22,36 @@ public class OwnerController {
 
     @GetMapping("/submitProperty")
     public String submitProperty() {
-        return "properties/propertyFacilities";
+        return "properties/submitProperty";
     }
 
     @PostMapping("/submitNewProperty")
-    public String submitProperty(@RequestParam("estatename") String estatename, @RequestParam("description") String description, @RequestParam("price") int price, @RequestParam("location") String location, @RequestParam("propertyType") String propertyType, @ModelAttribute RealEstate realEstate, Model model) {
-        Property property=new Property();
-        model.addAttribute("property", property);
+    public String submitNewProperty( Principal principal, @RequestParam("estatename") String estatename, @RequestParam("description") String description, @RequestParam("price") int price, @RequestParam("location") String location, @RequestParam("propertyType") String propertyType, @ModelAttribute RealEstate realEstate, Model model) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        String email = principal.getName();
+        Integer ownerId = ownerService.findOwnerIdByEmail(email);
+        Owner owner=ownerService.findById(ownerId);
         model.addAttribute("estatename", estatename);
         model.addAttribute("description", description);
         model.addAttribute("price", price);
         model.addAttribute("location", location);
-        if(!property.equals("Land")) {
+        if(!propertyType.equals("Land")) {
             return "properties/propertyFacilities";
         }else{
-            return "redirect:/index";
+            Land land = new Land();
+            land.setLocation(location);
+            land.setEstateName(estatename);
+            land.setDescription(description);
+            land.setPrice(price);
+            land.setVisibility("Invisible");
+            land.setAvailability(true);
+            land.setOwner(owner);
+            propertyService.SaveLandProperty(land);
+            return "redirect:/propertySubmitted";
         }
+
         //RealEstate newProperty = switch (propertyType) {
             //case "House" -> new House();
             //case "Land" -> new Land();
@@ -49,6 +64,11 @@ public class OwnerController {
 
     }
 
+    @GetMapping("/propertySubmitted")
+    public String propertySubmitted() {
+        return "properties/propertySubmitted";
+    }
+
 
     @GetMapping("/Listings")
     public String ownerListings(Model model, Principal principal) {
@@ -59,8 +79,8 @@ public class OwnerController {
     }
 
 
-    @GetMapping("/manageApplications/{propertyId}")
-    public String manageApplications(@PathVariable String propertyId, Model model, Principal principal) {
+    @GetMapping("/manageApplications")
+    public String manageApplications(Model model, Principal principal) {
         String email = principal.getName();
         Integer ownerId = ownerService.findOwnerIdByEmail(email);
         model.addAttribute("Applications", ownerService.getOwnerRentalApplications(ownerId));

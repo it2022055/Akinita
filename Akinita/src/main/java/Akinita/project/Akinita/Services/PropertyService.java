@@ -37,4 +37,8 @@ public class PropertyService {
     public Property getPropertyById(int id) {
         return propertyRepository.findPropertyById(id);
     }
+
+    public void SaveLandProperty(Land land) {
+        landRepository.save(land);
+    }
 }

@@ -1,21 +1,22 @@
 /* Βασική φόρμα */
 .form {
     display: flex;
-    flex-direction: column;
-    gap: 20px; /* Μικρότερο κενό ανάμεσα στα πεδία */
+    gap: 20px;
     padding: 2em;
+    flex-direction: column;
     background-color: rgba(255, 255, 255, 0.68);
     border-radius: 25px;
     align-items: center;
     justify-content: center;
-    max-width: 500px; /* Περιορίζει την πλάτος της φόρμας */
-    width: 90%; /* Responsive: προσαρμογή */
-    max-height: 80%;
+    max-width: 700px;
+    width: 90%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     box-sizing: border-box;
+    max-height: 80vh; /* Χρησιμοποιείστε vh αντί για % */
+    overflow-y: auto; /* Προσθήκη κύλισης */
 }
 
 /* Heading */

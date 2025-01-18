@@ -13,18 +13,18 @@
 <div layout:fragment="main-content" th:action="@{/searchProperties} " class="container">
     <form class="form">
         <div class="field">
-            <input autocomplete="off" placeholder="Περιοχή" class="input-field" type="text">
+            <input autocomplete="off" placeholder="Location" class="input-field" type="text">
         </div>
         <div class="rolefield">
-            <p>Τύπος Ακινήτου:</p>
+            <p>Property type:</p>
             <select class="roleddlist">
-                <option value="House">Σπίτι</option>
-                <option value="CommercialProperty">Επαγγελματικός χώρος</option>
-                <option value="Parking">Πάρκινγκ</option>
-                <option value="Land">Οικόπεδο</option>
+                <option value="House">House</option>
+                <option value="CommercialProperty">Commercial Property</option>
+                <option value="Parking">Parking</option>
+                <option value="Land">Land</option>
             </select>
         </div>
-        <button class="button1">Αναζήτηση</button>
+        <button class="button1" name="PropertySearch">Search</button>
     </form>
 </div>
 </body>
