@@ -3,6 +3,7 @@ package Akinita.project.Akinita.Entities;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -22,8 +23,7 @@ public class Property implements RealEstate {
     @Column
     private String location;
 
-    @NotBlank(message = "Price is required")
-    @Size(max = 10)
+    @NotNull(message = "Price is required")
     @Column
     private int price;
 
@@ -35,9 +35,10 @@ public class Property implements RealEstate {
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
 
-    @NotBlank(message = "Availability for Sale is required")
+    @NotNull(message = "Availability for Sale is required")
     @Column(name = "availability")
-    private boolean availability;
+    private Boolean availability;
+
 
     @Column(name = "visibility")
     private String visibility;
@@ -56,12 +57,11 @@ public class Property implements RealEstate {
     public Property() {
     }
 
-    @NotBlank(message = "Availability for Sale is required")
-    public boolean isAvailability() {
+    public Boolean isAvailability() {
         return availability;
     }
 
-    public void setAvailability(@NotBlank(message = "Availability for Sale is required") boolean availability) {
+    public void setAvailability(Boolean availability) {
         this.availability = availability;
     }
 
@@ -125,12 +125,7 @@ public class Property implements RealEstate {
 
     @Override
     public boolean isAvailableForSale() {
-        return availability;
-    }
-
-    @Override
-    public void setAvailability(Boolean availability) {
-        this.availability = availability;
+        return false;
     }
 
     @Override

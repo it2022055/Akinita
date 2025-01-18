@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 public class Parking extends Property implements ConstructionDate {
 
-    public Parking(int id, String estateName, String location, int price, String description, Owner owner, boolean availability, String visibility, Date constructionDate) {
+    public Parking(int id, String estateName, String location, int price, String description, Owner owner, Boolean availability, String visibility, Date constructionDate) {
         super(id, estateName, location, price, description, owner, availability, visibility);
         this.constructionDate = constructionDate;
     }

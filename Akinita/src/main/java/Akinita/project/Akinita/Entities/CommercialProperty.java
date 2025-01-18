@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 public class CommercialProperty extends Property implements ConstructionDate, BuildingFees {
 
-    public CommercialProperty(int id, String estateName, String location, int price, String description, Owner owner, boolean availability, String visibility, Date constructionDate, boolean buildingFees) {
+    public CommercialProperty(int id, String estateName, String location, int price, String description, Owner owner, Boolean availability, String visibility, Date constructionDate, boolean buildingFees) {
         super(id, estateName, location, price, description, owner, availability, visibility);
         this.constructionDate = constructionDate;
         this.buildingFees = buildingFees;

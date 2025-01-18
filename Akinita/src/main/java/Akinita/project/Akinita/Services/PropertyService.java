@@ -3,16 +3,23 @@ package Akinita.project.Akinita.Services;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import Akinita.project.Akinita.Repositories.RealEstate.*;
 import Akinita.project.Akinita.Entities.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class PropertyService {
+
     PropertyRepository propertyRepository;
+    @Autowired
     HouseRepository houseRepository;
+    @Autowired
     LandRepository landRepository;
+    @Autowired
     ParkingRepository parkingRepository;
+    @Autowired
     CommercialPropertyRepository commercialPropertyRepository;
 
     public int SaveProperty(RealEstate property) {

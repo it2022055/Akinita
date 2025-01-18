@@ -17,9 +17,9 @@
             <p style="color: black; font-size: 3em; margin-bottom: 2em;">No listings were found!</p>
         </div>
         <div th:each="property : ${Listings}" class="property-card">
-            <h2 th:text="${property.name}">Property Name</h2>
+            <h2 th:text="${property.getEstateName()}">Property Name</h2>
             <p th:text="${property.getDescription()}">Property Description</p>
-            <p th:text="${property.price}">Property Price</p>
+            <p th:text="${property.getPrice()}">Property Price</p>
             <button class="button1" name="Change Availability">Change Availability</button>
             <button class="button1" name="DeleteProperty">Delete Property</button>
         </div>

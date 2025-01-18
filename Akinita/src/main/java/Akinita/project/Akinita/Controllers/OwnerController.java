@@ -26,30 +26,36 @@ public class OwnerController {
     }
 
     @PostMapping("/submitNewProperty")
-    public String submitNewProperty( Principal principal, @RequestParam("estatename") String estatename, @RequestParam("description") String description, @RequestParam("price") int price, @RequestParam("location") String location, @RequestParam("propertyType") String propertyType, @ModelAttribute RealEstate realEstate, Model model) {
+    public String submitNewProperty( Principal principal, @RequestParam("estateΝame") String estateΝame, @RequestParam("description") String description, @RequestParam("price") int price, @RequestParam("location") String location, @RequestParam("propertyType") String propertyType, @ModelAttribute RealEstate realEstate, Model model) {
         if (principal == null) {
             return "redirect:/login";
         }
+        System.out.println("Method execution start");
+        System.out.println("estatename: " + estateΝame);
+        System.out.println("location: " + location);
+        System.out.println("price: " + price);
+        System.out.println("description: " + description);
+        System.out.println("propertyType: " + propertyType);
         String email = principal.getName();
         Integer ownerId = ownerService.findOwnerIdByEmail(email);
         Owner owner=ownerService.findById(ownerId);
-        model.addAttribute("estatename", estatename);
+        model.addAttribute("estateΝame", estateΝame);
         model.addAttribute("description", description);
         model.addAttribute("price", price);
         model.addAttribute("location", location);
         if(!propertyType.equals("Land")) {
-            return "properties/propertyFacilities";
+            return "redirect:/properties/propertyFacilities";
         }else{
             Land land = new Land();
             land.setLocation(location);
-            land.setEstateName(estatename);
+            land.setEstateName(estateΝame);
             land.setDescription(description);
             land.setPrice(price);
             land.setVisibility("Invisible");
             land.setAvailability(true);
             land.setOwner(owner);
             propertyService.SaveLandProperty(land);
-            return "redirect:/propertySubmitted";
+            return "redirect:/properties/propertySubmitted";
         }
 
         //RealEstate newProperty = switch (propertyType) {
