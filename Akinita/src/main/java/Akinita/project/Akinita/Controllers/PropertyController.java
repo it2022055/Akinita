@@ -14,13 +14,19 @@ public class PropertyController {
     @Autowired
     PropertyService propertyService;
 
-    @GetMapping("/searchProperties")
-    public String searchProperties(@RequestParam(name = "area", required = false) String area,
+//    @GetMapping("/searchProperties")
+//    public String searchProperties(Model model) {
+//        model.addAttribute("Properties", propertyService.findAllProperties());
+//        return "redirect:/properties/searchProperties";
+//    }
+
+    @GetMapping("/searchProperties/Location")
+    public String searchPropertiesByLocation(@RequestParam(name = "area", required = false) String area,
                                    @RequestParam(name = "propertyType", required = false) String propertyType,
                                    Model model) {
         System.out.println("Area: " + area);
         System.out.println("Property Type: " + propertyType);
-        model.addAttribute("Properties", propertyService.findAllProperties(area, propertyType));
+        model.addAttribute("Properties", propertyService.findAllPropertiesByLocation(area, propertyType));
         return "redirect:/properties/searchProperties";
     }
 

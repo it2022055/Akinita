@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Property implements RealEstate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +34,10 @@ public class Property implements RealEstate {
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
+
+    @ManyToOne
+    @JoinColumn(name = "renter_id")  // Εδώ προσθέτεις το πεδίο για τον renter
+    private Renter renter;
 
     @NotBlank(message = "Availability for Sale is required")
     @Column(name = "availability")

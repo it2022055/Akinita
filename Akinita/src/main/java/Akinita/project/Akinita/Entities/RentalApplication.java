@@ -27,6 +27,11 @@ public class RentalApplication {
     // Constructors
     public RentalApplication() {}
 
+    public RentalApplication(User owner, Property property, User renter) {
+        this.owner = owner;
+        this.property = property;
+        this.renter = renter;
+    }
 
     public int getId() {
         return id;

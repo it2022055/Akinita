@@ -20,7 +20,7 @@ public class PropertyService {
         return propertyRepository.findIdByProperty(property);
     }
 
-    public List<? extends Property> findAllProperties(String location, String propertyType) {
+    public List<? extends Property> findAllPropertiesByLocation(String location, String propertyType) {
         return switch (propertyType) {
             case "House" -> houseRepository.findByLocation(location);
             case "Land" -> landRepository.findByLocation(location);
@@ -28,5 +28,13 @@ public class PropertyService {
             case "CommercialProperty" -> commercialPropertyRepository.findByLocation(location);
             default -> throw new IllegalArgumentException("Invalid property type");
         };
+    }
+
+    public List findAllProperties() {
+        return propertyRepository.findByAvailability(true);
+    }
+
+    public Property getPropertyById(int id) {
+        return propertyRepository.findPropertyById(id);
     }
 }

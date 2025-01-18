@@ -1,41 +1,59 @@
 package Akinita.project.Akinita.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Renter {
-    @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Integer Id;
+    @Id
+    @Column(name = "user_id")
+    private Integer userId;
 
-    @Column(name = "first_name")
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @MapsId
+    private User user;
+
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column
+    @Column(name = "telephone_number", nullable = false)
     private String telephoneNumber;
 
-    public Renter(Integer id, String firstName, String lastName, String email, String telephoneNumber) {
-        Id = id;
+    // Default constructor
+    public Renter() {
+    }
+
+    // Constructor
+    public Renter(User user, String firstName, String lastName, String telephoneNumber) {
+        this.user = user;
+        this.userId = user.getId(); // Assign primary key from User
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephoneNumber = telephoneNumber;
     }
 
-    public Renter() {
+    // Getters and Setters
+    public Integer getUserId() {
+        return userId;
     }
 
-    public Integer getId() {
-        return Id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public void setId(Integer id) {
-        Id = id;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        this.userId = user.getId(); // Sync userId with User entity
     }
 
     public String getFirstName() {
@@ -64,10 +82,11 @@ public class Renter {
 
     @Override
     public String toString() {
-        return "Student{" +
-                "Id=" + Id +
+        return "Renter{" +
+                "userId=" + userId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", telephoneNumber='" + telephoneNumber + '\'' +
                 '}';
     }
 }

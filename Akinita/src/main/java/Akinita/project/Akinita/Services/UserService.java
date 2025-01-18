@@ -26,7 +26,6 @@ public class UserService implements UserDetailsService {
     private RoleRepository roleRepository;
 
 
-
     private BCryptPasswordEncoder passwordEncoder;
     public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -40,12 +39,9 @@ public class UserService implements UserDetailsService {
         String encodedPassword = passwordEncoder.encode(passwd);
         user.setPassword(encodedPassword);
 
-        Role role = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        Role role1 = roleRepository.findByName(assignedrole)
+        Role role = roleRepository.findByName(assignedrole)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         Set<Role> roles = new HashSet<>();
-        roles.add(role1);
         roles.add(role);
         user.setRoles(roles);
         return userRepository.save(user);
@@ -82,7 +78,20 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public Object getUser(Long userId) {
+    public Object getUser(int userId) {
         return userRepository.findById(userId).get();
+    }
+
+    public boolean existsUser(String username) {
+        return userRepository.existsByUsername(username);
+
+    }
+
+    public Object getRoles() {
+        return roleRepository.findAll();
+    }
+
+    public Object getRole(Integer roleId) {
+        return roleRepository.findById(roleId).get();
     }
 }

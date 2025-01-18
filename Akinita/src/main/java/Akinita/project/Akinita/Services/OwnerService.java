@@ -6,7 +6,6 @@ import Akinita.project.Akinita.Repositories.RealEstate.CommercialPropertyReposit
 import Akinita.project.Akinita.Repositories.RealEstate.HouseRepository;
 import Akinita.project.Akinita.Repositories.RealEstate.LandRepository;
 import Akinita.project.Akinita.Repositories.RealEstate.ParkingRepository;
-import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
 import Akinita.project.Akinita.Repositories.User.OwnerRepository;
 import Akinita.project.Akinita.Entities.Owner;
 import jakarta.transaction.Transactional;
@@ -30,7 +29,7 @@ public class OwnerService {
    @Autowired
     private OwnerRepository ownerRepository;
     @Autowired
-    private RentalApplicationRepository rentalApplicationRepository;
+    private ApplicationService applicationService;
 
     // Μέθοδος που επιστρέφει τα ακίνητα του ιδιοκτήτη
     public List<RealEstate> getOwnerProperties(int ownerId) {
@@ -50,7 +49,11 @@ public class OwnerService {
     }
 
     public List<RentalApplication> getOwnerRentalApplications(int ownerId) {
-        return new ArrayList<>(rentalApplicationRepository.findByOwnerId(ownerId));
+        return new ArrayList<>(applicationService.findByOwner(ownerId));
+    }
+
+    public Owner getOwner(int id) {
+        return ownerRepository.findByOwnerId(id);
     }
 
     @Transactional
