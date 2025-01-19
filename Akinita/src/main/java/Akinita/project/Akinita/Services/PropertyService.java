@@ -1,19 +1,16 @@
 package Akinita.project.Akinita.Services;
 
-import Akinita.project.Akinita.Entities.Properties.Land;
-import Akinita.project.Akinita.Entities.Properties.Property;
-import Akinita.project.Akinita.Entities.PropertySpecifications;
+import Akinita.project.Akinita.Entities.Properties.*;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import Akinita.project.Akinita.Repositories.RealEstate.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PropertyService {
+
 
     PropertyRepository propertyRepository;
     @Autowired
@@ -24,6 +21,7 @@ public class PropertyService {
     ParkingRepository parkingRepository;
     @Autowired
     CommercialPropertyRepository commercialPropertyRepository;
+
 
     public int SaveProperty(RealEstate property) {
         propertyRepository.save(property);
@@ -40,38 +38,35 @@ public class PropertyService {
         };
     }
 
-    public List<Property> findProperties(String area, String propertyType, Double minPrice, Double maxPrice, Double minSize, Double maxSize, String buildingFees, String constructionDate) {
-        // Δημιουργία του query με βάση τα φίλτρα
-        Specification<Property> spec = Specification.where(null);
+    public List findProperties(String area, String propertyType, Double minPrice, Double maxPrice, Double minSize, Double maxSize, Boolean buildingFees, Date constructionDate) {
 
-        if (area != null && !area.isEmpty()) {
-            spec = spec.and(PropertySpecifications.hasLocation(area));
-        }
-        if (propertyType != null && !propertyType.isEmpty() && !"All".equalsIgnoreCase(propertyType)) {
-            spec = spec.and(PropertySpecifications.hasPropertyType(propertyType));
-        }
-        if (minPrice != null) {
-            spec = spec.and(PropertySpecifications.hasMinPrice(minPrice));
-        }
-        if (maxPrice != null) {
-            spec = spec.and(PropertySpecifications.hasMaxPrice(maxPrice));
-        }
-        if (minSize != null) {
-            spec = spec.and(PropertySpecifications.hasMinSize(minSize));
-        }
-        if (maxSize != null) {
-            spec = spec.and(PropertySpecifications.hasMaxSize(maxSize));
+        if (propertyType.equals("All")) {
+            return propertyRepository.findAll();
         }
 
-        if (buildingFees != null && !buildingFees.isEmpty()) {
-            spec = spec.and(PropertySpecifications.hasBuildingFees(buildingFees));
-        }
-        if (constructionDate != null && !constructionDate.isEmpty()) {
-            spec = spec.and(PropertySpecifications.hasConstructionDate(constructionDate));
-        }
+        // Πάρε τα αποτελέσματα από τις αναζητήσεις
+        List<Property> property_results = propertyRepository.findByLocation(area);
+        List<Property> price_greater_results = propertyRepository.findByPriceGreaterThanEqual(minPrice);
+        List<Property> price_less_results = propertyRepository.findByPriceLessThanEqual(maxPrice);
+        List<Property> bf_results = new ArrayList<>();
+        bf_results.addAll(houseRepository.findByBuildingFees(buildingFees));
+        bf_results.addAll(commercialPropertyRepository.findByBuildingFees(buildingFees));
 
-        return propertyRepository.findAll((Example) spec);
+        List<Property> construction_results = new ArrayList<>();
+        construction_results.addAll(commercialPropertyRepository.findByConstructionDate(constructionDate));
+        construction_results.addAll(houseRepository.findByConstructionDate(constructionDate));
+        construction_results.addAll(parkingRepository.findByConstructionDate(constructionDate));
+
+// Χρησιμοποιούμε Sets για να βρούμε τα κοινά properties
+        Set<Property> commonResults = new HashSet<>(property_results);
+        commonResults.retainAll(price_greater_results); // Κοινά μεταξύ location και min price
+        commonResults.retainAll(price_less_results); // Κοινά μεταξύ location και max price
+        commonResults.retainAll(bf_results); // Κοινά μεταξύ location και building fees
+        commonResults.retainAll(construction_results); // Κοινά μεταξύ location και construction date
+
+        return new ArrayList<>(commonResults);
     }
+
 
 
 
