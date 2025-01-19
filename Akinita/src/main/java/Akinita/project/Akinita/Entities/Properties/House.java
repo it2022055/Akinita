@@ -33,8 +33,6 @@ public class House extends Property implements BuildingFees, ConstructionDate {
 
     }
 
-
-    @NotBlank(message = "Building fees are required")
     public boolean getBuildingFees() {
         return buildingFees;
     }

@@ -9,6 +9,7 @@ import Akinita.project.Akinita.Interfaces.RealEstate;
 import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.security.Principal;
 import java.util.Date;
 
 @Controller
+@SessionAttributes({"estateName", "description", "price", "location", "sqMeters", "propertyType", "owner"})
 @RequestMapping("Owner")
 public class OwnerController {
     @Autowired
@@ -31,22 +33,29 @@ public class OwnerController {
     }
 
     @PostMapping("/submitNewProperty")
-    public String submitNewProperty( Principal principal,@RequestParam("SqMeters") int sqMeters, @RequestParam("estateΝame") String estateΝame, @RequestParam("description") String description, @RequestParam("price") int price, @RequestParam("location") String location, @RequestParam("propertyType") String propertyType, @ModelAttribute RealEstate realEstate, Model model, RedirectAttributes redirectAttributes) {
+    public String submitNewProperty( Principal principal,@RequestParam("SqMeters") int sqMeters,
+                                     @RequestParam("estateName") String estateName,
+                                     @RequestParam("description") String description,
+                                     @RequestParam("price") int price, @RequestParam("location") String location,
+                                     @RequestParam("propertyType") String propertyType,
+                                     @ModelAttribute RealEstate realEstate,
+                                     Model model,
+                                     RedirectAttributes redirectAttributes) {
         if (principal == null) {
             return "redirect:/login";
         }
         String email = principal.getName();
         Integer ownerId = ownerService.findOwnerIdByEmail(email);
         Owner owner=ownerService.findById(ownerId);
-        model.addAttribute("estateΝame", estateΝame);
+        model.addAttribute("estateName", estateName);
         model.addAttribute("description", description);
         model.addAttribute("price", price);
         model.addAttribute("location", location);
-        model.addAttribute("SqMeters", sqMeters);
+        model.addAttribute("sqMeters", sqMeters);
         model.addAttribute("owner", owner);
         model.addAttribute("propertyType", propertyType);
         if(!propertyType.equals("Land")) {
-            redirectAttributes.addFlashAttribute("estateΝame", estateΝame);
+            redirectAttributes.addFlashAttribute("estateName", estateName);
             redirectAttributes.addFlashAttribute("description", description);
             redirectAttributes.addFlashAttribute("price", price);
             redirectAttributes.addFlashAttribute("location", location);
@@ -57,7 +66,7 @@ public class OwnerController {
         }else{
             Land land = new Land();
             land.setLocation(location);
-            land.setEstateName(estateΝame);
+            land.setEstateName(estateName);
             land.setDescription(description);
             land.setPrice(price);
             land.setVisibility("Invisible");
@@ -75,16 +84,37 @@ public class OwnerController {
         }
     }
     @GetMapping("/propertyFacilities")
-    public String propertyFacilities(Model model, @RequestParam("constructionDate") Date constructiondate, @RequestParam("SharedExpences") Boolean SharedExpences) {
-        System.out.println("Method PROPERTY FACILITISE start");
-        // Ανάκτηση δεδομένων από το μοντέλο
-        String estateName = (String) model.getAttribute("estateΝame");
-        String location = (String) model.getAttribute("location");
-        Integer price = (Integer) model.getAttribute("price");
+    public String propertyFacilities(Model model) {
+        return "properties/propertyFacilities";
+    }
+
+    @PostMapping("/propertyFacilities")
+    public String propertyFacilities(Model model, @RequestParam("constructionDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date constructiondate,
+                                     @RequestParam(value = "AC", required = false) Boolean ac,
+                                     @RequestParam(value = "ELEVATOR", required = false) Boolean elevator,
+                                     @RequestParam(value = "PARKING", required = false) Boolean parkingparam,
+                                     @RequestParam(value = "GARDEN", required = false) Boolean garden,
+                                     @RequestParam(value = "FIREPLACE", required = false) Boolean fireplace,
+                                     @RequestParam(value = "POOL", required = false) Boolean pool,
+                                     @RequestParam(value = "STORAGE", required = false) Boolean storage,
+                                     @RequestParam(value = "ALARM", required = false) Boolean alarm,
+                                     @RequestParam(value = "SHAREDEXPENSES", required = false) Boolean sharedExpenses) {
+        String estateName = (String) model.getAttribute("estateName");
         String description = (String) model.getAttribute("description");
-        Integer sqMeters = (Integer) model.getAttribute("SqMeters");
+        Integer price = (Integer) model.getAttribute("price");
+        String location = (String) model.getAttribute("location");
+        Integer sqMeters = (Integer) model.getAttribute("sqMeters");
         String propertyType = (String) model.getAttribute("propertyType");
         Owner owner = (Owner) model.getAttribute("owner");
+        ac = (ac != null) ? ac : false;
+        elevator = (elevator != null) ? elevator : false;
+        parkingparam = (parkingparam != null) ? parkingparam : false;
+        garden = (garden != null) ? garden : false;
+        fireplace = (fireplace != null) ? fireplace : false;
+        pool = (pool != null) ? pool : false;
+        storage = (storage != null) ? storage : false;
+        alarm = (alarm != null) ? alarm : false;
+        sharedExpenses = (sharedExpenses != null) ? sharedExpenses : false;
         if(propertyType.equals("House")){
             House house = new House();
             house.setLocation(location);
@@ -97,13 +127,11 @@ public class OwnerController {
             house.setOwner(owner);
             house.setConstructionDate(constructiondate);
             house.setRenter(null);
-            house.setBuildingFees(SharedExpences);
+            house.setBuildingFees(sharedExpenses);
             try{
                 propertyService.SaveHouseProperty(house);
             }catch(Exception e){
-                e.printStackTrace();
-                return "redirect:/Owner/propertySubmitted";
-            }
+                e.printStackTrace();}
         } else if (propertyType.equals("Parking")) {
             Parking parking = new Parking();
             parking.setLocation(location);
@@ -116,14 +144,13 @@ public class OwnerController {
             parking.setOwner(owner);
             parking.setConstructionDate(constructiondate);
             parking.setRenter(null);
-            parking.setBuildingFees(SharedExpences);
+            parking.setBuildingFees(sharedExpenses);
             try{
                 propertyService.SaveParkingProperty(parking);
             }catch(Exception e){
                 e.printStackTrace();
-                return "redirect:/Owner/propertySubmitted";
             }
-        } else if (propertyType.equals("CommercialProperty")) {
+        } else{
             CommercialProperty commercialProperty = new CommercialProperty();
             commercialProperty.setLocation(location);
             commercialProperty.setEstateName(estateName);
@@ -135,15 +162,15 @@ public class OwnerController {
             commercialProperty.setOwner(owner);
             commercialProperty.setConstructionDate(constructiondate);
             commercialProperty.setRenter(null);
-            commercialProperty.setBuildingFees(SharedExpences);
+            commercialProperty.setBuildingFees(sharedExpenses);
             try{
                 propertyService.SaveCommercialProperty(commercialProperty);
             }catch(Exception e){
                 e.printStackTrace();
-                return "redirect:/Owner/propertySubmitted";
+
             }
         }
-        return "properties/propertyFacilities";
+        return "redirect:/Owner/propertySubmitted";
     }
 
     @GetMapping("/propertySubmitted")
