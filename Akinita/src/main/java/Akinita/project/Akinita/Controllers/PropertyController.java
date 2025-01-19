@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -40,8 +41,8 @@ public class PropertyController {
                                    @RequestParam(name = "maxPrice", required = false) Double maxPrice,
                                    @RequestParam(name = "minSize", required = false) Double minSize,
                                    @RequestParam(name = "maxSize", required = false) Double maxSize,
-                                   @RequestParam(name = "buildingFees", required = false) String buildingFees,
-                                   @RequestParam(name = "constructionDate", required = false) String constructionDate,
+                                   @RequestParam(name = "buildingFees", required = false) Boolean buildingFees,
+                                   @RequestParam(name = "constructionDate", required = false) Date constructionDate,
                                    Model model) {
         System.out.println("Area: " + area);
         System.out.println("Property Type: " + propertyType);
@@ -52,9 +53,9 @@ public class PropertyController {
         System.out.println("Building Fees: " + buildingFees);
         System.out.println("Construction Date: " + constructionDate);
 
-        List<Property> properties = propertyService.findProperties(area, propertyType, minPrice, maxPrice, minSize, maxSize, buildingFees, constructionDate);
+        List properties = propertyService.findProperties(area, propertyType, minPrice, maxPrice, minSize, maxSize, buildingFees, constructionDate);
         model.addAttribute("Properties", properties);
-        return "properties/search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
+        return "search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
     }
 
 

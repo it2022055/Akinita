@@ -14,12 +14,12 @@ public interface PropertyRepository<T,ID> extends JpaRepository<T, ID>{
 
     List<T> findByEstateName(String estateName);
 
-    @Query("SELECT p FROM Property p WHERE p.availability = true AND p.location = :location")
+    @Query("SELECT p.id FROM Property p WHERE p.availability = true AND p.location = :location")
     List<Property> findByLocation(@Param("location") String location);
 
-    List<T> findByPriceGreaterThanEqual(int price);
+    List<T> findByPriceGreaterThanEqual(Double price);
 
-    List<T> findByPriceLessThanEqual(int price);
+    List<T> findByPriceLessThanEqual(Double price);
 
     List<T> findByDescriptionContaining(String keyword);
 
