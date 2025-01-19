@@ -7,7 +7,7 @@ import Akinita.project.Akinita.Repositories.RealEstate.HouseRepository;
 import Akinita.project.Akinita.Repositories.RealEstate.LandRepository;
 import Akinita.project.Akinita.Repositories.RealEstate.ParkingRepository;
 import Akinita.project.Akinita.Repositories.User.OwnerRepository;
-import Akinita.project.Akinita.Entities.Owner;
+import Akinita.project.Akinita.Entities.Actors.Owner;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

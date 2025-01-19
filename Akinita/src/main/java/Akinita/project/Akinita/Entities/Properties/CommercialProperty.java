@@ -1,5 +1,7 @@
-package Akinita.project.Akinita.Entities;
+package Akinita.project.Akinita.Entities.Properties;
 
+import Akinita.project.Akinita.Entities.Actors.Owner;
+import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Interfaces.LimitedMethods.BuildingFees;
 import Akinita.project.Akinita.Interfaces.LimitedMethods.ConstructionDate;
 import jakarta.persistence.*;
@@ -10,10 +12,10 @@ import jakarta.validation.constraints.Past;
 import java.util.Date;
 
 @Entity
-public class House extends Property implements BuildingFees, ConstructionDate {
+public class CommercialProperty extends Property implements ConstructionDate, BuildingFees {
 
-    public House(int id, String estateName, String location, int price, String description, Owner owner, Boolean availability, String visibility, Date constructionDate, boolean buildingFees) {
-        super(id, estateName, location, price, description, owner, availability, visibility);
+    public CommercialProperty(int id, String estateName, String location, int price, String description, Owner owner, Renter renter, int squareMeter, Boolean availability, String visibility, Date constructionDate, boolean buildingFees) {
+        super(id, estateName, location, price, description, owner, renter,availability, visibility, squareMeter);
         this.constructionDate = constructionDate;
         this.buildingFees = buildingFees;
     }
@@ -27,10 +29,9 @@ public class House extends Property implements BuildingFees, ConstructionDate {
     @Column(name = "building_fees")
     private boolean buildingFees;
 
-    public House() {
+    public CommercialProperty() {
 
     }
-
 
     @NotBlank(message = "Building fees are required")
     public boolean getBuildingFees() {
@@ -38,7 +39,7 @@ public class House extends Property implements BuildingFees, ConstructionDate {
     }
 
     @Override
-    public void setBuildingFees(boolean buildingFees) {
+    public void setBuildingFees( boolean buildingFees) {
         this.buildingFees = buildingFees;
     }
 

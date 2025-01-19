@@ -1,31 +1,140 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{page_layout/layout}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{page_layout/layout}">
 
 <head>
     <meta charset="UTF-8">
     <title>Akinita</title>
     <link th:href="@{/css/index.css}" rel="stylesheet">
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const priceSlider = document.getElementById('priceSlider');
+            const priceDisplay = document.getElementById('priceDisplay');
+            priceSlider.addEventListener('input', function() {
+                priceDisplay.textContent = '€' + priceSlider.value;
+            });
+
+            const sizeSlider = document.getElementById('sizeSlider');
+            const sizeDisplay = document.getElementById('sizeDisplay');
+            sizeSlider.addEventListener('input', function() {
+                sizeDisplay.textContent = sizeSlider.value + ' m²';
+            });
+
+            const showExtraFieldsCheckbox = document.getElementById('showExtraFields');
+            const dynamicFieldsContainer = document.getElementById('dynamicFields');
+            const propertyTypeSelect = document.getElementById('propertyType');
+            const buildingFeesField = document.getElementById('buildingFeesField');
+            const constructionDateField = document.getElementById('constructionDateField');
+
+            // Initially hide dynamic fields, building fees, and construction date
+            dynamicFieldsContainer.style.display = 'none';
+            buildingFeesField.style.display = 'none';
+            constructionDateField.style.display = 'none';
+
+            // Show extra fields when checkbox is clicked
+            showExtraFieldsCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    dynamicFieldsContainer.style.display = 'grid'; // Εμφανίζει τα πεδία ως grid
+                } else {
+                    dynamicFieldsContainer.style.display = 'none';
+                }
+            });
+
+            // Show building fees and construction date field based on property type
+            propertyTypeSelect.addEventListener('change', function() {
+                if (this.value === 'House' || this.value === 'CommercialProperty') {
+                    buildingFeesField.style.display = 'block'; // Εμφανίζει το πεδίο για τα Building Fees
+                    constructionDateField.style.display = 'block'; // Εμφανίζει το πεδίο για το Construction Date
+                } else if (this.value === 'Parking') {
+                    buildingFeesField.style.display = 'none'; // Κρύβει το πεδίο για τα Building Fees
+                    constructionDateField.style.display = 'block'; // Εμφανίζει το πεδίο για το Construction Date
+                } else {
+                    buildingFeesField.style.display = 'none'; // Κρύβει το πεδίο για τα Building Fees
+                    constructionDateField.style.display = 'none'; // Κρύβει το πεδίο για το Construction Date
+                }
+            });
+        });
+    </script>
 </head>
+
 <body>
-<div layout:fragment="main-content" th:action="@{/searchProperties} " class="container">
-    <form class="form">
+<div layout:fragment="main-content" class="container">
+    <form class="form" th:action="@{/searchProperties}" method="get">
+        <!-- Location and Property Type in the same row -->
+        <div class="field-row">
+            <div class="field">
+                <label>Location</label>
+                <input autocomplete="off" placeholder="Location" class="input-field" type="text" name="location">
+            </div>
+            <div class="field">
+                <label for="propertyType">Property Type:</label>
+                <select id="propertyType" name="propertyType">
+                    <option value="All">All</option>
+                    <option value="CommercialProperty">Commercial Property</option>
+                    <option value="Parking">Parking</option>
+                    <option value="Land">Land</option>
+                    <option value="House">House</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Checkbox to show extra fields based on property type -->
         <div class="field">
-            <input autocomplete="off" placeholder="Location" class="input-field" type="text">
+            <label for="showExtraFields">
+                <input type="checkbox" id="showExtraFields"> Show extra options based on property type
+            </label>
         </div>
-        <div class="rolefield">
-            <p>Property type:</p>
-            <select class="roleddlist">
-                <option value="House">House</option>
-                <option value="CommercialProperty">Commercial Property</option>
-                <option value="Parking">Parking</option>
-                <option value="Land">Land</option>
-            </select>
+
+        <!-- Dynamic Fields Based on Property Type (Initially Hidden) -->
+        <div id="dynamicFields">
+            <!-- Price Range Fields -->
+            <div class="field">
+                <label for="minPrice">Min Price</label>
+                <input type="number" id="minPrice" name="minPrice" placeholder="Min Price" min="1" max="10000000" value="0">
+            </div>
+            <div class="field">
+                <label for="maxPrice">Max Price</label>
+                <input type="number" id="maxPrice" name="maxPrice" placeholder="Max Price" min="1" max="10000000" value="10000000">
+            </div>
+            <div class="field">
+                <label for="priceSlider">Price Range:</label>
+                <input type="range" id="priceSlider" name="priceRange" min="0" max="10000000" step="1000" value="0">
+                <output for="priceSlider" id="priceDisplay">€0</output>
+            </div>
+
+            <!-- Square Meter Fields -->
+            <div class="field">
+                <label for="minSize">Min Size (sq meters)</label>
+                <input type="number" id="minSize" name="minSize" placeholder="Min Size" min="1" max="50000" value="1">
+            </div>
+            <div class="field">
+                <label for="maxSize">Max Size (sq meters)</label>
+                <input type="number" id="maxSize" name="maxSize" placeholder="Max Size" min="1" max="50000" value="50000">
+            </div>
+            <div class="field">
+                <label for="sizeSlider">Size Range:</label>
+                <input type="range" id="sizeSlider" name="sizeRange" min="1" max="50000" step="1" value="1">
+                <output for="sizeSlider" id="sizeDisplay">1 m²</output>
+            </div>
+
+            <!-- Building Fees (only shown for House) -->
+            <div class="field" id="buildingFeesField" style="display:none;">
+                <label for="buildingFees">Building Fees</label>
+                <select id="buildingFees" name="buildingFees">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <!-- Construction Date (only shown for Parking) -->
+            <div class="field" id="constructionDateField" style="display:none;">
+                <label for="constructionDate">Construction Date</label>
+                <input type="date" id="constructionDate" name="constructionDate">
+            </div>
         </div>
-        <button class="button1" name="PropertySearch">Search</button>
+
+        <button type="submit" class="button1">Search</button>
     </form>
 </div>
 </body>
+
 </html>

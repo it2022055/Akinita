@@ -30,15 +30,6 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login() {
-
-//        if ("ROLE_ADMIN".equals(role)) {
-//            return "admin/admin_index";
-//        } else if ("ROLE_RENTER".equals(role)) {
-//            return "renter/renter_index";
-//        } else if ("ROLE_OWNER".equals(role)) {
-//            return "owner/owner_index";
-//        }
-//
         return "auth/login";
     }
 }

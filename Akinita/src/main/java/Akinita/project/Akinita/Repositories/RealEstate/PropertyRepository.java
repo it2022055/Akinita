@@ -1,7 +1,7 @@
 package Akinita.project.Akinita.Repositories.RealEstate;
 
-import Akinita.project.Akinita.Entities.Owner;
-import Akinita.project.Akinita.Entities.Property;
+import Akinita.project.Akinita.Entities.Actors.Owner;
+import Akinita.project.Akinita.Entities.Properties.Property;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;

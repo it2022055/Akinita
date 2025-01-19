@@ -1,9 +1,15 @@
 package Akinita.project.Akinita.Entities;
 
+import Akinita.project.Akinita.Entities.Actors.User;
+import Akinita.project.Akinita.Entities.Properties.Property;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Past;
+
+import java.util.Date;
+import java.util.List;
 
 @Entity
 public class RentalApplication {
@@ -23,6 +29,24 @@ public class RentalApplication {
     @ManyToOne
     @JoinColumn(name = "renter_id", referencedColumnName = "id") // Ξένο κλειδί προς τον πίνακα Renter
     private User renter; // Αναφορά στον ενοικιαστή
+
+    @Column
+    private String renterJob;
+
+    @Column
+    private String incomeVerification;
+
+    @Column
+    private Boolean renterPets;
+
+    @OneToMany(mappedBy = "rentalApplication", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FileEntity> files;
+
+    @Past(message = "The rental date must be in the past")
+    @Temporal(TemporalType.DATE)                                       // Date is saved without 'hours'
+    @Column(name = "rental_date")
+    private Date rentalDate;
+
 
     // Constructors
     public RentalApplication() {}
@@ -64,6 +88,50 @@ public class RentalApplication {
 
     public void setRenter(User renter) {
         this.renter = renter;
+    }
+
+    public String getRenterJob() {
+        return renterJob;
+    }
+
+    public void setRenterJob(String renterJob) {
+        this.renterJob = renterJob;
+    }
+
+    public String getIncomeVerification() {
+        return incomeVerification;
+    }
+
+    public void setIncomeVerification(String incomeVerification) {
+        this.incomeVerification = incomeVerification;
+    }
+
+    public Boolean getRenterPets() {
+        return renterPets;
+    }
+
+    public void setRenterPets(Boolean renterPets) {
+        this.renterPets = renterPets;
+    }
+
+    public List<FileEntity> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<FileEntity> files) {
+        this.files = files;
+    }
+
+    public void addFile(FileEntity file) {
+        files.add(file);
+    }
+
+    public Date getRentalDate() {
+        return rentalDate;
+    }
+
+    public void setRentalDate(Date rentalDate) {
+        this.rentalDate = rentalDate;
     }
 }
 

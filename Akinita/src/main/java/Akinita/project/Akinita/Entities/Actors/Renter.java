@@ -1,9 +1,6 @@
-package Akinita.project.Akinita.Entities;
+package Akinita.project.Akinita.Entities.Actors;
 
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Renter {
