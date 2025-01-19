@@ -1,7 +1,10 @@
 package Akinita.project.Akinita.Controllers;
 
 import Akinita.project.Akinita.Entities.Actors.Owner;
+import Akinita.project.Akinita.Entities.Properties.CommercialProperty;
+import Akinita.project.Akinita.Entities.Properties.House;
 import Akinita.project.Akinita.Entities.Properties.Land;
+import Akinita.project.Akinita.Entities.Properties.Parking;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.PropertyService;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.Date;
 
 @Controller
 @RequestMapping("Owner")
@@ -31,13 +35,6 @@ public class OwnerController {
         if (principal == null) {
             return "redirect:/login";
         }
-        System.out.println("Method execution start");
-        System.out.println("estatename: " + estateΝame);
-        System.out.println("location: " + location);
-        System.out.println("price: " + price);
-        System.out.println("description: " + description);
-        System.out.println("propertyType: " + propertyType);
-        System.out.println("SqMeters: " + sqMeters);
         String email = principal.getName();
         Integer ownerId = ownerService.findOwnerIdByEmail(email);
         Owner owner=ownerService.findById(ownerId);
@@ -46,6 +43,8 @@ public class OwnerController {
         model.addAttribute("price", price);
         model.addAttribute("location", location);
         model.addAttribute("SqMeters", sqMeters);
+        model.addAttribute("owner", owner);
+        model.addAttribute("propertyType", propertyType);
         if(!propertyType.equals("Land")) {
             redirectAttributes.addFlashAttribute("estateΝame", estateΝame);
             redirectAttributes.addFlashAttribute("description", description);
@@ -53,6 +52,7 @@ public class OwnerController {
             redirectAttributes.addFlashAttribute("location", location);
             redirectAttributes.addFlashAttribute("SqMeters", sqMeters);
             redirectAttributes.addFlashAttribute("owner", owner);
+            redirectAttributes.addFlashAttribute("propertyType", propertyType);
             return "redirect:/Owner/propertyFacilities";
         }else{
             Land land = new Land();
@@ -75,13 +75,74 @@ public class OwnerController {
         }
     }
     @GetMapping("/propertyFacilities")
-    public String propertyFacilities(Model model) {
+    public String propertyFacilities(Model model, @RequestParam("constructionDate") Date constructiondate, @RequestParam("SharedExpences") Boolean SharedExpences) {
         System.out.println("Method PROPERTY FACILITISE start");
-        System.out.println("estateName: " + model.getAttribute("estateΝame"));
-        System.out.println("location: " + model.getAttribute("location"));
-        System.out.println("price: " + model.getAttribute("price"));
-        System.out.println("description: " + model.getAttribute("description"));
-        System.out.println("SqMeters: " + model.getAttribute("SqMeters"));
+        // Ανάκτηση δεδομένων από το μοντέλο
+        String estateName = (String) model.getAttribute("estateΝame");
+        String location = (String) model.getAttribute("location");
+        Integer price = (Integer) model.getAttribute("price");
+        String description = (String) model.getAttribute("description");
+        Integer sqMeters = (Integer) model.getAttribute("SqMeters");
+        String propertyType = (String) model.getAttribute("propertyType");
+        Owner owner = (Owner) model.getAttribute("owner");
+        if(propertyType.equals("House")){
+            House house = new House();
+            house.setLocation(location);
+            house.setEstateName(estateName);
+            house.setDescription(description);
+            house.setPrice(price);
+            house.setVisibility("Invisible");
+            house.setAvailability(true);
+            house.setSquareMeter(sqMeters);
+            house.setOwner(owner);
+            house.setConstructionDate(constructiondate);
+            house.setRenter(null);
+            house.setBuildingFees(SharedExpences);
+            try{
+                propertyService.SaveHouseProperty(house);
+            }catch(Exception e){
+                e.printStackTrace();
+                return "redirect:/Owner/propertySubmitted";
+            }
+        } else if (propertyType.equals("Parking")) {
+            Parking parking = new Parking();
+            parking.setLocation(location);
+            parking.setEstateName(estateName);
+            parking.setDescription(description);
+            parking.setPrice(price);
+            parking.setVisibility("Invisible");
+            parking.setAvailability(true);
+            parking.setSquareMeter(sqMeters);
+            parking.setOwner(owner);
+            parking.setConstructionDate(constructiondate);
+            parking.setRenter(null);
+            parking.setBuildingFees(SharedExpences);
+            try{
+                propertyService.SaveParkingProperty(parking);
+            }catch(Exception e){
+                e.printStackTrace();
+                return "redirect:/Owner/propertySubmitted";
+            }
+        } else if (propertyType.equals("CommercialProperty")) {
+            CommercialProperty commercialProperty = new CommercialProperty();
+            commercialProperty.setLocation(location);
+            commercialProperty.setEstateName(estateName);
+            commercialProperty.setDescription(description);
+            commercialProperty.setPrice(price);
+            commercialProperty.setVisibility("Invisible");
+            commercialProperty.setAvailability(true);
+            commercialProperty.setSquareMeter(sqMeters);
+            commercialProperty.setOwner(owner);
+            commercialProperty.setConstructionDate(constructiondate);
+            commercialProperty.setRenter(null);
+            commercialProperty.setBuildingFees(SharedExpences);
+            try{
+                propertyService.SaveCommercialProperty(commercialProperty);
+            }catch(Exception e){
+                e.printStackTrace();
+                return "redirect:/Owner/propertySubmitted";
+            }
+        }
         return "properties/propertyFacilities";
     }
 

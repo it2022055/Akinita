@@ -41,7 +41,7 @@ public class House extends Property implements BuildingFees, ConstructionDate {
     }
 
     @Override
-    public void setBuildingFees(boolean buildingFees) {
+    public void setBuildingFees(Boolean buildingFees) {
         this.buildingFees = buildingFees;
     }
 
@@ -51,7 +51,7 @@ public class House extends Property implements BuildingFees, ConstructionDate {
     }
 
     @Override
-    public void setConstructionDate(Date date) {
-
+    public void setConstructionDate(Date constructionDate) {
+        this.constructionDate = constructionDate;
     }
 }

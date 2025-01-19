@@ -29,7 +29,7 @@ public class CommercialProperty extends Property implements ConstructionDate, Bu
 
     @NotNull(message = "Building fees are required")
     @Column(name = "building_fees")
-    private boolean buildingFees;
+    private Boolean buildingFees;
 
     public CommercialProperty() {
 
@@ -40,7 +40,7 @@ public class CommercialProperty extends Property implements ConstructionDate, Bu
     }
 
     @Override
-    public void setBuildingFees( boolean buildingFees) {
+    public void setBuildingFees( Boolean buildingFees) {
         this.buildingFees = buildingFees;
     }
 
