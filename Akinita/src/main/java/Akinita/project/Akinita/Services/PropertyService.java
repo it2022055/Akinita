@@ -81,4 +81,10 @@ public class PropertyService {
     public void SaveLandProperty(Land land) {
         landRepository.save(land);
     }
+
+    public void SaveHouseProperty(House house){houseRepository.save(house);}
+
+    public void SaveParkingProperty(Parking parking){parkingRepository.save(parking);}
+
+    public void SaveCommercialProperty(CommercialProperty commercialProperty){commercialPropertyRepository.save(commercialProperty);}
 }

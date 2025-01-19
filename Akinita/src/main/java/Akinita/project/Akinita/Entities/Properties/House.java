@@ -27,7 +27,7 @@ public class House extends Property implements BuildingFees, ConstructionDate {
 
     @NotNull(message = "Building fees are required")
     @Column(name = "building_fees")
-    private boolean buildingFees;
+    private Boolean buildingFees;
 
     public House() {
 
@@ -40,7 +40,7 @@ public class House extends Property implements BuildingFees, ConstructionDate {
     }
 
     @Override
-    public void setBuildingFees(boolean buildingFees) {
+    public void setBuildingFees(Boolean buildingFees) {
         this.buildingFees = buildingFees;
     }
 
@@ -50,7 +50,7 @@ public class House extends Property implements BuildingFees, ConstructionDate {
     }
 
     @Override
-    public void setConstructionDate(Date date) {
-
+    public void setConstructionDate(Date constructionDate) {
+        this.constructionDate = constructionDate;
     }
 }

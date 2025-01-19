@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.Date;
 
 @Controller
 @RequestMapping("Owner")
@@ -74,7 +75,7 @@ public class OwnerController {
         }
     }
     @GetMapping("/propertyFacilities")
-    public String propertyFacilities(Model model) {
+    public String propertyFacilities(Model model, @RequestParam("constructionDate") Date constructiondate, @RequestParam("SharedExpences") Boolean SharedExpences) {
         System.out.println("Method PROPERTY FACILITISE start");
         // Ανάκτηση δεδομένων από το μοντέλο
         String estateName = (String) model.getAttribute("estateΝame");
@@ -94,7 +95,9 @@ public class OwnerController {
             house.setAvailability(true);
             house.setSquareMeter(sqMeters);
             house.setOwner(owner);
+            house.setConstructionDate(constructiondate);
             house.setRenter(null);
+            house.setBuildingFees(SharedExpences);
             try{
                 propertyService.SaveHouseProperty(house);
             }catch(Exception e){
@@ -111,7 +114,9 @@ public class OwnerController {
             parking.setAvailability(true);
             parking.setSquareMeter(sqMeters);
             parking.setOwner(owner);
+            parking.setConstructionDate(constructiondate);
             parking.setRenter(null);
+            parking.setBuildingFees(SharedExpences);
             try{
                 propertyService.SaveParkingProperty(parking);
             }catch(Exception e){
@@ -128,7 +133,9 @@ public class OwnerController {
             commercialProperty.setAvailability(true);
             commercialProperty.setSquareMeter(sqMeters);
             commercialProperty.setOwner(owner);
+            commercialProperty.setConstructionDate(constructiondate);
             commercialProperty.setRenter(null);
+            commercialProperty.setBuildingFees(SharedExpences);
             try{
                 propertyService.SaveCommercialProperty(commercialProperty);
             }catch(Exception e){

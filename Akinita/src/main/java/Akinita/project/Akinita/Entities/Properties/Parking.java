@@ -4,6 +4,7 @@ import Akinita.project.Akinita.Entities.Actors.Owner;
 import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Interfaces.LimitedMethods.ConstructionDate;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
 import java.util.Date;
@@ -22,6 +23,10 @@ public class Parking extends Property implements ConstructionDate {
     @Column(name = "construction_date")
     private Date constructionDate;
 
+    @NotNull(message = "Building fees are required")
+    @Column(name = "building_fees")
+    private Boolean buildingFees;
+
     public Parking() {
 
     }
@@ -32,7 +37,15 @@ public class Parking extends Property implements ConstructionDate {
     }
 
     @Override
-    public void setConstructionDate(Date date) {
+    public void setConstructionDate(Date constructionDate) {
+        this.constructionDate = constructionDate;
+    }
 
+    public Boolean getBuildingFees() {
+        return buildingFees;
+    }
+
+    public void setBuildingFees(Boolean buildingFees) {
+        this.buildingFees = buildingFees;
     }
 }
