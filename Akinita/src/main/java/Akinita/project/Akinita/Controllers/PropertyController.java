@@ -25,15 +25,15 @@ public class PropertyController {
 //        return "redirect:/properties/searchProperties";
 //    }
 
-    @GetMapping("/searchProperties/Location")
-    public String searchPropertiesByLocation(@RequestParam(name = "area", required = false) String area,
-                                   @RequestParam(name = "propertyType", required = false) String propertyType,
-                                   Model model) {
-        System.out.println("Area: " + area);
-        System.out.println("Property Type: " + propertyType);
-        model.addAttribute("Properties", propertyService.findAllPropertiesByLocation(area, propertyType));
-        return "redirect:/properties/searchProperties";
-    }
+//    @GetMapping("/searchProperties/Location")
+//    public String searchPropertiesByLocation(@RequestParam(name = "area", required = false) String area,
+//                                   @RequestParam(name = "propertyType", required = false) String propertyType,
+//                                   Model model) {
+//        System.out.println("Area: " + area);
+//        System.out.println("Property Type: " + propertyType);
+//        model.addAttribute("Properties", propertyService.findAllPropertiesByLocation(area, propertyType));
+//        return "redirect:/properties/searchProperties";
+//    }
 
     @GetMapping("/searchProperties")
     public String searchProperties(@RequestParam(name = "area", required = false) String area,
@@ -60,7 +60,7 @@ public class PropertyController {
 
 
         List properties = propertyService.findProperties(area, propertyType, minPrice, maxPrice, minSize, maxSize, buildingFees, constructionDate,priceSlider, sizeSlider);
-        model.addAttribute("Properties", properties);
+        model.addAttribute("properties", properties);
         return "search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
     }
 

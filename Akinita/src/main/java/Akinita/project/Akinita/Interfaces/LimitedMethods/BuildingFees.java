@@ -4,7 +4,7 @@ package Akinita.project.Akinita.Interfaces.LimitedMethods;
 public interface BuildingFees {
 
     // Building Fees
-    boolean getBuildingFees();
+    Boolean getBuildingFees();
     void setBuildingFees(Boolean buildingFees);
 
 }

@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{page_layout/layout}">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Search Results</title>
-    <link th:href="@{/css/index.css}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Search</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Αν έχεις εξωτερικό αρχείο CSS -->
 </head>
 <body>
-<div layout:fragment="main-content" class="container">
-    <h1>Search Results</h1>
-    <div th:if="${Properties.isEmpty()}">
+<header>
+    <h1>Property Search Results</h1>
+</header>
+
+<main>
+    <!-- Έλεγχος αν η λίστα properties είναι κενή -->
+    <div th:if="${#lists.isEmpty(properties)}">
         <p>No properties found matching your criteria.</p>
     </div>
 
-    <div th:unless="${Properties.isEmpty()}">
+    <!-- Εμφάνιση των αποτελεσμάτων, αν η λίστα δεν είναι κενή -->
+    <div th:unless="${#lists.isEmpty(properties)}">
         <table class="properties-table">
             <thead>
             <tr>
@@ -25,17 +31,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="property : ${Properties}">
-                <td th:text="${property.location}">Location</td>
-                <td th:text="${property.propertyType}">Property Type</td>
-                <td th:text="${property.price}">Price</td>
-                <td th:text="${property.size}">Size</td>
-                <td th:text="${property.buildingFees != null ? property.buildingFees : 'N/A'}">Building Fees</td>
-                <td th:text="${property.constructionDate != null ? property.constructionDate : 'N/A'}">Construction Date</td>
+            <tr th:each="property : ${properties}">
+                <td th:text="${property.estateName}">Estate Name</td>
+
             </tr>
             </tbody>
         </table>
     </div>
-</div>
+</main>
+
+<footer>
+    <p>&copy; 2025 Property Finder. All rights reserved.</p>
+</footer>
 </body>
 </html>

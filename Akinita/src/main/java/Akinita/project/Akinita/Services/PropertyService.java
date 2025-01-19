@@ -46,7 +46,7 @@ public class PropertyService {
         List<Property> property_results = new ArrayList<>();
 
         // Πάρε τα αποτελέσματα από τις αναζητήσεις
-        if (!area.isEmpty()) {
+        if (area != null) {
             property_results = propertyRepository.findByLocation(area);
         } else {
             property_results = propertyRepository.findAll();
@@ -55,7 +55,7 @@ public class PropertyService {
         List<Property> price_greater_results = new ArrayList<>();
         List<Property> price_less_results = new ArrayList<>();
 
-        if(priceSlider == 0) {
+        if(priceSlider == null) {
             price_greater_results = propertyRepository.findByPriceGreaterThanEqual(minPrice);
             price_less_results = propertyRepository.findByPriceLessThanEqual(maxPrice);
         } else {
@@ -65,7 +65,7 @@ public class PropertyService {
         List<Property> size_greater_results = new ArrayList<>();
         List<Property> size_less_results = new ArrayList<>();
 
-        if(sizeSlider == 0) {
+        if(sizeSlider == null) {
             size_greater_results = propertyRepository.findByPriceGreaterThanEqual(minSize);
             size_less_results = propertyRepository.findBySquareMeterLessThanEqual(maxSize);
         } else {
@@ -77,9 +77,15 @@ public class PropertyService {
         bf_results.addAll(commercialPropertyRepository.findByBuildingFees(buildingFees));
 
         List<Property> construction_results = new ArrayList<>();
-        construction_results.addAll(commercialPropertyRepository.findByConstructionDate(constructionDate));
-        construction_results.addAll(houseRepository.findByConstructionDate(constructionDate));
-        construction_results.addAll(parkingRepository.findByConstructionDate(constructionDate));
+
+        if(constructionDate != null) {
+            construction_results.addAll(commercialPropertyRepository.findByConstructionDate(constructionDate));
+            construction_results.addAll(houseRepository.findByConstructionDate(constructionDate));
+            construction_results.addAll(parkingRepository.findByConstructionDate(constructionDate));
+        } else {
+            construction_results.addAll(propertyRepository.findAll());
+        }
+
 
 // Χρησιμοποιούμε Sets για να βρούμε τα κοινά properties
         Set<Property> commonResults = new HashSet<>(property_results);

@@ -35,8 +35,10 @@ public class CommercialProperty extends Property implements ConstructionDate, Bu
 
     }
 
-    public @NotBlank(message = "Building fees are required") Boolean getBuildingFees() {
-        return buildingFees;
+
+    @Override
+    public Boolean getBuildingFees() {
+        return false;
     }
 
     @Override
