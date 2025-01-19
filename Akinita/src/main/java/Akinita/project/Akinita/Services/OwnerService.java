@@ -2,10 +2,10 @@ package Akinita.project.Akinita.Services;
 
 import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Interfaces.RealEstate;
-import Akinita.project.Akinita.Repositories.RealEstate.CommercialPropertyRepository;
-import Akinita.project.Akinita.Repositories.RealEstate.HouseRepository;
-import Akinita.project.Akinita.Repositories.RealEstate.LandRepository;
-import Akinita.project.Akinita.Repositories.RealEstate.ParkingRepository;
+import Akinita.project.Akinita.Repositories.RealEstate.CommercialPropertyGenericRepository;
+import Akinita.project.Akinita.Repositories.RealEstate.HouseGenericRepository;
+import Akinita.project.Akinita.Repositories.RealEstate.LandGenericRepository;
+import Akinita.project.Akinita.Repositories.RealEstate.ParkingGenericRepository;
 import Akinita.project.Akinita.Repositories.User.OwnerRepository;
 import Akinita.project.Akinita.Entities.Actors.Owner;
 import jakarta.transaction.Transactional;
@@ -20,13 +20,13 @@ import java.util.Optional;
 public class OwnerService {
 
     @Autowired
-    private HouseRepository houseRepository;
+    private HouseGenericRepository houseRepository;
     @Autowired
-    private LandRepository landRepository;
+    private LandGenericRepository landRepository;
     @Autowired
-    private ParkingRepository parkingRepository;
+    private ParkingGenericRepository parkingRepository;
     @Autowired
-    private CommercialPropertyRepository commercialPropertyRepository;
+    private CommercialPropertyGenericRepository commercialPropertyRepository;
    @Autowired
     private OwnerRepository ownerRepository;
     @Autowired

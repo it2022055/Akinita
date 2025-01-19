@@ -3,6 +3,7 @@ package Akinita.project.Akinita.Controllers;
 import Akinita.project.Akinita.Entities.Properties.Property;
 import Akinita.project.Akinita.Services.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +40,12 @@ public class PropertyController {
                                    @RequestParam(name = "propertyType", required = false) String propertyType,
                                    @RequestParam(name = "minPrice", required = false) Double minPrice,
                                    @RequestParam(name = "maxPrice", required = false) Double maxPrice,
+                                   @RequestParam(name = "priceSlider", required = false) Double priceSlider,
                                    @RequestParam(name = "minSize", required = false) Double minSize,
                                    @RequestParam(name = "maxSize", required = false) Double maxSize,
+                                   @RequestParam(name = "sizeSlider", required = false) Double sizeSlider,
                                    @RequestParam(name = "buildingFees", required = false) Boolean buildingFees,
-                                   @RequestParam(name = "constructionDate", required = false) Date constructionDate,
+                                   @RequestParam(name = "constructionDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date constructionDate,
                                    Model model) {
         System.out.println("Area: " + area);
         System.out.println("Property Type: " + propertyType);
@@ -52,8 +55,11 @@ public class PropertyController {
         System.out.println("Max Size: " + maxSize);
         System.out.println("Building Fees: " + buildingFees);
         System.out.println("Construction Date: " + constructionDate);
+        System.out.println("Size slider: " + sizeSlider);
+        System.out.println("Price slider: " + priceSlider);
 
-        List properties = propertyService.findProperties(area, propertyType, minPrice, maxPrice, minSize, maxSize, buildingFees, constructionDate);
+
+        List properties = propertyService.findProperties(area, propertyType, minPrice, maxPrice, minSize, maxSize, buildingFees, constructionDate,priceSlider, sizeSlider);
         model.addAttribute("Properties", properties);
         return "search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
     }

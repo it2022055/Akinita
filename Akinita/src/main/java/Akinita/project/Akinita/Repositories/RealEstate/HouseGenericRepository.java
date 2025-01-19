@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface HouseRepository extends PropertyRepository<House, Integer>, ConstructionDate<House, Integer>, BuildingFees<House, Integer> {
+public interface HouseGenericRepository extends PropertyGenericRepository<House, Integer>, ConstructionDate<House, Integer>, BuildingFees<House, Integer> {
 
     @Query("SELECT h FROM House h WHERE h.buildingFees = true")
     List<House> findByBuildingFees(@Param("building_fees") boolean buildingFees);

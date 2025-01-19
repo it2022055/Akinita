@@ -9,6 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface ParkingRepository extends PropertyRepository<Parking,Integer>, ConstructionDate<Parking, Integer> {
+public interface ParkingGenericRepository extends PropertyGenericRepository<Parking,Integer>, ConstructionDate<Parking, Integer> {
     List<Parking> findByConstructionDate(@Param("construction_date") Date construction_date);
 }

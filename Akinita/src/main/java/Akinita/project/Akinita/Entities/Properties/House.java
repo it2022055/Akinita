@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -21,21 +22,21 @@ public class House extends Property implements BuildingFees, ConstructionDate {
     }
 
     @Past(message = "The construction date must be in the past")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)                                       // Date is saved without 'hours'
     @Column(name = "construction_date")
     private Date constructionDate;
 
     @NotNull(message = "Building fees are required")
     @Column(name = "building_fees")
-    private boolean buildingFees;
+    private Boolean buildingFees;
 
     public House() {
 
     }
 
 
-    @NotBlank(message = "Building fees are required")
-    public boolean getBuildingFees() {
+    public @NotBlank(message = "Building fees are required") Boolean getBuildingFees() {
         return buildingFees;
     }
 
