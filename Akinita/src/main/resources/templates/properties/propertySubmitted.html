@@ -11,7 +11,7 @@
 </head>
 <body>
 <div layout:fragment="main-content">
-    <form class="form" th:action="@{/submitNewProperty}" method="post" th:object="${property}">
+    <form class="form" th:action="@{/Owner/propertySubmitted}" method="get">
         <p id="heading">Your property has been submitted! Please wait while we review it</p>
         <div class="loader">
             <div class="truckWrapper">

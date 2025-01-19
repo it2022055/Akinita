@@ -38,7 +38,7 @@ public class Property implements RealEstate {
     private Owner owner;
 
     @ManyToOne
-    @JoinColumn(name = "renter_id", nullable = false)
+    @JoinColumn(name = "renter_id", nullable = true)
     private Renter renter;
 
     @NotNull(message = "Availability for Sale is required")
@@ -52,7 +52,7 @@ public class Property implements RealEstate {
     @Column(name = "visibility")
     private String visibility;
 
-    public Property(int id, String estateName, String location, int price, String description, Owner owner, Renter renter, boolean availability, String visibility, int squareMeter) {
+    public Property(int id, String estateName, String location, int price, String description, Owner owner, Renter renter, Boolean availability, String visibility, int squareMeter) {
         this.id = id;
         this.estateName = estateName;
         this.location = location;
@@ -150,5 +150,16 @@ public class Property implements RealEstate {
         return renter.getUserId();
     }
 
+    public void setRenter(Renter renter) {
+        this.renter = renter;
+    }
 
+    @NotNull(message = "Square meter is required")
+    public int getSquareMeter() {
+        return squareMeter;
+    }
+
+    public void setSquareMeter(@NotNull(message = "Square meter is required") int squareMeter) {
+        this.squareMeter = squareMeter;
+    }
 }

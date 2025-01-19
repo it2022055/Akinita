@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -26,7 +27,7 @@ public class OwnerController {
     }
 
     @PostMapping("/submitNewProperty")
-    public String submitNewProperty( Principal principal, @RequestParam("estateΝame") String estateΝame, @RequestParam("description") String description, @RequestParam("price") int price, @RequestParam("location") String location, @RequestParam("propertyType") String propertyType, @ModelAttribute RealEstate realEstate, Model model) {
+    public String submitNewProperty( Principal principal,@RequestParam("SqMeters") int sqMeters, @RequestParam("estateΝame") String estateΝame, @RequestParam("description") String description, @RequestParam("price") int price, @RequestParam("location") String location, @RequestParam("propertyType") String propertyType, @ModelAttribute RealEstate realEstate, Model model, RedirectAttributes redirectAttributes) {
         if (principal == null) {
             return "redirect:/login";
         }
@@ -36,6 +37,7 @@ public class OwnerController {
         System.out.println("price: " + price);
         System.out.println("description: " + description);
         System.out.println("propertyType: " + propertyType);
+        System.out.println("SqMeters: " + sqMeters);
         String email = principal.getName();
         Integer ownerId = ownerService.findOwnerIdByEmail(email);
         Owner owner=ownerService.findById(ownerId);
@@ -43,8 +45,15 @@ public class OwnerController {
         model.addAttribute("description", description);
         model.addAttribute("price", price);
         model.addAttribute("location", location);
+        model.addAttribute("SqMeters", sqMeters);
         if(!propertyType.equals("Land")) {
-            return "redirect:/properties/propertyFacilities";
+            redirectAttributes.addFlashAttribute("estateΝame", estateΝame);
+            redirectAttributes.addFlashAttribute("description", description);
+            redirectAttributes.addFlashAttribute("price", price);
+            redirectAttributes.addFlashAttribute("location", location);
+            redirectAttributes.addFlashAttribute("SqMeters", sqMeters);
+            redirectAttributes.addFlashAttribute("owner", owner);
+            return "redirect:/Owner/propertyFacilities";
         }else{
             Land land = new Land();
             land.setLocation(location);
@@ -53,21 +62,27 @@ public class OwnerController {
             land.setPrice(price);
             land.setVisibility("Invisible");
             land.setAvailability(true);
+            land.setSquareMeter(sqMeters);
+            land.setRenter(null);
             land.setOwner(owner);
-            propertyService.SaveLandProperty(land);
-            return "redirect:/properties/propertySubmitted";
+            try{
+                propertyService.SaveLandProperty(land);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            System.out.println("Redirecting to /properties/propertySubmitted");
+            return "redirect:/Owner/propertySubmitted";
         }
-
-        //RealEstate newProperty = switch (propertyType) {
-            //case "House" -> new House();
-            //case "Land" -> new Land();
-            //case "Parking" -> new Parking();
-            //case "CommercialProperty" -> new CommercialProperty();
-            //default -> throw new IllegalArgumentException("Invalid property type");
-        //};
-
-        //int id = propertyService.SaveProperty(newProperty);
-
+    }
+    @GetMapping("/propertyFacilities")
+    public String propertyFacilities(Model model) {
+        System.out.println("Method PROPERTY FACILITISE start");
+        System.out.println("estateName: " + model.getAttribute("estateΝame"));
+        System.out.println("location: " + model.getAttribute("location"));
+        System.out.println("price: " + model.getAttribute("price"));
+        System.out.println("description: " + model.getAttribute("description"));
+        System.out.println("SqMeters: " + model.getAttribute("SqMeters"));
+        return "properties/propertyFacilities";
     }
 
     @GetMapping("/propertySubmitted")
