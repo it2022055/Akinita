@@ -38,6 +38,6 @@ public interface PropertyGenericRepository<T,ID> extends JpaRepository<T, ID>{
     @Query("SELECT p.id FROM Property p WHERE p = :property")
     int findIdByProperty(@Param("property") T property);
 
-
-
+    @Query("SELECT p.owner.userId FROM Property p WHERE p.id = :propertyId")
+    Integer findOwnerIdByPropertyId(@Param("propertyId") int propertyId);
 }

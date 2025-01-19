@@ -132,4 +132,9 @@ public class PropertyService {
     public void SaveParkingProperty(Parking parking){parkingRepository.save(parking);}
 
     public void SaveCommercialProperty(CommercialProperty commercialProperty){commercialPropertyRepository.save(commercialProperty);}
+
+
+    public Integer findOwnerIdByPropertyId(int propertyId) {
+        return propertyRepository.findOwnerIdByPropertyId(propertyId);
+    }
 }

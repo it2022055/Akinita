@@ -1,45 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}" xmlns:sec="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Search</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Αν έχεις εξωτερικό αρχείο CSS -->
+    <title>Property Search Results</title>
+    <link th:href="@{/css/search_results.css}" rel="stylesheet">
 </head>
+
 <body>
-<header>
-    <h1>Property Search Results</h1>
-</header>
-
-<main>
-    <!-- Έλεγχος αν η λίστα properties είναι κενή -->
+<div layout:fragment="main-content" class="container">
+    <p id="heading">Property Search Results</p>
     <div th:if="${#lists.isEmpty(properties)}">
-        <p>No properties found matching your criteria.</p>
+        <p style="color: black; font-size: 1.5em; margin-bottom: 2em;">No properties found matching your criteria.</p>
     </div>
+    <div th:each="property : ${properties}" class="property-card">
+        <h2 th:text="${property.getEstateName()}">Property Name</h2>
+        <p th:text="${property.getDescription()}">Property Description</p>
+        <p th:text="${property.getLocation()}">Property Location</p>
+        <p th:text="${property.getSquareMeter()} + ' m²'">Property Size</p>
+        <p th:text="'€' + ${property.getPrice()}">Property Price</p>
 
-    <!-- Εμφάνιση των αποτελεσμάτων, αν η λίστα δεν είναι κενή -->
-    <div th:unless="${#lists.isEmpty(properties)}">
-        <table class="properties-table">
-            <thead>
-            <tr>
-                <th>Location</th>
-                <th>Property Type</th>
-                <th>Price</th>
-                <th>Size (m²)</th>
-                <th>Building Fees</th>
-                <th>Construction Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="property : ${properties}">
-                <td th:text="${property.estateName}">Estate Name</td>
+        <!-- Εμφάνιση κουμπιού μόνο αν ο ρόλος είναι ROLE_RENTER -->
+        <button class="button1" sec:authorize="hasRole('ROLE_RENTER')"
+                onclick="window.location.href='/Renter/rental_application';">Apply for Renting</button>
 
-            </tr>
-            </tbody>
-        </table>
+
     </div>
-</main>
-
+</div>
 <footer>
     <p>&copy; 2025 Property Finder. All rights reserved.</p>
 </footer>

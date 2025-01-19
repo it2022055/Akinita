@@ -19,7 +19,7 @@ public interface RenterRepository extends JpaRepository<Renter, Integer> {
             "VALUES (:userId, :firstName, :lastName, :telephoneNumber)", nativeQuery = true)
     void saveRenterCustom(Integer userId, String firstName, String lastName, String telephoneNumber);
 
-    @Query("SELECT o FROM Owner o WHERE o.user.email = :email")
+    @Query("SELECT r FROM Renter r WHERE r.user.email = :email")
     Renter findByEmail(String email);
 
     Renter findByUserId(Integer userId);
