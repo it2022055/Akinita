@@ -1,101 +1,88 @@
-
 .form {
     display: flex;
-    flex-direction: row;
-    gap: 40px;
-    padding-left: 2em;
-    padding-right: 2em;
-    padding-bottom: 0.4em;
-    background-color: rgba(255, 255, 255, 0.68);
+    flex-direction: column; /* Στήλες για καλύτερη διάταξη */
+    gap: 20px;
+    padding: 1em;
+    background-color: rgba(255, 255, 255, 0.8); /* Αυξημένο opacity για πιο έντονο background */
     border-radius: 25px;
-    align-items: center;
-    justify-content: center;
-    height: 150px;
-    width: 1000px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    align-items: flex-start;
+    width: 100%;
+    margin: auto;
 }
 
-
-#heading {
-    text-align: center;
-    margin: 2em;
-    color: black;
-    font-size: 1.2em;
+.field-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .field {
     display: flex;
+    flex-direction: column;
     gap: 0.5em;
-    border-radius: 25px;
     padding: 0.6em;
-    border: none;
-    outline: none;
-    color: white;
-    background-color: rgba(255, 255, 255, 0.68);
-    box-shadow: inset 1px 2px 14px rgb(5, 5, 5);
+    background-color: transparent;
+    box-shadow: none;
+    width: auto;
 }
 
-.input-field {
-    background: none;
-    border: none;
-    outline: none;
-    width: 100%;
+label {
+    font-weight: 700; /* Πολύ πιο παχιά γραμματοσειρά για το Location label */
     color: black;
+    font-size: 1.1em; /* Μπορείς να αυξήσεις και το μέγεθος αν το θέλεις */
 }
 
-.form .btn {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    margin-top: 2.5em;
-}
-
-.button1 {
+input, select {
+    width: auto;
     padding: 0.5em;
-    padding-left: 1.1em;
-    padding-right: 1.1em;
+    border: none;
+    border-bottom: 2px solid #000;
+    background: transparent;
+    color: black;
+    font-size: 1em;
+}
+
+input[type="range"] {
+    width: 100%;
+    height: 6px;
+    background: #ddd;
     border-radius: 5px;
-    margin-right: 0.5em;
+    margin-top: 10px;
+    padding: 0;
+}
+
+input[type="range"]:focus {
+    outline: none;
+}
+
+button {
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    background-color: #252525;
+    color: white;
     border: none;
     outline: none;
     transition: .4s ease-in-out;
-    background-color: #252525;
-    color: white;
+    width: 100%;
 }
 
-.button1:hover {
+button:hover {
     background-color: white;
     color: black;
 }
 
-/* Επικεντρώνει το rolefield */
-.rolefield {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    gap: 0.5em;
-    border-radius: 25px;
-    padding: 0.6em;
-    border: none;
-    outline: none;
+output {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-left: 10px;
     color: black;
-    width: 100%; /* Responsive */
-    max-width: 250px; /* Περιορισμός πλάτους */
-    background-color: rgba(255, 255, 255, 0.68);
-    box-shadow: inset 2px 2px 14px rgb(5, 5, 5);
-    box-sizing: border-box;
 }
 
-/* Στυλ για dropdowns */
-.roleddlist {
-    width: 100%; /* Responsive */
-    max-width: 400px; /* Σταθερό μέγεθος */
-    background-color: rgba(255, 255, 255, 0.68);
-    color: black;
-    padding: 0.6em;
-    border-radius: 5px;
-    box-sizing: border-box;
+/* Dynamic Fields Grid Layout */
+#dynamicFields {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Δημιουργεί 3 στήλες */
+    gap: 20px;
+    width: 100%;
+    padding-top: 1em;
 }

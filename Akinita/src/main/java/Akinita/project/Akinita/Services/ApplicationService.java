@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ApplicationService {
@@ -27,5 +28,9 @@ public class ApplicationService {
 
     public RentalApplication save(RentalApplication rentalApplication) {
         return rentalApplicationRepository.save(rentalApplication);
+    }
+
+    public RentalApplication getApplication(int rpId) {
+        return  rentalApplicationRepository.findById(rpId);
     }
 }

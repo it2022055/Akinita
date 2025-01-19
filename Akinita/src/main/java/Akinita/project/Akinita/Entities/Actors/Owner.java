@@ -1,5 +1,6 @@
-package Akinita.project.Akinita.Entities;
+package Akinita.project.Akinita.Entities.Actors;
 
+import Akinita.project.Akinita.Entities.Properties.Property;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

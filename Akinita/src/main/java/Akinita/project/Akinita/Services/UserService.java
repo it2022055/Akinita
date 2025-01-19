@@ -3,7 +3,7 @@ package Akinita.project.Akinita.Services;
 import Akinita.project.Akinita.Repositories.User.RoleRepository;
 import Akinita.project.Akinita.Repositories.User.UserRepository;
 import Akinita.project.Akinita.Entities.Role;
-import Akinita.project.Akinita.Entities.User;
+import Akinita.project.Akinita.Entities.Actors.User;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -74,11 +75,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public Object getUsers() {
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
-    public Object getUser(int userId) {
+    public User getUser(int userId) {
         return userRepository.findById(userId).get();
     }
 

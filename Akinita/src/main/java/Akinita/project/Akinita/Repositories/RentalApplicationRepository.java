@@ -16,5 +16,5 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
 
     List<RentalApplication> findByPropertyId(int propertyId);
 
-
+    RentalApplication findById(int id);
 }

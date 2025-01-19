@@ -1,5 +1,7 @@
-package Akinita.project.Akinita.Entities;
+package Akinita.project.Akinita.Entities.Properties;
 
+import Akinita.project.Akinita.Entities.Actors.Owner;
+import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Interfaces.LimitedMethods.ConstructionDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
@@ -9,8 +11,8 @@ import java.util.Date;
 @Entity
 public class Parking extends Property implements ConstructionDate {
 
-    public Parking(int id, String estateName, String location, int price, String description, Owner owner, Boolean availability, String visibility, Date constructionDate) {
-        super(id, estateName, location, price, description, owner, availability, visibility);
+    public Parking(int id, String estateName, String location, int price, String description, Owner owner, Renter renter, Boolean availability, String visibility, Date constructionDate, int squareMeter) {
+        super(id, estateName, location, price, description, owner, renter, availability, visibility, squareMeter);
         this.constructionDate = constructionDate;
     }
 

@@ -1,6 +1,6 @@
 package Akinita.project.Akinita.Interfaces;
 
-import Akinita.project.Akinita.Entities.Owner;
+import Akinita.project.Akinita.Entities.Actors.Owner;
 
 public interface RealEstate {
 
@@ -25,10 +25,12 @@ public interface RealEstate {
     void setDescription(String description);
 
     // Sale Availability
-    boolean isAvailableForSale();
+    Boolean isAvailableForSale();
     void setAvailability(Boolean availability);
 
     // Owner
     void setOwner(Owner owner);
 
+    int getOwnerId();
+    int getRenterId();
 }

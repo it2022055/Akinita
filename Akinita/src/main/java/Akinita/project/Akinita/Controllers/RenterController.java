@@ -1,6 +1,7 @@
 package Akinita.project.Akinita.Controllers;
 
 import Akinita.project.Akinita.Entities.*;
+import Akinita.project.Akinita.Entities.Actors.User;
 import Akinita.project.Akinita.Services.RenterService;
 import Akinita.project.Akinita.Services.PropertyService;
 import Akinita.project.Akinita.Services.UserService;
@@ -30,7 +31,7 @@ public class RenterController {
     }
 
     @GetMapping("/Search")
-    public String SearchProperties(Model model, Principal principal) {
+    public String SearchProperties(Model model) {
             model.addAttribute("Properties", propertyService.findAllProperties());
             return "properties/searchProperties";
     }
@@ -50,54 +51,5 @@ public class RenterController {
         return "properties/submitRentalApplication";
     }
 
-//    @PostMapping("/saveUser")
-//    public String saveUser(@ModelAttribute User user, @RequestParam("role") String role,  @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname,@RequestParam("telephone") String telephone, Model model) {
-//        User saveduser = userService.saveUser(user, role);
-//        if (role.equals("ROLE_OWNER")){
-//            Owner newOwner=new Owner(saveduser,firstname,lastname,telephone);
-//            ownerService.save(newOwner);
-//        }else{
-//            Renter newRenter=new Renter();
-//            renterRepository.save(newRenter);
-//        }
-//        String message = "User '" + saveduser.getId() + "' saved successfully with role: " + role;
-//        model.addAttribute("msg", message);
-//
-//        return "redirect:/login";
-//    }
-
-//    @PostMapping("/submitProperty")
-//    public String submitProperty(@RequestParam String propertyType, @ModelAttribute RealEstate realEstate, Model model) {
-//        RealEstate newProperty;
-//
-//        switch(propertyType) {
-//            case "House":
-//                newProperty = new House();
-//                break;
-//            case "Land":
-//                newProperty = new Land();
-//                break;
-//            case "Parking":
-//                newProperty = new Parking();
-//                break;
-//            case "CommercialProperty":
-//                newProperty = new CommercialProperty();
-//                break;
-//            default:
-//                throw new IllegalArgumentException("Invalid property type");
-//        }
-//        Integer id = propertyService.SaveProperty(newProperty);
-//        String message = "Property '"+id+"' saved successfully !";
-//        model.addAttribute("msg", message);
-//        return "redirect:/index";
-//    }
-//
-//    @GetMapping("/manageApplications/{propertyId}")
-//    public String manageApplications(@PathVariable String propertyId, Model model, Principal principal) {
-//        String email = principal.getName();
-//        Integer ownerId = ownerService.findOwnerIdByEmail(email);
-//        model.addAttribute("Applications", ownerService.getOwnerRentalApplications(ownerId));
-//        return "properties/manageApplications";
-//    }
 
 }

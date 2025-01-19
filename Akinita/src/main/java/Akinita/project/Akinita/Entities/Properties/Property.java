@@ -1,5 +1,7 @@
-package Akinita.project.Akinita.Entities;
+package Akinita.project.Akinita.Entities.Properties;
 
+import Akinita.project.Akinita.Entities.Actors.Owner;
+import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -35,29 +37,39 @@ public class Property implements RealEstate {
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
 
+    @ManyToOne
+    @JoinColumn(name = "renter_id", nullable = false)
+    private Renter renter;
+
     @NotNull(message = "Availability for Sale is required")
     @Column(name = "availability")
     private Boolean availability;
 
+    @NotNull(message = "Square meter is required")
+    @Column(name = "square_meter")
+    private int squareMeter;
 
     @Column(name = "visibility")
     private String visibility;
 
-    public Property(int id, String estateName, String location, int price, String description, Owner owner, boolean availability, String visibility) {
+    public Property(int id, String estateName, String location, int price, String description, Owner owner, Renter renter, boolean availability, String visibility, int squareMeter) {
         this.id = id;
         this.estateName = estateName;
         this.location = location;
         this.price = price;
         this.description = description;
         this.owner = owner;
+        this.renter = renter;
         this.availability = availability;
         this.visibility = visibility;
+        this.squareMeter = squareMeter;
     }
 
     public Property() {
+
     }
 
-    public Boolean isAvailability() {
+    public Boolean isAvailableForSale() {
         return availability;
     }
 
@@ -124,13 +136,18 @@ public class Property implements RealEstate {
     }
 
     @Override
-    public boolean isAvailableForSale() {
-        return false;
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     @Override
-    public void setOwner(Owner owner) {
-        this.owner = owner;
+    public int getOwnerId() {
+        return owner.getUserId();
+    }
+
+    @Override
+    public int getRenterId() {
+        return renter.getUserId();
     }
 
 

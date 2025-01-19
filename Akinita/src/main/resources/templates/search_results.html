@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <link th:href="@{/css/index.css}" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="main-content" class="container">
+    <h1>Search Results</h1>
+    <div th:if="${Properties.isEmpty()}">
+        <p>No properties found matching your criteria.</p>
+    </div>
+
+    <div th:unless="${Properties.isEmpty()}">
+        <table class="properties-table">
+            <thead>
+            <tr>
+                <th>Location</th>
+                <th>Property Type</th>
+                <th>Price</th>
+                <th>Size (m²)</th>
+                <th>Building Fees</th>
+                <th>Construction Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="property : ${Properties}">
+                <td th:text="${property.location}">Location</td>
+                <td th:text="${property.propertyType}">Property Type</td>
+                <td th:text="${property.price}">Price</td>
+                <td th:text="${property.size}">Size</td>
+                <td th:text="${property.buildingFees != null ? property.buildingFees : 'N/A'}">Building Fees</td>
+                <td th:text="${property.constructionDate != null ? property.constructionDate : 'N/A'}">Construction Date</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

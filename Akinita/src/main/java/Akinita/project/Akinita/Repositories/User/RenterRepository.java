@@ -1,7 +1,6 @@
 package Akinita.project.Akinita.Repositories.User;
 
-import Akinita.project.Akinita.Entities.Owner;
-import Akinita.project.Akinita.Entities.Renter;
+import Akinita.project.Akinita.Entities.Actors.Renter;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

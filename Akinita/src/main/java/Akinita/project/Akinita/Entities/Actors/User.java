@@ -1,5 +1,7 @@
-package Akinita.project.Akinita.Entities;
+package Akinita.project.Akinita.Entities.Actors;
 
+import Akinita.project.Akinita.Entities.Favorite;
+import Akinita.project.Akinita.Entities.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -35,6 +37,10 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Favorite> favorites = new HashSet<>();
+
 
     public User() {
     }

@@ -1,8 +1,7 @@
 package Akinita.project.Akinita.Services;
 
 import Akinita.project.Akinita.Entities.RentalApplication;
-import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
-import Akinita.project.Akinita.Entities.Renter;
+import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Repositories.User.RenterRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,7 @@
 package Akinita.project.Akinita.Controllers;
 
-import Akinita.project.Akinita.Entities.*;
+import Akinita.project.Akinita.Entities.Actors.Owner;
+import Akinita.project.Akinita.Entities.Properties.Land;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.PropertyService;
@@ -10,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("Owner")
