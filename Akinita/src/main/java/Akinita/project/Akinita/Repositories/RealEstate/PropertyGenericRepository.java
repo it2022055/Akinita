@@ -31,7 +31,8 @@ public interface PropertyGenericRepository<T,ID> extends JpaRepository<T, ID>{
 
     List<T> findByOwner(Owner owner);
 
-    List<Property> findByOwner_UserId(Integer userId);
+    List<Property> findByVisibilityAndOwner_UserId(String visibility, Integer userId);
+
 
     Property findPropertyById(Integer propertyId);
 

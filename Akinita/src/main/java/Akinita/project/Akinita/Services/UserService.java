@@ -1,10 +1,13 @@
 package Akinita.project.Akinita.Services;
 
+import Akinita.project.Akinita.Entities.Actors.Renter;
+import Akinita.project.Akinita.Repositories.User.RenterRepository;
 import Akinita.project.Akinita.Repositories.User.RoleRepository;
 import Akinita.project.Akinita.Repositories.User.UserRepository;
 import Akinita.project.Akinita.Entities.Role;
 import Akinita.project.Akinita.Entities.Actors.User;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +28,8 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     private RoleRepository roleRepository;
+    @Autowired
+    private RenterRepository renterRepository;
 
 
     private BCryptPasswordEncoder passwordEncoder;
@@ -59,20 +64,36 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> opt = userRepository.findByUsername(username);
 
-        if(opt.isEmpty())
-            throw new UsernameNotFoundException("User with email: " +username +" not found !");
-        else {
+        if (opt.isEmpty()) {
+            throw new UsernameNotFoundException("User with email: " + username + " not found!");
+        } else {
             User user = opt.get();
+
+            // Έλεγχος αν ο χρήστης έχει τον ρόλο ROLE_RENTER
+            boolean isRenter = user.getRoles().stream()
+                    .anyMatch(role -> role.toString().equals("ROLE_RENTER"));
+
+            if (isRenter) {
+                // Φόρτωση του Renter από το RenterRepository
+                Optional<Renter> renterOpt = renterRepository.findById(user.getId());
+
+                if (renterOpt.isEmpty() || !renterOpt.get().getAcceptance().equals("Accepted")) {
+                    throw new UsernameNotFoundException("Renter with email: " + username + " is not accepted!");
+                }
+            }
+
             return new org.springframework.security.core.userdetails.User(
                     user.getEmail(),
                     user.getPassword(),
                     user.getRoles()
                             .stream()
-                            .map(role-> new SimpleGrantedAuthority(role.toString()))
+                            .map(role -> new SimpleGrantedAuthority(role.toString()))
                             .collect(Collectors.toSet())
             );
         }
     }
+
+
 
     @Transactional
     public List<User> getUsers() {

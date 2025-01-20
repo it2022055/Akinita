@@ -22,6 +22,9 @@ public class Renter {
     @Column(name = "telephone_number", nullable = false)
     private String telephoneNumber;
 
+    @Column(nullable = false)
+    private String acceptance;
+
     // Default constructor
     public Renter() {
     }
@@ -33,6 +36,7 @@ public class Renter {
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephoneNumber = telephoneNumber;
+        this.acceptance = "Unaccepted";
     }
 
     // Getters and Setters
@@ -75,6 +79,14 @@ public class Renter {
 
     public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
+    }
+
+    public String getAcceptance() {
+        return acceptance;
+    }
+
+    public void setAcceptance(String acceptance) {
+        this.acceptance = acceptance;
     }
 
     @Override

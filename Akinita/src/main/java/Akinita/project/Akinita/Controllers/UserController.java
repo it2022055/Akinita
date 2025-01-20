@@ -61,7 +61,11 @@ public class UserController {
             return "redirect:/login";
         }else{
             Renter newRenter=new Renter(saveduser,firstname,lastname,telephone);
-            renterService.save(newRenter);
+            try{
+                renterService.save(newRenter);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             return "redirect:/users/rentalApplication";
         }
     }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Accept Renters</title>
+    <link th:href="@{/css/users.css}" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="main-content">
+    <form class="form">
+        <div th:if="${ not#lists.isEmpty(Renters)}" style="color: rgba(45,45,48,0.90)">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Telephone number</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="renter : ${Renters}">
+                    <td th:text="${renter.getFirstName()}"></td>
+                    <td th:text="${renter.getLastName()}"></td>
+                    <td th:text="${renter.getUser().getUsername()}"></td>
+                    <td th:text="${renter.getUser().getEmail()}"></td>
+                    <td th:text="${renter.getTelephoneNumber()}"></td>
+                    <td th:if="${renter.getUserId()}"><a class="btn btn-info" th:href="@{/Renter/AcceptRenters/{id}(id=${renter.getUserId()})}">Accept Renter</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${ #lists.isEmpty(Renters)}">
+            No renters to accept found!
+        </div>
+    </form>
+</div>
+</body>
+</html>

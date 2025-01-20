@@ -11,26 +11,32 @@
 <body>
 <div layout:fragment="main-content">
     <form class="form">
-        <div th:if="${ not#lists.isEmpty(properties)}">
+        <div th:if="${ not#lists.isEmpty(properties)}" style="color: rgba(45,45,48,0.90)">
             <table class="table">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Estate Name</th>
-                    <th>Actions</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Price</th>
+                    <th>Square Meters</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="property : ${properties}">
-                    <td th:text="${property.getId()}"></td>
+                    <td th:text="${property.getDescription()}"></td>
+                    <td th:text="${property.getLocation()}"></td>
                     <td th:text="${property.getEstateName()}"></td>
+                    <td th:text="${property.getPrice()}"></td>
+                    <td th:text="${property.getSquareMeter()}"></td>
                     <td th:if="${property.getId()}"><a class="btn btn-info" th:href="@{/Service/AcceptListings/{id}(id=${property.id})}">Change Visibility</a>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <div th:if="${ #lists.isEmpty(properties)}">
+        <div th:if="${ #lists.isEmpty(properties)}" style="color: rgba(45,45,48,0.90)">
             No updatable properties found!
         </div>
     </form>

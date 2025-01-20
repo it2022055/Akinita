@@ -10,7 +10,7 @@
     <link th:href="@{/css/users.css}" rel="stylesheet">
 </head>
 <body>
-<div layout:fragment="main-content">
+<div layout:fragment="main-content" style="color: rgba(45,45,48,0.90)">
     <form class="form" action="#" th:action="@{/user/{id}(id=${user.id})}" th:object="${user}"
           method="post">
 

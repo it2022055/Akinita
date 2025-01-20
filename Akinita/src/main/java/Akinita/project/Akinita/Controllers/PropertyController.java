@@ -2,6 +2,7 @@ package Akinita.project.Akinita.Controllers;
 
 import Akinita.project.Akinita.Entities.Properties.Property;
 import Akinita.project.Akinita.Services.PropertyService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -58,12 +59,13 @@ public class PropertyController {
         return "/properties/updateProperties";
     }
 
-    @PostMapping("/AcceptListings/{property_id}")
+    @Transactional
+    @GetMapping("/AcceptListings/{property_id}")
     public String updateProperties(@ModelAttribute("properties") Property property, Model model, @PathVariable int property_id){
         Property the_property= propertyService.getPropertyById(property_id);
         the_property.setVisibility("Visible");
         propertyService.updateProperty(the_property);
-        return "redirect:/properties/updateProperties";
+        return "redirect:/Service/AcceptListings";
 
     }
 

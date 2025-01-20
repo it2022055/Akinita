@@ -1,12 +1,14 @@
 package Akinita.project.Akinita.Controllers;
 
 import Akinita.project.Akinita.Entities.*;
+import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Entities.Actors.User;
 import Akinita.project.Akinita.Entities.Properties.Property;
 import Akinita.project.Akinita.Services.FileStorageService;
 import Akinita.project.Akinita.Services.RenterService;
 import Akinita.project.Akinita.Services.PropertyService;
 import Akinita.project.Akinita.Services.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -109,5 +111,24 @@ public class RenterController {
     @GetMapping("/applicationSubmitted")
     public String RentalApplicationsSub(Model model, Principal principal) {
         return "/renter/applicationSubmitted";
+    }
+
+    @GetMapping("/AcceptRenters")
+    public String AcceptRenters(Model model) {
+        model.addAttribute("Renters",renterService.findAllUnacceptedRenters());
+        return "renter/acceptRenters";
+    }
+
+    @Transactional
+    @GetMapping("/AcceptRenters/{renter_id}")
+    public String acceptRenters(Model model, @PathVariable Integer renter_id) {
+        Renter the_renter = renterService.getRenterById(renter_id);
+        the_renter.setAcceptance("Accepted");
+        try{
+            renterService.UpdateRenter(the_renter);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "redirect:/Renter/AcceptRenters";
     }
 }

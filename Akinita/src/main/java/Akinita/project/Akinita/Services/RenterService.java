@@ -1,5 +1,6 @@
 package Akinita.project.Akinita.Services;
 
+import Akinita.project.Akinita.Entities.Properties.Property;
 import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Repositories.User.RenterRepository;
@@ -37,6 +38,13 @@ public class RenterService {
 
     @Transactional
     public void save(Renter newRenter){
-        renterRepository.saveRenterCustom(newRenter.getUserId(), newRenter.getFirstName(), newRenter.getLastName(), newRenter.getTelephoneNumber());
+        renterRepository.saveRenterCustom(newRenter.getUserId(), newRenter.getFirstName(), newRenter.getLastName(), newRenter.getTelephoneNumber(), newRenter.getAcceptance());
     }
+
+    public List<Renter> findAllUnacceptedRenters(){
+        return renterRepository.findAllUnacceptedRenters();
+    }
+
+    @Transactional
+    public void UpdateRenter(Renter renter) {renterRepository.save(renter);}
 }

@@ -16,6 +16,7 @@
             <a class="nav-link" href="/" data-path="/" >Home</a>
             <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-link" href="/users">Users</a>
             <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-link" href="/Service/AcceptListings">Accept Listings</a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-link" href="/Renter/AcceptRenters">Accept Renters</a>
             </a>
             <a sec:authorize="!isAuthenticated()"  class="nav-link">
                 <a  class="nav-link" href="/login">Login</a>

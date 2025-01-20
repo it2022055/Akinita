@@ -20,6 +20,7 @@
                     <th>Estate Name</th>
                     <th>Description</th>
                     <th>Price</th>
+                    <th>Availability</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -27,6 +28,7 @@
                     <td th:text="${property.getEstateName()}"></td>
                     <td th:text="${property.getDescription()}"></td>
                     <td th:text="${property.getPrice()}"></td>
+                    <td th:text="${property.isAvailableForSale()}"></td>
                     <td th:if="${property.getId()}"><a class="button1" th:href="@{/Owner/Listings/ChangeAvailability/{property_id}(property_id=${property.id})}">Change Availability</a>
                     <td th:if="${property.getId()}"><a class="button1" th:href="@{/Owner/Listings/Delete/{property_id}(property_id=${property.id})}">Delete</a>
                     </td>
