@@ -19,22 +19,6 @@ public class PropertyController {
     @Autowired
     PropertyService propertyService;
 
-//    @GetMapping("/searchProperties")
-//    public String searchProperties(Model model) {
-//        model.addAttribute("Properties", propertyService.findAllProperties());
-//        return "redirect:/properties/searchProperties";
-//    }
-
-//    @GetMapping("/searchProperties/Location")
-//    public String searchPropertiesByLocation(@RequestParam(name = "area", required = false) String area,
-//                                   @RequestParam(name = "propertyType", required = false) String propertyType,
-//                                   Model model) {
-//        System.out.println("Area: " + area);
-//        System.out.println("Property Type: " + propertyType);
-//        model.addAttribute("Properties", propertyService.findAllPropertiesByLocation(area, propertyType));
-//        return "redirect:/properties/searchProperties";
-//    }
-
     @GetMapping("/searchProperties")
     public String searchProperties(@RequestParam(name = "area", required = false) String area,
                                    @RequestParam(name = "propertyType", required = false) String propertyType,
@@ -44,22 +28,25 @@ public class PropertyController {
                                    @RequestParam(name = "minSize", required = false) Double minSize,
                                    @RequestParam(name = "maxSize", required = false) Double maxSize,
                                    @RequestParam(name = "sizeSlider", required = false) Double sizeSlider,
-                                   @RequestParam(name = "buildingFees", required = false) Boolean buildingFees,
+                                   @RequestParam(name = "buildingFees", required = false) String buildingFees,
                                    @RequestParam(name = "constructionDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date constructionDate,
                                    Model model) {
+
+        boolean bf = buildingFees.equals("yes");
+
         System.out.println("Area: " + area);
         System.out.println("Property Type: " + propertyType);
         System.out.println("Min Price: " + minPrice);
         System.out.println("Max Price: " + maxPrice);
         System.out.println("Min Size: " + minSize);
         System.out.println("Max Size: " + maxSize);
-        System.out.println("Building Fees: " + buildingFees);
+        System.out.println("Building Fees: " + bf);
         System.out.println("Construction Date: " + constructionDate);
         System.out.println("Size slider: " + sizeSlider);
         System.out.println("Price slider: " + priceSlider);
 
 
-        List properties = propertyService.findProperties(area, propertyType, minPrice, maxPrice, minSize, maxSize, buildingFees, constructionDate,priceSlider, sizeSlider);
+        List properties = propertyService.findProperties(area, propertyType, minPrice, maxPrice, minSize, maxSize, bf, constructionDate,priceSlider, sizeSlider);
         model.addAttribute("properties", properties);
         return "search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
     }

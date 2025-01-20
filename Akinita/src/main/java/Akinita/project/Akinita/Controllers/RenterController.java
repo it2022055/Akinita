@@ -2,6 +2,7 @@ package Akinita.project.Akinita.Controllers;
 
 import Akinita.project.Akinita.Entities.*;
 import Akinita.project.Akinita.Entities.Actors.User;
+import Akinita.project.Akinita.Entities.Properties.Property;
 import Akinita.project.Akinita.Services.FileStorageService;
 import Akinita.project.Akinita.Services.RenterService;
 import Akinita.project.Akinita.Services.PropertyService;
@@ -28,16 +29,14 @@ public class RenterController {
     private FileStorageService fileStorageService;
 
     @GetMapping("/rental_application")
-    public String RenterRentalApplications(Model model, Principal principal) {
-        String email = principal.getName();
-        Integer renterId = renterService.findRenterIdByEmail(email);
-        model.addAttribute("Applications", renterService.getRenterRentalApplications(renterId));
-        return "rental_application";
+    public String RenterRentalApplications(Model model, @RequestParam("property_id") Property property) {
+        model.addAttribute("property_id", property.getId());
+        return "/renter/rental_application";
     }
 
 
     @PostMapping("/rental_application")
-    public String submitRentalApp(@RequestParam("property_id") int propertyId,
+    public String submitRentalApp(@RequestParam("property_id") Integer property_id,
                                   @RequestParam("jobSituation") String jobSituation,
                                   @RequestParam("taxStatement") MultipartFile taxStatement,
                                   @RequestParam("identityDocument") MultipartFile identityDocument,
@@ -49,26 +48,35 @@ public class RenterController {
 
         String email = principal.getName();
         Integer renterId = renterService.findRenterIdByEmail(email);
+        User renter = userService.getUser(renterId);
 
-        System.out.println(renterId);
-        System.out.println(propertyId);
-        System.out.println(jobSituation);
-        System.out.println(taxStatement);
-        System.out.println(identityDocument);
-        System.out.println(termsAcceptance);
-        System.out.println(rentalDuration);
-        System.out.println(description);
-        System.out.println(pets);
+        Property property = propertyService.getPropertyById(property_id);
+        User owner = userService.getUser(property.getOwnerId());
+
+        System.out.println("RenterId: " + renterId);
+        System.out.println("PropertyId: " + property_id);
+        System.out.println("JobSituation: " + jobSituation);
+        System.out.println("TaxStatement: " + taxStatement);
+        System.out.println("IdentityDocument: " + identityDocument);
+        System.out.println("TermsAcceptance: " + termsAcceptance);
+        System.out.println("RentalDuration: " + rentalDuration);
+        System.out.println("Description: " + description);
+        System.out.println("Pets: " + pets);
+
 
         // Δημιουργία του αντικειμένου αίτησης ενοικίασης
         RentalApplication application = new RentalApplication();
-        application.setRenterId(renterId);
-        application.setPropertyId(propertyId);
-        application.setOwnerId(propertyService.findOwnerIdByPropertyId(propertyId));
+        application.setRenter(renter);
+        application.setProperty(property);
+        application.setOwner(owner);
+
         application.setRenterJob(jobSituation);
         application.setRentalDuration(rentalDuration);
         application.setDescription(description);
         application.setRenterPets(pets);
+
+
+        renterService.saveApplication(application);            // part 1
 
         // Αποθήκευση των αρχείων
         try {
@@ -94,13 +102,12 @@ public class RenterController {
         model.addAttribute("message", "Η αίτησή σας καταχωρήθηκε επιτυχώς.");
 
         // Ανακατεύθυνση ή επιστροφή στη σελίδα
-        return "redirect:/Renter/RentalApplications";  // Ανακατεύθυνση στη σελίδα με τις αιτήσεις
+        return "redirect:/Renter/applicationSubmitted";  // Ανακατεύθυνση στη σελίδα με τις αιτήσεις
 
     }
 
-    @GetMapping("/rental_application_submitted")
+    @GetMapping("/applicationSubmitted")
     public String RentalApplicationsSub(Model model, Principal principal) {
-
-        return "rental_application";
+        return "/renter/applicationSubmitted";
     }
 }

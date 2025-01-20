@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.*;
 import jakarta.validation.Path;
 import jakarta.validation.constraints.Past;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -39,16 +40,14 @@ public class RentalApplication {
     private String renterJob;
 
     @Column
-    private String incomeVerification;
-
-    @Column
     private Boolean renterPets;
 
     @OneToMany(mappedBy = "rentalApplication", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FileEntity> files;
 
-    @Past(message = "The rental date must be in the past")
+
     @Temporal(TemporalType.DATE)                                       // Date is saved without 'hours'            // Auto to kommati prepei na ginei anathesh otan ton dektei o owner
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "rental_date")
     private Date rentalDate;
 
@@ -95,20 +94,12 @@ public class RentalApplication {
         this.property = property;
     }
 
-    public void setPropertyId(Integer propertyId) {
-        this.property.setId(propertyId);
-    }
-
     public User getRenter() {
         return renter;
     }
 
     public void setRenter(User renter) {
         this.renter = renter;
-    }
-
-    public void setRenterId(Integer renterId) {
-        this.renter.setId(renterId);
     }
 
     public String getRenterJob() {
@@ -119,13 +110,6 @@ public class RentalApplication {
         this.renterJob = renterJob;
     }
 
-    public String getIncomeVerification() {
-        return incomeVerification;
-    }
-
-    public void setIncomeVerification(String incomeVerification) {
-        this.incomeVerification = incomeVerification;
-    }
 
     public Boolean getRenterPets() {
         return renterPets;

@@ -43,33 +43,29 @@ public class PropertyService {
             return propertyRepository.findAll();
         }
 
-        List<Property> property_results = new ArrayList<>();
 
-        // Πάρε τα αποτελέσματα από τις αναζητήσεις
-        if (area != null) {
-            property_results = propertyRepository.findByLocation(area);
-        } else {
-            property_results = propertyRepository.findAll();
-        }
+        List<Property> property_results = switch (propertyType) {
+            case "House" -> houseRepository.findCommonProperties(area);
+            case "Commercial Property" -> commercialPropertyRepository.findCommonProperties(area);
+            case "Parking" -> parkingRepository.findCommonProperties(area);
+            default -> landRepository.findAllProperties();
+        };
 
-        List<Property> price_greater_results = new ArrayList<>();
-        List<Property> price_less_results = new ArrayList<>();
+        List<Property> price_results = new ArrayList<>();
 
         if(priceSlider == null) {
-            price_greater_results = propertyRepository.findByPriceGreaterThanEqual(minPrice);
-            price_less_results = propertyRepository.findByPriceLessThanEqual(maxPrice);
+            price_results = propertyRepository.findPropertiesWithinPriceRange(minPrice,maxPrice);
         } else {
-            price_less_results = propertyRepository.findByPriceLessThanEqual(priceSlider);
+            price_results = propertyRepository.findByPriceLessThanEqual(priceSlider);
         }
 
-        List<Property> size_greater_results = new ArrayList<>();
-        List<Property> size_less_results = new ArrayList<>();
+        List<Property> size_results = new ArrayList<>();
+
 
         if(sizeSlider == null) {
-            size_greater_results = propertyRepository.findByPriceGreaterThanEqual(minSize);
-            size_less_results = propertyRepository.findBySquareMeterLessThanEqual(maxSize);
+            size_results = propertyRepository.findPropertiesWithinPriceRange(minSize,maxSize);
         } else {
-            size_less_results = propertyRepository.findBySquareMeterLessThanEqual(priceSlider);
+            size_results = propertyRepository.findBySquareMeterLessThanEqual(sizeSlider);
         }
 
         List<Property> bf_results = new ArrayList<>();
@@ -82,32 +78,41 @@ public class PropertyService {
             construction_results.addAll(commercialPropertyRepository.findByConstructionDate(constructionDate));
             construction_results.addAll(houseRepository.findByConstructionDate(constructionDate));
             construction_results.addAll(parkingRepository.findByConstructionDate(constructionDate));
-        } else {
-            construction_results.addAll(propertyRepository.findAll());
         }
 
 
 // Χρησιμοποιούμε Sets για να βρούμε τα κοινά properties
         Set<Property> commonResults = new HashSet<>(property_results);
+        System.out.println("1. "+ commonResults);
 
-        if(priceSlider == 0) {
-            commonResults.retainAll(price_greater_results); // Κοινά μεταξύ location και min price
-            commonResults.retainAll(price_less_results); // Κοινά μεταξύ location και max price
-        } else {
-            commonResults.retainAll(price_less_results); // Κοινά μεταξύ location και slider price
+
+        // Κοινά μεταξύ location και  price
+        commonResults.retainAll(price_results); // Κοινά μεταξύ location και price
+
+        System.out.println("2. "+ commonResults);
+
+        // Κοινά μεταξύ location και slider size
+        commonResults.retainAll(size_results); // Κοινά μεταξύ location και  size
+
+        System.out.println("3. "+ commonResults);
+
+        if(constructionDate != null || !propertyType.equals("Land")){
+            commonResults.retainAll(construction_results); // Κοινά μεταξύ location και construction date
+            System.out.println("4. "+ commonResults);
         }
 
-        if(sizeSlider == 0) {
-            commonResults.retainAll(size_greater_results); // Κοινά μεταξύ location και min size
-            commonResults.retainAll(size_less_results); // Κοινά μεταξύ location και max size
-        } else {
-            commonResults.retainAll(size_less_results); // Κοινά μεταξύ location και slider size
+        if(buildingFees && ( propertyType.equals("House") || propertyType.equals("Commercial Property") )) {
+            commonResults.retainAll(bf_results); // Κοινά μεταξύ location και building fees
+            System.out.println("5. "+ commonResults);
         }
 
-        commonResults.retainAll(bf_results); // Κοινά μεταξύ location και building fees
-        commonResults.retainAll(construction_results); // Κοινά μεταξύ location και construction date
-
-        System.out.println("Properties Found: " + commonResults.size());
+        System.out.println("common results"+commonResults);
+        System.out.println("property results" + property_results);
+        System.out.println("price results" +price_results);
+        System.out.println("size results" +size_results);
+        System.out.println("bf results" +bf_results);
+        System.out.println("construt results" +construction_results);
+        System.out.println("Properties Found: " + commonResults.size());            // Thelw ena kalutero tropo gia anazhthsh
 
         return new ArrayList<>(commonResults);
     }
