@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Users</title>
+    <link th:href="@{/css/users.css}" rel="stylesheet">
 </head>
 <body>
-<--To be made-->
+<div layout:fragment="main-content">
+    <form class="form">
+        <div th:if="${ not#lists.isEmpty(users)}">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:if="${user.id}"><a class="btn btn-info" th:href="@{/user/{id}(id=${user.id})}">Edit</a>
+                        <span th:each="role : ${user.roles}">
+                    <a class="btn btn-danger" th:href="@{/user/role/delete/{id}/{role_id}(id=${user.id},role_id=${role.id})}" th:utext="'Delete '+  ${role.name}"/>
+                </span>
+                        <span th:each="role : ${roles}">
+                        <a  class="btn btn-success" th:href="@{/user/role/add/{id}/{role_id}(id=${user.id},role_id=${role.id})}" th:if="${! user.roles.contains(role)}" th:utext="'Add ' + ${role.name}"></a>
+                    </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${ #lists.isEmpty(users)}">
+            No users found!
+        </div>
+        <a href="/register" class="button1" role="button">Create new User</a>
+    </form>
+</div>
 </body>
 </html>

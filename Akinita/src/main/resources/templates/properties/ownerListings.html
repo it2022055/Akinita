@@ -11,27 +11,31 @@
 </head>
 <body>
 <div layout:fragment="main-content" class="container">
-    <form class="form" th:action="@{/Listings/action}" method="post">
+    <form class="form">
         <p id="heading">Owner's Listings</p>
-        <div th:if="${#lists.isEmpty(Listings)}">
-            <p style="color: black; font-size: 3em; margin-bottom: 2em;">No listings were found!</p>
+        <div th:if="${ not#lists.isEmpty(Listings)}" style="color: black">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Estate Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="property : ${Listings}">
+                    <td th:text="${property.getEstateName()}"></td>
+                    <td th:text="${property.getDescription()}"></td>
+                    <td th:text="${property.getPrice()}"></td>
+                    <td th:if="${property.getId()}"><a class="button1" th:href="@{/Owner/Listings/ChangeAvailability/{property_id}(property_id=${property.id})}">Change Availability</a>
+                    <td th:if="${property.getId()}"><a class="button1" th:href="@{/Owner/Listings/Delete/{property_id}(property_id=${property.id})}">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <div th:each="property : ${Listings}" class="property-card">
-            <div class="field">
-                <h2>Name:</h2>
-                <h2 th:text="${property.getEstateName()}">Property Name</h2>
-            </div>
-            <div class="field">
-                <h2>Description:</h2>
-                <p th:text="${property.getDescription()}">Property Description</p>
-            </div>
-            <div class="field">
-                <h2>Price:</h2>
-                <p th:text="${property.getPrice()}">Property Price</p>
-            </div>
-            <input type="hidden" th:name="propertyId" th:value="${property.getId()}"/>
-            <button class="button1" name="ChangeAvailability">Change Availability</button>
-            <button class="button1" name="DeleteProperty">Delete Property</button>
+        <div th:if="${ #lists.isEmpty(Listings)}">
+            No listings were found!
         </div>
     </form>
 </div>

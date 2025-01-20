@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -51,5 +49,22 @@ public class PropertyController {
         return "search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
     }
 
+    @GetMapping("/AcceptListings")
+    public String updateProperties(Model model){
+        model.addAttribute("properties", propertyService.findAllInvisibleProperties());
+        for(Property property : propertyService.findAllInvisibleProperties()){
+            System.out.println("PROPETRY:"+property.getEstateName());
+        }
+        return "/properties/updateProperties";
+    }
+
+    @PostMapping("/AcceptListings/{property_id}")
+    public String updateProperties(@ModelAttribute("properties") Property property, Model model, @PathVariable int property_id){
+        Property the_property= propertyService.getPropertyById(property_id);
+        the_property.setVisibility("Visible");
+        propertyService.updateProperty(the_property);
+        return "redirect:/properties/updateProperties";
+
+    }
 
 }

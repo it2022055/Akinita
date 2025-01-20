@@ -45,6 +45,8 @@ public class RentalApplication {
     @OneToMany(mappedBy = "rentalApplication", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FileEntity> files;
 
+    @Column
+    private Boolean Status;
 
     @Temporal(TemporalType.DATE)                                       // Date is saved without 'hours'            // Auto to kommati prepei na ginei anathesh otan ton dektei o owner
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -110,6 +112,13 @@ public class RentalApplication {
         this.renterJob = renterJob;
     }
 
+    public Boolean getStatus() {
+        return Status;
+    }
+
+    public void setStatus(Boolean status) {
+        Status = status;
+    }
 
     public Boolean getRenterPets() {
         return renterPets;

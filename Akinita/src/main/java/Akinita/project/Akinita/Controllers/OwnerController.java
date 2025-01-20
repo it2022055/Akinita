@@ -1,13 +1,13 @@
 package Akinita.project.Akinita.Controllers;
 
 import Akinita.project.Akinita.Entities.Actors.Owner;
-import Akinita.project.Akinita.Entities.Properties.CommercialProperty;
-import Akinita.project.Akinita.Entities.Properties.House;
-import Akinita.project.Akinita.Entities.Properties.Land;
-import Akinita.project.Akinita.Entities.Properties.Parking;
+import Akinita.project.Akinita.Entities.Properties.*;
+import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Interfaces.RealEstate;
+import Akinita.project.Akinita.Services.ApplicationService;
 import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.PropertyService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -26,6 +26,8 @@ public class OwnerController {
     private PropertyService propertyService;
     @Autowired
     private OwnerService ownerService;
+    @Autowired
+    private ApplicationService applicationService;
 
     @GetMapping("/submitProperty")
     public String submitProperty() {
@@ -187,23 +189,31 @@ public class OwnerController {
         return "properties/ownerListings";
     }
 
-    @PostMapping("/Listings/action")
-    public String handlePropertyAction(
-            @RequestParam("propertyId") Long propertyId,
-            @RequestParam("action") String action,
-            Principal principal) {
-        System.out.println("Selected action:"+action);
-        System.out.println("Selected property:"+propertyId);
-
-        if ("changeAvailability".equals(action)) {
-            //propertyService.changeAvailability(propertyId);
-        } else if ("deleteProperty".equals(action)) {
-            //propertyService.deleteById(propertyId);
-        }
-        // Επιστροφή στα Listings μετά την ενέργεια
-        return "redirect:/Listings";
+    @Transactional
+    @GetMapping("/Listings/ChangeAvailability/{property_id}")
+    public String ChangeAvailability(@PathVariable("property_id") Integer property_id){
+       Property the_property=  propertyService.getPropertyById(property_id);
+       if(the_property.isAvailableForSale()){
+           the_property.setAvailability(false);
+       }else {
+           the_property.setAvailability(true);
+       }
+       propertyService.updateProperty(the_property);
+       return "redirect:/Owner/Listings";
     }
 
+    @Transactional
+    @GetMapping("/Listings/Delete/{property_id}")
+    public String DeleteProperty(@PathVariable("property_id") Integer property_id){
+        Property the_property=  propertyService.getPropertyById(property_id);
+        try{
+            propertyService.DeleteProperty(the_property);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return "redirect:/Owner/Listings";
+    }
 
     @GetMapping("/manageApplications")
     public String manageApplications(Model model, Principal principal) {
@@ -212,5 +222,25 @@ public class OwnerController {
         model.addAttribute("Applications", ownerService.getOwnerRentalApplications(ownerId));
         return "properties/manageApplications";
     }
+
+    @Transactional
+    @GetMapping("/manageRentalApplications/setstatus/{rentalApplication_id}")
+    public String SetStatus(@PathVariable("rentalApplication_id") Integer rentalApplication_id,
+                            @RequestParam("status") String status) {
+        RentalApplication the_rentalApplication = applicationService.getApplication(rentalApplication_id);
+        try {
+            if ("accept".equalsIgnoreCase(status)) {
+                applicationService.SetRentalApplicationStatus(true); // Accept
+            } else if ("decline".equalsIgnoreCase(status)) {
+                applicationService.SetRentalApplicationStatus(false); // Decline
+            } else {
+                throw new IllegalArgumentException("Invalid status value: " + status);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/Owner/manageApplications";
+    }
+
 
 }

@@ -1,7 +1,9 @@
 package Akinita.project.Akinita.Services;
 
+import Akinita.project.Akinita.Entities.Actors.User;
 import Akinita.project.Akinita.Entities.Properties.*;
 import Akinita.project.Akinita.Repositories.RealEstate.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -117,12 +119,16 @@ public class PropertyService {
         return new ArrayList<>(commonResults);
     }
 
-
-
-
+    @Transactional
+    public Integer updateProperty(Property property) {
+        property=propertyRepository.save(property);
+        return property.getId();
+    }
     public List findAllProperties() {
         return propertyRepository.findByAvailability(true);
     }
+
+    public List<Property> findAllInvisibleProperties(){return propertyRepository.findByVisibility("Invisible");}
 
     public Property getPropertyById(int id) {
         return propertyRepository.findPropertyById(id);
@@ -137,6 +143,8 @@ public class PropertyService {
     public void SaveParkingProperty(Parking parking){parkingRepository.save(parking);}
 
     public void SaveCommercialProperty(CommercialProperty commercialProperty){commercialPropertyRepository.save(commercialProperty);}
+
+    public void DeleteProperty(Property property) {propertyRepository.delete(property);}
 
 
     public Integer findOwnerIdByPropertyId(int propertyId) {

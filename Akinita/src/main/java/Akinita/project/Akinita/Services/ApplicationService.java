@@ -33,4 +33,6 @@ public class ApplicationService {
     public RentalApplication getApplication(int rpId) {
         return  rentalApplicationRepository.findById(rpId);
     }
+
+    public void SetRentalApplicationStatus(Boolean status) {rentalApplicationRepository.setStatus(status);}
 }

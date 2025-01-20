@@ -10,25 +10,40 @@
     <link th:href="@{/css/manageApplications.css}" rel="stylesheet">
 </head>
 <body>
-<div layout:fragment="main-content" class="container">
+<div layout:fragment="main-content">
     <form class="form">
-        <p id="heading">Owner's Rental Applications</p>
-        <div th:if="${#lists.isEmpty(Applications)}">
-            <p style="color: black; font-size: 3em; margin-bottom: 2em;">No rental applications were found!</p>
+        <div th:if="${ not#lists.isEmpty(Applications)}">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Property Name</th>
+                    <th>Renter Name</th>
+                    <th>Rental Duration</th>
+                    <th>Renter Job</th>
+                    <th>Renter Pets</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="RentalApplication : ${Applications}">
+                    <td th:text="${RentalApplication.getProperty().getEstateName()}"></td>
+                    <td th:text="${RentalApplication.getRenter().getUsername()}"></td>
+                    <td th:text="${RentalApplication.getRentalDuration()}"></td>
+                    <td th:text="${RentalApplication.getRenterJob()}"></td>
+                    <td th:text="${RentalApplication.getRenterPets()}"></td>
+                    <td th:if="${RentalApplication.getId()}">
+                        <a class="button1" th:href="@{/Owner/manageRentalApplications/setstatus/{rentalApplication_id}(rentalApplication_id=${RentalApplication.getId()})}" th:params="status='accept'">Accept</a>
+                    </td>
+                    <td th:if="${RentalApplication.getId()}">
+                        <a class="button1" th:href="@{/Owner/manageRentalApplications/setstatus/{rentalApplication_id}(rentalApplication_id=${RentalApplication.getId()})}" th:params="status='decline'">Decline</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <form class="form">
-        <div th:each="RentalApplication : ${Applications}" class="property-card">
-                <div class="field">
-                    <h2>Name:</h2>
-                    <h2 th:text="${RentalApplication.getProperty().getEstateName()}">Property Name</h2>
-                </div>
-                <div class="field">
-                    <h2>Renter username:</h2>
-                    <p th:text="${RentalApplication.getRenter().getUsername()}">Renter Username</p>
-                </div>
-            <button class="button1" name="ViewApplication">View Application</button>
+        <div th:if="${ #lists.isEmpty(Applications)}">
+            No rental applications were found!
         </div>
-    </form>
     </form>
 </div>
 </body>

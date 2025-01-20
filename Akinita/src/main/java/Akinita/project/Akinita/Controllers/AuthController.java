@@ -42,15 +42,15 @@ public class AuthController {
         roleRepository.updateOrInsert(role_owner);
         roleRepository.updateOrInsert(role_renter);
         roleRepository.updateOrInsert(role_admin);
-        User user = new User();
-        user.setUsername("admin");
-        String encodedPassword = passwordEncoder.encode("admin");
-        user.setPassword(encodedPassword);
-        user.setEmail("admin@example.com");
-        Set<Role> roles = new HashSet<>();
-        roles.add(role_admin);
-        user.setRoles(roles);
-        userRepository.save(user);
+        //User user = new User();
+        //user.setUsername("admin");
+        //String encodedPassword = passwordEncoder.encode("admin");
+        //user.setPassword(encodedPassword);
+        //user.setEmail("admin@example.com");
+        //Set<Role> roles = new HashSet<>();
+        //roles.add(role_admin);
+        //user.setRoles(roles);
+        //userRepository.save(user);
     }
 
     @GetMapping("/login")

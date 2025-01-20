@@ -14,4 +14,6 @@ public interface PropertyRepository extends PropertyGenericRepository<Property,I
     List<Property> findPropertiesWithinPriceRange(
             @Param("minPrice") Double minPrice,
             @Param("maxPrice") Double maxPrice);
+
+    List<Property> findByVisibility(String visibility);
 }
