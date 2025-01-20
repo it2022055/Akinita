@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Application</title>
+    <link th:href="@{/css/application_form.css}" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="main-content" class="container">
+    <h1>Rental Application</h1>
+    <form th:action="@{/Renter/rental_application}" method="post" enctype="multipart/form-data">
+        <!-- Job Situation -->
+        <label for="jobSituation">Job Situation:</label>
+        <input type="text" id="jobSituation" name="jobSituation" required>
+
+        <!-- Rental Duration -->
+        <label for="rentalDuration">Rental Duration (months):</label>
+        <input type="number" id="rentalDuration" name="rentalDuration" min="1" required>
+
+        <!-- Pets -->
+        <label for="pets">Do you have pets?</label>
+        <input type="checkbox" id="pets" name="pets">
+
+        <!-- Rental Application Description -->
+        <label for="applicationDescription">Description for Rental Application:</label>
+        <textarea id="applicationDescription" name="description" rows="5" required></textarea>
+
+        <!-- Photocopy of the last tax statement -->
+        <label for="taxStatement">Photocopy of the last tax statement (PDF):</label>
+        <input type="file" id="taxStatement" name="taxStatement" accept=".pdf" required>
+
+        <!-- Identity Document -->
+        <label for="identityDocument">Copy of ID/Passport (PDF):</label>
+        <input type="file" id="identityDocument" name="identityDocument" accept=".pdf" required>
+
+        <!-- Terms Acceptance Document -->
+        <label for="termsAcceptance">Terms Acceptance Document (PDF):</label>
+        <input type="file" id="termsAcceptance" name="termsAcceptance" accept=".pdf" required>
+
+        <!-- Κρυφό πεδίο για το property_id -->
+        <input type="hidden" name="property_id" th:value="${property_id}" />
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-button">Submit Application</button>
+    </form>
+</div>
+
+<footer>
+    <p>&copy; 2025 Property Finder. All rights reserved.</p>
+</footer>
+</body>
+</html>

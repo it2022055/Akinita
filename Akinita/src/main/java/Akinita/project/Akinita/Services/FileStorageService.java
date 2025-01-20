@@ -15,17 +15,12 @@ public class FileStorageService {
     @Autowired
     private FileRepository fileRepository;
 
-    @Autowired
-    private ApplicationService applicationService;
-
-    public FileEntity saveFile(MultipartFile file, int rpId) throws IOException {
-        RentalApplication rentalApplication = applicationService.getApplication(rpId);
-
+    public FileEntity saveFile(MultipartFile file, RentalApplication application) throws IOException {
         FileEntity fileEntity = new FileEntity();
         fileEntity.setFileName(file.getOriginalFilename());
         fileEntity.setFileType(file.getContentType());
         fileEntity.setData(file.getBytes());
-        fileEntity.setRentalApplication(rentalApplication);  // Σύνδεση του αρχείου με τον χρήστη
+        fileEntity.setRentalApplication(application); // Σύνδεση με την αίτηση
 
         return fileRepository.save(fileEntity);
     }

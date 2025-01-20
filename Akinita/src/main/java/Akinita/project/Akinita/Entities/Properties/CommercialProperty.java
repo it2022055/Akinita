@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -21,6 +22,7 @@ public class CommercialProperty extends Property implements ConstructionDate, Bu
     }
 
     @Past(message = "The construction date must be in the past")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)                                       // Date is saved without 'hours'
     @Column(name = "construction_date")
     private Date constructionDate;
@@ -33,8 +35,10 @@ public class CommercialProperty extends Property implements ConstructionDate, Bu
 
     }
 
-    public boolean getBuildingFees() {
-        return buildingFees;
+
+    @Override
+    public Boolean getBuildingFees() {
+        return false;
     }
 
     @Override
@@ -49,6 +53,6 @@ public class CommercialProperty extends Property implements ConstructionDate, Bu
 
     @Override
     public void setConstructionDate(Date date) {
-
+        this.constructionDate = date;
     }
 }

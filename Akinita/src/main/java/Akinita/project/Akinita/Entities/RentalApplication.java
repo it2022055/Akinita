@@ -6,8 +6,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 import jakarta.persistence.*;
+import jakarta.validation.Path;
 import jakarta.validation.constraints.Past;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
@@ -34,19 +40,22 @@ public class RentalApplication {
     private String renterJob;
 
     @Column
-    private String incomeVerification;
-
-    @Column
     private Boolean renterPets;
 
     @OneToMany(mappedBy = "rentalApplication", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FileEntity> files;
 
-    @Past(message = "The rental date must be in the past")
-    @Temporal(TemporalType.DATE)                                       // Date is saved without 'hours'
+
+    @Temporal(TemporalType.DATE)                                       // Date is saved without 'hours'            // Auto to kommati prepei na ginei anathesh otan ton dektei o owner
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "rental_date")
     private Date rentalDate;
 
+    @Column
+    private int rentalDuration;
+
+    @Column
+    private String description;
 
     // Constructors
     public RentalApplication() {}
@@ -73,6 +82,9 @@ public class RentalApplication {
     public void setOwner(User owner) {
         this.owner = owner;
     }
+    public void setOwnerId(Integer ownerId) {
+        this.owner.setId(ownerId);
+    }
 
     public Property getProperty() {
         return property;
@@ -98,13 +110,6 @@ public class RentalApplication {
         this.renterJob = renterJob;
     }
 
-    public String getIncomeVerification() {
-        return incomeVerification;
-    }
-
-    public void setIncomeVerification(String incomeVerification) {
-        this.incomeVerification = incomeVerification;
-    }
 
     public Boolean getRenterPets() {
         return renterPets;
@@ -112,6 +117,22 @@ public class RentalApplication {
 
     public void setRenterPets(Boolean renterPets) {
         this.renterPets = renterPets;
+    }
+
+    public int getRentalDuration() {
+        return rentalDuration;
+    }
+
+    public void setRentalDuration(int rentalDuration) {
+        this.rentalDuration = rentalDuration;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<FileEntity> getFiles() {
@@ -122,17 +143,6 @@ public class RentalApplication {
         this.files = files;
     }
 
-    public void addFile(FileEntity file) {
-        files.add(file);
-    }
-
-    public Date getRentalDate() {
-        return rentalDate;
-    }
-
-    public void setRentalDate(Date rentalDate) {
-        this.rentalDate = rentalDate;
-    }
 }
 
 

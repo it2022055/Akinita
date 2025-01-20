@@ -13,16 +13,6 @@ import java.io.IOException;
 public class FileController {
 
     @Autowired
-    private FileStorageService fileStorageService;
+    private FileStorageService fileStorageService; // dk if i need you
 
-    @PostMapping("/upload/{userId}")
-    public String uploadFile(@RequestParam("file") MultipartFile file, @PathVariable int userId, Model model) {      // gia save arxeiwn
-        try {
-            fileStorageService.saveFile(file, userId);
-            model.addAttribute("message", "File uploaded successfully!");
-        } catch (IOException e) {
-            model.addAttribute("message", "File upload failed: " + e.getMessage());
-        }
-        return "uploadStatus";
-    }
 }

@@ -8,6 +8,6 @@ import java.util.List;
 @NoRepositoryBean
 public interface BuildingFees <T, ID> extends  JpaRepository<T, ID> {
 
-    List<T> findByBuildingFees(boolean facilities);
+    List<T> findByBuildingFees(Boolean facilities);
 
 }
