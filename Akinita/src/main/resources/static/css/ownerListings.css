@@ -1,7 +1,7 @@
 .form {
     display: flex;
     gap: 20px;
-    padding: 2em;
+    padding: 2em 1em;
     flex-direction: column;
     background-color: rgba(255, 255, 255, 0.68);
     border-radius: 25px;
@@ -9,14 +9,16 @@
     justify-content: center;
     max-width: 700px;
     width: 90%;
-    position: absolute;
-    top: 50%;
+    position: fixed;
+    top: 10%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     box-sizing: border-box;
-    max-height: 80vh; /* Χρησιμοποιείστε vh αντί για % */
-    overflow-y: auto; /* Προσθήκη κύλισης */
+    max-height: 80vh;
+    overflow-y: auto;
 }
+
+
 
 #heading {
     text-align: center;
@@ -50,6 +52,29 @@
     color: black;
 }
 
+.field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    border-radius: 25px;
+    padding: 0.6em;
+    border: none;
+    outline: none;
+    margin-bottom: 1em;
+    width: auto;
+    color: rgba(45,45,48,0.65);
+    background-color: rgba(255, 255, 255, 0.68);
+    box-shadow: inset 2px 2px 14px rgb(5, 5, 5);
+}
+
+.input-field {
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: black;
+}
 /* Responsive βελτιστοποίηση */
 @media (max-width: 768px) {
     .form {

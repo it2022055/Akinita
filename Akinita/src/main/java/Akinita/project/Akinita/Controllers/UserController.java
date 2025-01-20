@@ -58,14 +58,17 @@ public class UserController {
         if (role.equals("ROLE_OWNER")){
             Owner newOwner=new Owner(saveduser,firstname,lastname,telephone);
             ownerService.save(newOwner);
+            return "redirect:/login";
         }else{
             Renter newRenter=new Renter(saveduser,firstname,lastname,telephone);
             renterService.save(newRenter);
+            return "redirect:/users/rentalApplication";
         }
-        String message = "User '" + saveduser.getId() + "' saved successfully with role: " + role;
-        model.addAttribute("msg", message);
+    }
 
-        return "redirect:/login";
+    @GetMapping("/users/rentalApplication")
+    public String rentalApplication() {
+        return "auth/rentalApplication";
     }
 
 

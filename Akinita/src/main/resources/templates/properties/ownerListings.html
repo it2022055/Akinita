@@ -11,16 +11,26 @@
 </head>
 <body>
 <div layout:fragment="main-content" class="container">
-    <form class="form">
+    <form class="form" th:action="@{/Listings/action}" method="post">
         <p id="heading">Owner's Listings</p>
         <div th:if="${#lists.isEmpty(Listings)}">
             <p style="color: black; font-size: 3em; margin-bottom: 2em;">No listings were found!</p>
         </div>
         <div th:each="property : ${Listings}" class="property-card">
-            <h2 th:text="${property.getEstateName()}">Property Name</h2>
-            <p th:text="${property.getDescription()}">Property Description</p>
-            <p th:text="${property.getPrice()}">Property Price</p>
-            <button class="button1" name="Change Availability">Change Availability</button>
+            <div class="field">
+                <h2>Name:</h2>
+                <h2 th:text="${property.getEstateName()}">Property Name</h2>
+            </div>
+            <div class="field">
+                <h2>Description:</h2>
+                <p th:text="${property.getDescription()}">Property Description</p>
+            </div>
+            <div class="field">
+                <h2>Price:</h2>
+                <p th:text="${property.getPrice()}">Property Price</p>
+            </div>
+            <input type="hidden" th:name="propertyId" th:value="${property.getId()}"/>
+            <button class="button1" name="ChangeAvailability">Change Availability</button>
             <button class="button1" name="DeleteProperty">Delete Property</button>
         </div>
     </form>

@@ -16,12 +16,19 @@
         <div th:if="${#lists.isEmpty(Applications)}">
             <p style="color: black; font-size: 3em; margin-bottom: 2em;">No rental applications were found!</p>
         </div>
+        <form class="form">
         <div th:each="RentalApplication : ${Applications}" class="property-card">
-            <h2 th:text="${RentalApplication.getProperty().getEstateName()}">Property Name</h2>
-            <p th:text="${RentalApplication.getRenter().getUsername()}">Renter Username</p>
-            <button class="button1" name="DeclineApplication">Decline Application</button>
-            <button class="button1" name="AcceptApplication">Accept Application</button>
+                <div class="field">
+                    <h2>Name:</h2>
+                    <h2 th:text="${RentalApplication.getProperty().getEstateName()}">Property Name</h2>
+                </div>
+                <div class="field">
+                    <h2>Renter username:</h2>
+                    <p th:text="${RentalApplication.getRenter().getUsername()}">Renter Username</p>
+                </div>
+            <button class="button1" name="ViewApplication">View Application</button>
         </div>
+    </form>
     </form>
 </div>
 </body>

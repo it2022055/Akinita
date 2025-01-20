@@ -187,6 +187,23 @@ public class OwnerController {
         return "properties/ownerListings";
     }
 
+    @PostMapping("/Listings/action")
+    public String handlePropertyAction(
+            @RequestParam("propertyId") Long propertyId,
+            @RequestParam("action") String action,
+            Principal principal) {
+        System.out.println("Selected action:"+action);
+        System.out.println("Selected property:"+propertyId);
+
+        if ("changeAvailability".equals(action)) {
+            //propertyService.changeAvailability(propertyId);
+        } else if ("deleteProperty".equals(action)) {
+            //propertyService.deleteById(propertyId);
+        }
+        // Επιστροφή στα Listings μετά την ενέργεια
+        return "redirect:/Listings";
+    }
+
 
     @GetMapping("/manageApplications")
     public String manageApplications(Model model, Principal principal) {
