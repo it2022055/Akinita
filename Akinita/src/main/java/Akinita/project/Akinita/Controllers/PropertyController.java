@@ -5,6 +5,7 @@ import Akinita.project.Akinita.Services.PropertyService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Controller
 @RequestMapping("Service")
 public class PropertyController {
@@ -50,21 +52,25 @@ public class PropertyController {
         return "search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
     }
 
-    @GetMapping("/AcceptListings")
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/AcceptListings") //Μέθοδος προβολής ιδιοκτησιών προς αποδοχή από τον admin
     public String updateProperties(Model model){
-        model.addAttribute("properties", propertyService.findAllInvisibleProperties());
-        for(Property property : propertyService.findAllInvisibleProperties()){
-            System.out.println("PROPETRY:"+property.getEstateName());
-        }
+        model.addAttribute("properties", propertyService.findAllInvisibleProperties()); //Προσθήκη ιδιοκτησιών στο model
         return "/properties/updateProperties";
     }
 
+    @Secured("ROLE_ADMIN")
     @Transactional
-    @GetMapping("/AcceptListings/{property_id}")
-    public String updateProperties(@ModelAttribute("properties") Property property, Model model, @PathVariable int property_id){
+    @GetMapping("/AcceptListings/{property_id}") //Μέθοδος αποδοχής ιδιοκτησίας από τον admin
+    public String updateProperties(@ModelAttribute("properties") Property property,@PathVariable int property_id){
         Property the_property= propertyService.getPropertyById(property_id);
-        the_property.setVisibility("Visible");
-        propertyService.updateProperty(the_property);
+        the_property.setVisibility("Visible"); //Αλλαγή visibility
+        try {
+            propertyService.updateProperty(the_property); //Αποθήκευση αλλαγών στη Βάση Δεδομένων
+        }catch (Exception e){
+            throw new RuntimeException("Could not update property");
+        }
+
         return "redirect:/Service/AcceptListings";
 
     }

@@ -11,16 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Controller
 public class UserController {
     @Autowired
-    private UserService userService;
+    private UserService userService; //Δήλωση του User Service
 
     @Autowired
-    private OwnerService ownerService;
+    private OwnerService ownerService; //Δήλωση του Owner Service
 
     @Autowired
-    private RenterService renterService;
+    private RenterService renterService; //Δήλωση του Renter Service
 
 
     public UserController(UserService userService,OwnerService ownerService,RenterService renterService) {
@@ -31,59 +32,62 @@ public class UserController {
 
 
 
-    @PostMapping("/register")
+    @PostMapping("/register") //Μέθοδος για registration
     public String register(@RequestParam("role") String role, Model model) {
         User user = new User();
-        model.addAttribute("user", user);
-        model.addAttribute("role", role); // Προώθηση του ρόλου στη φόρμα
+        model.addAttribute("user", user); //Προώθηση του user στη φόρμα
+        model.addAttribute("role", role); //Προώθηση του ρόλου στη φόρμα
         System.out.println(role);
         return "auth/register";
     }
 
-    @GetMapping("/roleselection")
+    @GetMapping("/roleselection") //Επιστροφή φόρμας επιλογής ρόλου
     public String roleSelection() {
         return "auth/roleselection";
     }
 
 
-    @PostMapping("/saveUser")
+    @PostMapping("/saveUser") //Αποθήκευση καινούργιου χρήστη
     public String saveUser(@ModelAttribute User user, @RequestParam("role") String role,  @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname,@RequestParam("telephone") String telephone, Model model) {
 
-        if (userService.existsUser(user.getUsername())){
+        if (userService.existsUser(user.getUsername())){ //Έλεγχος αν το username υπάρχει ήδη
             System.out.println("Username is taken");
             return "redirect:/";
         }
-
-        User saveduser = userService.saveUser(user, role);
-        if (role.equals("ROLE_OWNER")){
-            Owner newOwner=new Owner(saveduser,firstname,lastname,telephone);
-            ownerService.save(newOwner);
-            return "redirect:/login";
-        }else{
-            Renter newRenter=new Renter(saveduser,firstname,lastname,telephone);
+        User saveduser = userService.saveUser(user, role); //Αποθήκευση user στη Βάση Δεδομένων
+        if (role.equals("ROLE_OWNER")){ //Αν ο ρόλος που έχει επιλεχθεί είναι Owner
+            Owner newOwner=new Owner(saveduser,firstname,lastname,telephone); //Δημιουργία αντικειμένου Owner
             try{
-                renterService.save(newRenter);
+                ownerService.save(newOwner); //Αποθήκευση owner στη βάση δεδομένων
             }catch (Exception e){
-                e.printStackTrace();
+                throw new RuntimeException("Saving owner failed");
             }
-            return "redirect:/users/rentalApplication";
+            return "redirect:/login";
+        }else{ //Αν ο ρόλος που έχει επιλεχθεί είναι Renter
+            Renter newRenter=new Renter(saveduser,firstname,lastname,telephone); //Δημιουργία αντικειμένου Renter
+            try{
+                renterService.save(newRenter); //Αποθήκευση renter στη βάση δεδομένων
+            }catch (Exception e){
+                throw new RuntimeException("Saving renter failed");
+            }
+            return "redirect:/Renter/applicationSubmitted";
         }
     }
 
-    @GetMapping("/users/rentalApplication")
+    @GetMapping("/users/rentalApplication") //Μέθοδος επιστροφής rental application
     public String rentalApplication() {
         return "auth/rentalApplication";
     }
 
 
     @GetMapping("/users")
-    public String showUsers(Model model){
+    public String showUsers(Model model){ //Μέθοδος προβολής όλων των users
         model.addAttribute("users", userService.getUsers());
         model.addAttribute("roles", userService.getRoles());
         return "auth/users";
     }
 
-    @GetMapping("/user/{user_id}")
+    @GetMapping("/user/{user_id}") //Μέθοδος προβολής user
     public String showUser(@PathVariable int user_id, Model model){
         model.addAttribute("user", userService.getUser(user_id));
         return "auth/user";
@@ -91,42 +95,52 @@ public class UserController {
 
     @PostMapping("/user/{user_id}")
     public String saveStudent(@PathVariable int user_id, @ModelAttribute("user") User user, Model model) {
-        User the_user = (User) userService.getUser(user_id);
-        the_user.setEmail(user.getEmail());
-        the_user.setUsername(user.getUsername());
-        userService.updateUser(the_user);
-        model.addAttribute("users", userService.getUsers());
+        User the_user = (User) userService.getUser(user_id); //Ανάκτηση αντικειμένου user από τη Βάση Δεδομένων
+        the_user.setEmail(user.getEmail()); //Αλλαγή email
+        the_user.setUsername(user.getUsername()); //Αλλαγή username
+        try{
+            userService.updateUser(the_user); //Αποθήκευση αλλαγής στη Βάση Δεδομένων
+        }catch (Exception e){
+            throw new RuntimeException("Updating user failed");
+        }
+        model.addAttribute("users", userService.getUsers()); //Προσθήκη των users στο model
         return "auth/users";
     }
 
     @GetMapping("/user/role/delete/{user_id}/{role_id}")
-    public String deleteRolefromUser(@PathVariable int user_id, @PathVariable Integer role_id, Model model){
-        User user = (User) userService.getUser(user_id);
-        Role role = (Role) userService.getRole(role_id);
-        user.getRoles().remove(role);
-        System.out.println("Roles: "+user.getRoles());
-        userService.updateUser(user);
-        model.addAttribute("users", userService.getUsers());
-        model.addAttribute("roles", userService.getRoles());
+    public String deleteRolefromUser(@PathVariable int user_id, @PathVariable Integer role_id, Model model){ //Μέθοδος διαγραφής ρόλου
+        User user = (User) userService.getUser(user_id); //Ανάκτηση user
+        Role role = (Role) userService.getRole(role_id); //Ανάκτηση ρόλου
+        user.getRoles().remove(role); //Αφαίρεση ρόλου
+        try{
+            userService.updateUser(user); //Αποθήκευση αλλαγής στη Βάση Δεδομένων
+        }catch (Exception e){
+            throw new RuntimeException("Updating user failed");
+        }
+        model.addAttribute("users", userService.getUsers()); //Προσθήκη users στο model
+        model.addAttribute("roles", userService.getRoles()); //Προσθήκη ρόλων στο model
         return "auth/users";
 
     }
 
     @GetMapping("/user/role/add/{user_id}/{role_id}")
-    public String addRoletoUser(@PathVariable int user_id, @PathVariable Integer role_id, Model model){
-        User user = (User) userService.getUser(user_id);
-        Role role = (Role) userService.getRole(role_id);
-        user.getRoles().add(role);
-        System.out.println("Roles: "+user.getRoles());
-        userService.updateUser(user);
-        model.addAttribute("users", userService.getUsers());
-        model.addAttribute("roles", userService.getRoles());
+    public String addRoletoUser(@PathVariable int user_id, @PathVariable Integer role_id, Model model){ //Μέθοδος προσθήκης ρόλου
+        User user = (User) userService.getUser(user_id); //Ανάκτηση user
+        Role role = (Role) userService.getRole(role_id); //Ανάκτηση ρόλου
+        user.getRoles().add(role); //Προσθήκη ρόλου
+        try{
+            userService.updateUser(user); //Αποθήκευση αλλαγής στη Βάση Δεδομένων
+        }catch (Exception e){
+            throw new RuntimeException("Updating user failed");
+        }
+        model.addAttribute("users", userService.getUsers()); //Προσθήκη users στο model
+        model.addAttribute("roles", userService.getRoles()); //Προσθήκη ρόλων στο model
         return "auth/users";
 
     }
 
     @PostMapping("/user/{user_id}/roleselection")
-    public String showRoleSelection(Model model){
+    public String showRoleSelection(Model model){ //Φόρμα role selection
         return "auth/roleselection";
     }
 }

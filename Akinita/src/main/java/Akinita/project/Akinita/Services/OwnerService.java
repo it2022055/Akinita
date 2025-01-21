@@ -16,24 +16,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Service
 public class OwnerService {
 
     @Autowired
-    private HouseGenericRepository houseRepository;
+    private HouseGenericRepository houseRepository; //Δήλωση του house Repository
     @Autowired
-    private LandGenericRepository landRepository;
+    private LandGenericRepository landRepository; //Δήλωση του land repository
     @Autowired
-    private ParkingGenericRepository parkingRepository;
+    private ParkingGenericRepository parkingRepository; //Δήλωση του parking repository
     @Autowired
-    private CommercialPropertyGenericRepository commercialPropertyRepository;
+    private CommercialPropertyGenericRepository commercialPropertyRepository; //Δήλωση του commercial property repository
    @Autowired
-    private OwnerRepository ownerRepository;
+    private OwnerRepository ownerRepository; //Δήλωση του owner repository
     @Autowired
-    private ApplicationService applicationService;
+    private ApplicationService applicationService; //Δήλωση του application service
 
-    // Μέθοδος που επιστρέφει τα ακίνητα του ιδιοκτήτη
-    public List<RealEstate> getOwnerProperties(int ownerId) {
+
+    public List<RealEstate> getOwnerProperties(int ownerId) { //Μέθοδος που επιστρέφει τα ακίνητα του ιδιοκτήτη
         List<RealEstate> ownerProperties = new ArrayList<>();
 
         //Ανάκτηση ακινήτων για κάθε τύπο
@@ -44,17 +45,17 @@ public class OwnerService {
         return ownerProperties;
     }
 
-    public Integer findOwnerIdByEmail(String email) {
+    public Integer findOwnerIdByEmail(String email) { //Μέθοδος ανάκτησης ID από το email
         Owner owner = ownerRepository.findByEmail(email);
         return owner != null ? owner.getUserId() : null;
     }
 
-    public Owner findById(int ownerId) {
+    public Owner findById(int ownerId) { //Μέθοδος ανάκτησης Owner από το ID
         Optional<Owner> optionalOwner = ownerRepository.findById(ownerId);
         return optionalOwner.orElse(null);
     }
 
-    public List<RentalApplication> getOwnerRentalApplications(int ownerId) {
+    public List<RentalApplication> getOwnerRentalApplications(int ownerId) { //Μέθοδος επιστροφής των αιτήσεων ενοικίασης
         return new ArrayList<>(applicationService.findByOwner(ownerId));
     }
 
@@ -63,7 +64,7 @@ public class OwnerService {
     }
 
     @Transactional
-    public void save(Owner newowner){
+    public void save(Owner newowner){ //Μέθοδος αποθήκευσης του Owner
         ownerRepository.saveOwnerCustom(newowner.getUserId(), newowner.getFirstName(), newowner.getLastName(), newowner.getTelephoneNumber());
     }
 }

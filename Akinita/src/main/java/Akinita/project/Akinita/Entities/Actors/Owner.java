@@ -80,10 +80,6 @@ public class Owner {
         return telephoneNumber;
     }
 
-    public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumber = telephoneNumber;
-    }
-
     public List<Property> getProperties() {
         return properties;
     }

@@ -56,7 +56,23 @@
             </div>
             <div class="field">
                 <p>CONSTRUCTION:</p>
-                <input autocomplete="off" placeholder="Construction Date" name="constructionDate" class="input-field" type="Date">
+                <label>
+                    <input autocomplete="off" placeholder="Construction Date" name="constructionDate" class="input-field" type="Date">
+                </label>
+            </div>
+            <div class="rolefield">
+                <p>ENERGY CLASS:</p>
+                <select class="roleddlist" name="ENERGYCLASS">
+                    <option value="Apls">A+</option>
+                    <option value="A">A</option>
+                    <option value="Bpls">B+</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="Z">Z</option>
+                    <option value="H">H</option>
+                </select>
             </div>
         </div>
         <div class="column">
@@ -84,7 +100,7 @@
                 <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"></svg>
                 <p>STORAGE:</p>
                 <label class="container">
-                    <input type="checkbox" name="CONTAINER">
+                    <input type="checkbox" name="STORAGE">
                     <svg viewBox="0 0 64 64" height="2em" width="2em">
                         <path d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16" pathLength="575.0541381835938" class="path"></path>
                     </svg>

@@ -1,6 +1,5 @@
 package Akinita.project.Akinita.Services;
 
-import Akinita.project.Akinita.Entities.Actors.User;
 import Akinita.project.Akinita.Entities.Properties.*;
 import Akinita.project.Akinita.Repositories.RealEstate.*;
 import jakarta.transaction.Transactional;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Service
 public class PropertyService {
 
@@ -24,12 +24,12 @@ public class PropertyService {
     CommercialPropertyGenericRepository commercialPropertyRepository;
 
 
-    public int SaveProperty(Property property) {
+    public int SaveProperty(Property property) { //Δες αν το θελεις αυτό- Ζαχος
         propertyRepository.save(property);
         return propertyRepository.findIdByProperty(property);
     }
 
-    public List<? extends Property> findAllPropertiesByLocation(String location, String propertyType) {
+    public List<? extends Property> findAllPropertiesByLocation(String location, String propertyType) { //Δες αν το θελεις αυτό- Ζαχος
         return switch (propertyType) {
             case "House" -> houseRepository.findByLocation(location);
             case "Land" -> landRepository.findByLocation(location);
@@ -120,34 +120,34 @@ public class PropertyService {
     }
 
     @Transactional
-    public Integer updateProperty(Property property) {
+    public Integer updateProperty(Property property) { //Μέθοδος ενημέρωσης property
         property=propertyRepository.save(property);
         return property.getId();
     }
-    public List findAllProperties() {
+    public List findAllProperties() { //Δες αν το θελεις αυτό- Ζαχος
         return propertyRepository.findByAvailability(true);
     }
 
-    public List<Property> findAllInvisibleProperties(){return propertyRepository.findByVisibility("Invisible");}
+    public List<Property> findAllInvisibleProperties(){return propertyRepository.findByVisibility("Invisible");} //Μέθοδος επιστροφής μη αποδεχτών properties
 
-    public Property getPropertyById(int id) {
+    public Property getPropertyById(int id) { //Μέθοδος επιστροφής ιδιοκτησίας απο το ID
         return propertyRepository.findPropertyById(id);
     }
 
-    public void SaveLandProperty(Land land) {
-        landRepository.save(land);
-    }
+    public Land SaveLandProperty(Land land) {
+        return landRepository.save(land);
+    } //Μέθοδος αποθήκευσης Land
 
-    public void SaveHouseProperty(House house){houseRepository.save(house);}
+    public House SaveHouseProperty(House house){return houseRepository.save(house);} //Μέθοδος αποθήκευσης house
 
-    public void SaveParkingProperty(Parking parking){parkingRepository.save(parking);}
+    public Parking SaveParkingProperty(Parking parking){return parkingRepository.save(parking);} //Μέθοδος αποθήκευσης parking
 
-    public void SaveCommercialProperty(CommercialProperty commercialProperty){commercialPropertyRepository.save(commercialProperty);}
+    public CommercialProperty SaveCommercialProperty(CommercialProperty commercialProperty){return commercialPropertyRepository.save(commercialProperty);} //Μέθοδος αποθήκευσης commercial property
 
-    public void DeleteProperty(Property property) {propertyRepository.delete(property);}
+    public void DeleteProperty(Property property) {propertyRepository.delete(property);} //Μέθοδος διαγραφής property
 
 
-    public Integer findOwnerIdByPropertyId(int propertyId) {
+    public Integer findOwnerIdByPropertyId(int propertyId) { //Δες αν το θελεις αυτό- Ζαχος
         return propertyRepository.findOwnerIdByPropertyId(propertyId);
     }
 }

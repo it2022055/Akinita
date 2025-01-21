@@ -18,11 +18,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    private UserService userService;
+    private UserService userService; //Δήλωση του userService
 
-    private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService; //Δήλωση του userDetailsService
 
-    private BCryptPasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder; //Δήλωση του password Encoder
 
     @Autowired
     public SecurityConfig(UserService userService, UserDetailsService userDetailsService, BCryptPasswordEncoder passwordEncoder) {
@@ -37,7 +37,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/home", "/register", "/roleselection", "/saveUser", "/images/**", "/js/**", "/css/**","/Service/searchProperties", "/search_results/**","/")
-                        .permitAll()
+                        .permitAll() // Ο χρήστης έχει τη δυνατότητα να αναζητήσει χωρίς λογαριασμό
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

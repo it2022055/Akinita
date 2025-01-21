@@ -22,17 +22,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Service
 public class UserService implements UserDetailsService {
 
-    private UserRepository userRepository;
+    private UserRepository userRepository; //Δήλωση του user repository
 
-    private RoleRepository roleRepository;
+    private RoleRepository roleRepository; //Δήλωση του role repository
     @Autowired
-    private RenterRepository renterRepository;
+    private RenterRepository renterRepository; //Δήλωση του renter repository
 
 
-    private BCryptPasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder; //Δήλωση του password Encoder
     public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -40,44 +41,44 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public User saveUser(User user, String assignedrole) {
-        String passwd= user.getPassword();
-        String encodedPassword = passwordEncoder.encode(passwd);
-        user.setPassword(encodedPassword);
+    public User saveUser(User user, String assignedrole) { //Μέθοδος αποθήκευσης user
+        String passwd= user.getPassword(); //Ανάκτηση password
+        String encodedPassword = passwordEncoder.encode(passwd); //Κωδικοποίηση password
+        user.setPassword(encodedPassword); //Προσθήκη password
 
         Role role = roleRepository.findByName(assignedrole)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        user.setRoles(roles);
-        return userRepository.save(user);
+        roles.add(role); //Προσθήκη ρόλου στο HashSet
+        user.setRoles(roles); //Προθήκη ρόλου στον user
+        return userRepository.save(user); //Αποθήκευση στη βάση δεδομένων
     }
 
     @Transactional
-    public Integer updateUser(User user) {
-        user = userRepository.save(user);
-        return user.getId();
+    public Integer updateUser(User user) { //Ενημέρωση user
+        user = userRepository.save(user); //Αποθήκευση στη βάση δεδομένων
+        return user.getId(); //Επιστροφή Id
     }
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { //Φόρτωση του user από τη βάση δεδομένων
         Optional<User> opt = userRepository.findByUsername(username);
 
-        if (opt.isEmpty()) {
+        if (opt.isEmpty()) { //Στην περίπτωση που ΔΕΝ υπάρχει το username
             throw new UsernameNotFoundException("User with email: " + username + " not found!");
-        } else {
+        } else { //Στην περίπτωση που υπάρχει το username
             User user = opt.get();
 
-            // Έλεγχος αν ο χρήστης έχει τον ρόλο ROLE_RENTER
+            //Έλεγχος αν ο χρήστης έχει τον ρόλο ROLE_RENTER
             boolean isRenter = user.getRoles().stream()
                     .anyMatch(role -> role.toString().equals("ROLE_RENTER"));
 
             if (isRenter) {
-                // Φόρτωση του Renter από το RenterRepository
+                //Φόρτωση του Renter από το RenterRepository
                 Optional<Renter> renterOpt = renterRepository.findById(user.getId());
 
-                if (renterOpt.isEmpty() || !renterOpt.get().getAcceptance().equals("Accepted")) {
+                if (renterOpt.isEmpty() || !renterOpt.get().getAcceptance().equals("Accepted")) { //Έλεγχος αν ο Renter είναι αποδεκτός από τον admin
                     throw new UsernameNotFoundException("Renter with email: " + username + " is not accepted!");
                 }
             }

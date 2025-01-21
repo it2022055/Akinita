@@ -2,6 +2,7 @@ package Akinita.project.Akinita.Entities.Properties;
 
 import Akinita.project.Akinita.Entities.Actors.Owner;
 import Akinita.project.Akinita.Entities.Actors.Renter;
+import Akinita.project.Akinita.Entities.Enums.EnergyClass;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -38,7 +39,7 @@ public class Property implements RealEstate {
     private Owner owner;
 
     @ManyToOne
-    @JoinColumn(name = "renter_id", nullable = true)
+    @JoinColumn(name = "renter_id")
     private Renter renter;
 
     @NotNull(message = "Availability for Sale is required")
@@ -77,9 +78,6 @@ public class Property implements RealEstate {
         this.availability = availability;
     }
 
-    public String getVisibility() {
-        return visibility;
-    }
 
     public void setVisibility(String visibility) {
         this.visibility = visibility;

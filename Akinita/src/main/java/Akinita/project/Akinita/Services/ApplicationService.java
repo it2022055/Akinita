@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Service
 public class ApplicationService {
 
@@ -34,5 +34,5 @@ public class ApplicationService {
         return  rentalApplicationRepository.findById(rpId);
     }
 
-    public void SetRentalApplicationStatus(Boolean status) {rentalApplicationRepository.setStatus(status);}
+    public void SetRentalApplicationStatus(Boolean status) {rentalApplicationRepository.setStatus(status);} //Μέθοδος για προσθήκη status στη βάση δεδομένων
 }

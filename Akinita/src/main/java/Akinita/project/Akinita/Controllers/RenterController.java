@@ -10,6 +10,7 @@ import Akinita.project.Akinita.Services.PropertyService;
 import Akinita.project.Akinita.Services.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Controller
 @RequestMapping("Renter")
 public class RenterController {
@@ -26,7 +28,7 @@ public class RenterController {
     @Autowired
     private RenterService renterService;
     @Autowired
-    private UserService userService;;
+    private UserService userService;
     @Autowired
     private FileStorageService fileStorageService;
 
@@ -97,11 +99,11 @@ public class RenterController {
             return "redirect:/Renter/RentalApplications";  // Ανακατεύθυνση αν υπάρχει σφάλμα
         }
 
-        // Αποθήκευση της αίτησης (μπορείς να την αποθηκεύσεις στην βάση μέσω του Service)
+        // Αποθήκευση της αίτησης (μπορείς να την αποθηκεύσεις στη βάση μέσω του Service)
         renterService.saveApplication(application);
 
         // Προαιρετικά, προσθέτουμε ένα μήνυμα επιτυχίας για την αναγνώριση της επιτυχίας της αποθήκευσης
-        model.addAttribute("message", "Η αίτησή σας καταχωρήθηκε επιτυχώς.");
+        model.addAttribute("message", "Η αίτηση σας καταχωρήθηκε επιτυχώς.");
 
         // Ανακατεύθυνση ή επιστροφή στη σελίδα
         return "redirect:/Renter/applicationSubmitted";  // Ανακατεύθυνση στη σελίδα με τις αιτήσεις
@@ -113,21 +115,23 @@ public class RenterController {
         return "/renter/applicationSubmitted";
     }
 
-    @GetMapping("/AcceptRenters")
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/AcceptRenters") //Μέθοδος προβολής Renters προς αποδοχή από τον admin
     public String AcceptRenters(Model model) {
-        model.addAttribute("Renters",renterService.findAllUnacceptedRenters());
+        model.addAttribute("Renters",renterService.findAllUnacceptedRenters()); //Προσθήκη Renters στο model
         return "renter/acceptRenters";
     }
 
+    @Secured("ROLE_ADMIN")
     @Transactional
-    @GetMapping("/AcceptRenters/{renter_id}")
+    @GetMapping("/AcceptRenters/{renter_id}") //Μέθοδος αποδοχής Renter
     public String acceptRenters(Model model, @PathVariable Integer renter_id) {
         Renter the_renter = renterService.getRenterById(renter_id);
-        the_renter.setAcceptance("Accepted");
+        the_renter.setAcceptance("Accepted"); //Αλλαγή απο "Unaccepted" σε "Accepted"
         try{
-            renterService.UpdateRenter(the_renter);
+            renterService.UpdateRenter(the_renter); //Αποθήκευση αλλαγής στη Βάση Δεδομένων
         }catch (Exception e){
-            e.printStackTrace();
+            throw new RuntimeException("Could not update renter");
         }
         return "redirect:/Renter/AcceptRenters";
     }

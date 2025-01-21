@@ -77,10 +77,6 @@ public class Renter {
         return telephoneNumber;
     }
 
-    public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumber = telephoneNumber;
-    }
-
     public String getAcceptance() {
         return acceptance;
     }
