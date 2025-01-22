@@ -28,7 +28,7 @@ public class Property implements RealEstate {
 
     @NotNull(message = "Price is required")
     @Column
-    private int price;
+    private Double price;
 
     @NotBlank(message = "Description is required")
     @Column
@@ -53,7 +53,7 @@ public class Property implements RealEstate {
     @Column(name = "visibility")
     private String visibility;
 
-    public Property(int id, String estateName, String location, int price, String description, Owner owner, Renter renter, Boolean availability, String visibility, int squareMeter) {
+    public Property(int id, String estateName, String location, Double price, String description, Owner owner, Renter renter, Boolean availability, String visibility, int squareMeter) {
         this.id = id;
         this.estateName = estateName;
         this.location = location;
@@ -114,12 +114,12 @@ public class Property implements RealEstate {
     }
 
     @Override
-    public int getPrice() {
+    public Double getPrice() {
         return price;
     }
 
     @Override
-    public void setPrice(int price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -159,5 +159,13 @@ public class Property implements RealEstate {
 
     public void setSquareMeter(@NotNull(message = "Square meter is required") int squareMeter) {
         this.squareMeter = squareMeter;
+    }
+
+    public String getVisibility() {
+        return visibility;
+    }
+
+    public Boolean getAvailability() {
+        return availability;
     }
 }

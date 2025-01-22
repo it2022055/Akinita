@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 public class CommercialProperty extends Property implements ConstructionDate, BuildingFees {
 
-    public CommercialProperty(int id, String estateName, String location, int price, String description, Owner owner, Renter renter, int squareMeter, Boolean availability, String visibility, Date constructionDate, boolean buildingFees) {
+    public CommercialProperty(int id, String estateName, String location, Double price, String description, Owner owner, Renter renter, int squareMeter, Boolean availability, String visibility, Date constructionDate, boolean buildingFees) {
         super(id, estateName, location, price, description, owner, renter,availability, visibility, squareMeter);
         this.constructionDate = constructionDate;
         this.buildingFees = buildingFees;

@@ -13,7 +13,7 @@
 
 <body>
 <div layout:fragment="main-content" class="container">
-    <form class="form">
+    <form class="form" th:action="@{/Renter/rental_application}" method="get">
         <p id="heading">Property Search Results</p>
         <div th:if="${#lists.isEmpty(properties)}">
             <p style="color: black; font-size: 1.5em; margin-bottom: 2em;">No properties found matching your criteria.</p>
@@ -25,9 +25,11 @@
             <p th:text="${property.getSquareMeter()} + ' m²'">Property Size</p>
             <p th:text="'€' + ${property.getPrice()}">Property Price</p>
 
+            <!-- Κρυφό πεδίο για το property.id -->
+            <input type="hidden" name="property_id" th:value="${property.id}" />
+
             <!-- Εμφάνιση κουμπιού μόνο αν ο ρόλος είναι ROLE_RENTER -->
-            <button class="button1" sec:authorize="hasRole('ROLE_RENTER')"
-                    th:onclick="'window.location.href=\'/Renter/rental_application?property_id=' + ${property.getId()} + '\';'">Apply for Renting</button>
+            <button type="submit" class="button1" sec:authorize="hasRole('ROLE_RENTER')">Apply for Renting</button>
 
         </div>
     </form>

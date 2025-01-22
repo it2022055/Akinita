@@ -14,15 +14,15 @@ public class ApplicationService {
     @Autowired
     private RentalApplicationRepository rentalApplicationRepository;
 
-    public List<RentalApplication> findByOwner(int owner_id) {
+    public RentalApplication findByOwner(int owner_id) {
         return rentalApplicationRepository.findByOwnerId(owner_id);
     }
 
-    public List<RentalApplication> findByRenter(int renter_id) {
+    public RentalApplication findByRenter(int renter_id) {
         return rentalApplicationRepository.findByRenterId(renter_id);
     }
 
-    public List<RentalApplication> findByProperty(int property_id) {
+    public RentalApplication findByProperty(int property_id) {
         return rentalApplicationRepository.findByPropertyId(property_id);
     }
 

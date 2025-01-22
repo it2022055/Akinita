@@ -1,8 +1,6 @@
 package Akinita.project.Akinita.Repositories.RealEstate;
 
 import Akinita.project.Akinita.Entities.Properties.Property;
-import Akinita.project.Akinita.Repositories.RealEstate.LimitedMethods.BuildingFees;
-import Akinita.project.Akinita.Repositories.RealEstate.LimitedMethods.ConstructionDate;
 import Akinita.project.Akinita.Entities.Properties.House;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,14 +10,20 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface HouseGenericRepository extends PropertyGenericRepository<House, Integer>, ConstructionDate<House, Integer>, BuildingFees<House, Integer> {
+public interface HouseGenericRepository extends PropertyGenericRepository<House, Integer>{
 
-    @Query("SELECT h FROM House h WHERE h.buildingFees = true")
-    List<House> findByBuildingFees(@Param("building_fees") Boolean buildingFees);
+    @Query("SELECT h FROM House h JOIN Property p ON p.id = h.id WHERE p.id = :id")
+    House findByHouseId(@Param("id") Integer id);
+
 
     List<House> findByConstructionDate(@Param("construction_date") Date construction_date);
 
-    @Query("SELECT p FROM Property p JOIN House h ON p.location = h.location AND p.id = h.id WHERE p.location = :location")
-    List<Property> findCommonProperties(@Param("location") String location);
+    @Query("SELECT p FROM Property p JOIN House h ON p.id = h.id  WHERE p.location = :location")
+    List<Property> findCommonPropertiesByLocation(@Param("location") String location);
+
+    @Query("SELECT p FROM Property p JOIN House h ON  p.id = h.id")
+    List<Property> findAllProperties();
+
+    List<Property> findByConstructionDateBefore(@Param("construction_date") Date construction_date);
 
 }

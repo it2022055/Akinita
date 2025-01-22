@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface LandGenericRepository extends PropertyGenericRepository<Land, Integer> {
 
-    @Query("SELECT p FROM Property p JOIN Land l ON p.location = l.location AND p.id = l.id WHERE p.location = :location")
-    List<Property> findCommonProperties(@Param("location") String location);
+    @Query("SELECT p FROM Property p JOIN Land l ON p.id = l.id WHERE p.location = :location")
+    List<Property> findCommonPropertiesByLocation(@Param("location") String location);
 
     @Query("SELECT p FROM Property p JOIN Land l ON  p.id = l.id ")
     List<Property> findAllProperties();

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +11,9 @@
 </head>
 <body>
 <div layout:fragment="main-content" class="container">
-    <h1>Rental Application</h1>
-    <form th:action="@{/Renter/rental_application}" method="post" enctype="multipart/form-data">
+
+    <form class="default-form" th:action="@{/Renter/rental_application}" method="post" enctype="multipart/form-data">
+        <h1>Rental Application</h1>
         <!-- Job Situation -->
         <label for="jobSituation">Job Situation:</label>
         <input type="text" id="jobSituation" name="jobSituation" required>

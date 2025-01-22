@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 
 @Entity
 public class Land extends Property {
-    public Land(int id, String estateName, String location, int price, String description, Owner owner, Renter renter, int squareMeter , Boolean availability, String visibility) {
+    public Land(int id, String estateName, String location, Double price, String description, Owner owner, Renter renter, int squareMeter , Boolean availability, String visibility) {
         super(id, estateName, location, price, description, owner, renter,availability, visibility, squareMeter);
     }
 

@@ -9,6 +9,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Date;
 import java.util.List;
@@ -26,14 +27,20 @@ public class PropertyController {
                                    @RequestParam(name = "minPrice", required = false) Double minPrice,
                                    @RequestParam(name = "maxPrice", required = false) Double maxPrice,
                                    @RequestParam(name = "priceSlider", required = false) Double priceSlider,
-                                   @RequestParam(name = "minSize", required = false) Double minSize,
-                                   @RequestParam(name = "maxSize", required = false) Double maxSize,
-                                   @RequestParam(name = "sizeSlider", required = false) Double sizeSlider,
+                                   @RequestParam(name = "minSize", required = false) Integer minSize,
+                                   @RequestParam(name = "maxSize", required = false) Integer maxSize,
+                                   @RequestParam(name = "sizeSlider", required = false) Integer sizeSlider,
                                    @RequestParam(name = "buildingFees", required = false) String buildingFees,
                                    @RequestParam(name = "constructionDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date constructionDate,
-                                   Model model) {
+                                   RedirectAttributes redirectAttributes) {
 
-        boolean bf = buildingFees.equals("yes");
+        boolean bf ;
+        if (buildingFees == null ){
+            bf = false;
+        }else{
+            bf = buildingFees.equals("Yes");
+        }
+        String location = (area == null)? "All" : area;
 
         System.out.println("Area: " + area);
         System.out.println("Property Type: " + propertyType);
@@ -47,9 +54,19 @@ public class PropertyController {
         System.out.println("Price slider: " + priceSlider);
 
 
-        List properties = propertyService.findProperties(area, propertyType, minPrice, maxPrice, minSize, maxSize, bf, constructionDate,priceSlider, sizeSlider);
+        List<Property> properties = propertyService.findProperties(location, propertyType, minPrice, maxPrice, minSize, maxSize, bf, constructionDate,priceSlider, sizeSlider);
+        redirectAttributes.addFlashAttribute("properties", properties);
+        return "redirect:/Service/search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
+    }
+
+    @GetMapping("/search_results")
+    public String RenterSearchResults(Model model) {
+        // Λήψη των αποτελεσμάτων από τα FlashAttributes
+        List<Property> properties = (List<Property>) model.asMap().get("properties");
+
+        // Προσθήκη των αποτελεσμάτων στο μοντέλο για την προβολή στη σελίδα
         model.addAttribute("properties", properties);
-        return "search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
+        return "search_results";
     }
 
     @Secured("ROLE_ADMIN")

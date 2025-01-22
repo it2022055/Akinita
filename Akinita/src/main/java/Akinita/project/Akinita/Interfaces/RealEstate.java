@@ -17,8 +17,8 @@ public interface RealEstate {
     void setLocation(String location);
 
     // Price
-    int getPrice();
-    void setPrice(int price);
+    Double getPrice();
+    void setPrice(Double price);
 
     // Description
     String getDescription();

@@ -43,7 +43,7 @@ public class RentalApplication {
     private Boolean renterPets;
 
     @OneToMany(mappedBy = "rentalApplication", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FileEntity> files;
+    private List<FileEntity> files;                                                                       // Na ftiaxw file repository pou psaxnei me bash to application id
 
     @Column
     private Boolean Status;

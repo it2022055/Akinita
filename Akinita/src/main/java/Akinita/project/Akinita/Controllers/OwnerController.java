@@ -43,9 +43,11 @@ public class OwnerController {
     public String submitNewProperty( Principal principal,@RequestParam("SqMeters") int sqMeters,
                                      @RequestParam("estateName") String estateName,
                                      @RequestParam("description") String description,
-                                     @RequestParam("price") int price, @RequestParam("location") String location,
+                                     @RequestParam("price") Double price, @RequestParam("location") String location,
                                      @RequestParam("propertyType") String propertyType,
+                                     @RequestParam(value = "constructionDate", required = false)  @DateTimeFormat(pattern = "yyyy-MM-dd") Date constructionDate,
                                      @ModelAttribute RealEstate realEstate,
+                                     @RequestParam(value = "buildingFees", required = false) Boolean bf,
                                      Model model,
                                      RedirectAttributes redirectAttributes) {
         if (principal == null) { //Στην περίπτωση που δεν είναι logged in ο Owner τον επιστέφει στη σελίδα του log in
@@ -61,16 +63,8 @@ public class OwnerController {
         model.addAttribute("sqMeters", sqMeters); //Προσθήκη τετραγωνικών μέτρων στο model
         model.addAttribute("owner", owner); //Προσθήκη ιδιοκτήτη στο model
         model.addAttribute("propertyType", propertyType); //Προσθήκη τύπου ιδιοκτησίας στο model
-        if(!propertyType.equals("Land")) { //Στην περίπτωση που ο τύπος ιδιοκτησίας ΔΕΝ είναι land
-            redirectAttributes.addFlashAttribute("estateName", estateName); //Προσθήκη ονόματος ιδιοκτησίας στο redAttributes για redirection
-            redirectAttributes.addFlashAttribute("description", description); //Προσθήκη περιγραφής στο redAttributes για redirection
-            redirectAttributes.addFlashAttribute("price", price); //Προσθήκη τιμής στο redAttributes για redirection
-            redirectAttributes.addFlashAttribute("location", location); //Προσθήκη περιοχής στο redAttributes για redirection
-            redirectAttributes.addFlashAttribute("SqMeters", sqMeters); //Προσθήκη τετραγωνικών μέτρων στο redAttributes για redirection
-            redirectAttributes.addFlashAttribute("owner", owner); //Προσθήκη ιδιοκτήτη στο redAttributes για redirection
-            redirectAttributes.addFlashAttribute("propertyType", propertyType); //Προσθήκη τύπου ιδιοκτησίας στο redAttributes για redirection
-            return "redirect:/Owner/propertyFacilities"; //Redirection στη φόρμα για την προσθήκη παροχών
-        }else{ //Στην περίπτωση που είναι land
+
+        if(propertyType.equals("Land")) {//Στην περίπτωση που είναι land
             Land land = new Land(); //Δημιουργίας land αντικειμένου
             land.setLocation(location); //Προσθήκη attributes
             land.setEstateName(estateName); //Προσθήκη attributes
@@ -87,6 +81,36 @@ public class OwnerController {
                 throw new RuntimeException("Error saving land");
             }
             return "redirect:/Owner/propertySubmitted";
+        }else if(propertyType.equals("Parking")) { //Στην περίπτωση που είναι parking
+            Parking parking = new Parking();
+            parking.setLocation(location);
+            parking.setEstateName(estateName);
+            parking.setDescription(description);
+            parking.setPrice(price);
+            parking.setVisibility("Invisible");
+            parking.setAvailability(true);
+            parking.setSquareMeter(sqMeters);
+            parking.setRenter(null);
+            parking.setOwner(owner);
+            parking.setBuildingFees(bf != null && bf);
+            parking.setConstructionDate(constructionDate);
+
+            try{
+                propertyService.SaveParkingProperty(parking); //Αποθήκευση του καινούριου property στη Βάση Δεδομένων
+            }catch(Exception e){
+                throw new RuntimeException("Error saving parking");
+            }
+            return "redirect:/Owner/propertySubmitted";
+        } else {//Στην περίπτωση που ο τύπος ιδιοκτησίας ΔΕΝ είναι land
+            redirectAttributes.addFlashAttribute("estateName", estateName); //Προσθήκη ονόματος ιδιοκτησίας στο redAttributes για redirection
+            redirectAttributes.addFlashAttribute("description", description); //Προσθήκη περιγραφής στο redAttributes για redirection
+            redirectAttributes.addFlashAttribute("price", price); //Προσθήκη τιμής στο redAttributes για redirection
+            redirectAttributes.addFlashAttribute("location", location); //Προσθήκη περιοχής στο redAttributes για redirection
+            redirectAttributes.addFlashAttribute("SqMeters", sqMeters); //Προσθήκη τετραγωνικών μέτρων στο redAttributes για redirection
+            redirectAttributes.addFlashAttribute("owner", owner); //Προσθήκη ιδιοκτήτη στο redAttributes για redirection
+            redirectAttributes.addFlashAttribute("propertyType", propertyType); //Προσθήκη τύπου ιδιοκτησίας στο redAttributes για redirection
+            return "redirect:/Owner/propertyFacilities"; //Redirection στη φόρμα για την προσθήκη παροχών
+
         }
     }
     @GetMapping("/propertyFacilities") //Φόρμα επιστροφής παροχών ιδιοκτησίας
@@ -96,7 +120,7 @@ public class OwnerController {
 
     @PostMapping("/propertyFacilities") //Φόρμα προσθήκης παροχών ιδιοκτησίας
     public String propertyFacilities(Model model,
-                                     @RequestParam("constructionDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date constructiondate,
+                                     @RequestParam(value = "constructionDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date constructiondate,
                                      @RequestParam(value = "AC", required = false) Boolean ac,
                                      @RequestParam(value = "ELEVATOR", required = false) Boolean elevator,
                                      @RequestParam(value = "PARKING", required = false) Boolean parkingparam,
@@ -107,11 +131,12 @@ public class OwnerController {
                                      @RequestParam(value = "ALARM", required = false) Boolean alarm,
                                      @RequestParam(value = "SHAREDEXPENSES", required = false) Boolean sharedExpenses,
                                      @RequestParam(value = "ENERGYCLASS") String energyclass) {
+
         //Λήψη δεδομένων από το μοντέλο
         String estateName = (String) model.getAttribute("estateName");
         String description = (String) model.getAttribute("description");
         Object priceObj = model.getAttribute("price");
-        int price = (priceObj != null) ? (int) priceObj : 0;
+        Double price = (priceObj != null) ? (Double) priceObj : 0;
         String location = (String) model.getAttribute("location");
         Object sqMetersObj = model.getAttribute("sqMeters");
         int sqMeters = (sqMetersObj != null) ? (int) sqMetersObj : 0;
@@ -164,7 +189,6 @@ public class OwnerController {
             parking.setConstructionDate(constructiondate); //Προσθήκη attributes
             parking.setBuildingFees(sharedExpenses != null && sharedExpenses); //Προσθήκη attributes
             parking.setEnergyClass(energyClassEnum); //Προσθήκη attributes
-            parking.setFacilities(selectedFacilities); //Προσθήκη attributes
 
             try {
                 propertyService.SaveParkingProperty(parking); //Αποθήκευση του καινούριου property στη Βάση Δεδομένων

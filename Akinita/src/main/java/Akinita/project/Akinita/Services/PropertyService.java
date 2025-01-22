@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Service
@@ -39,84 +40,71 @@ public class PropertyService {
         };
     }
 
-    public List findProperties(String area, String propertyType, Double minPrice, Double maxPrice, Double minSize, Double maxSize, Boolean buildingFees, Date constructionDate, Double priceSlider, Double sizeSlider) {
+    public List<Property> findProperties(String location, String propertyType, Double minPrice, Double maxPrice, Integer minSize, Integer maxSize, Boolean buildingFees, Date constructionDate, Double priceSlider, Integer sizeSlider) {
 
-        if (propertyType.equals("All")) {
-            return propertyRepository.findAll();
-        }
+        List<Property> filter = findByTypeAndLocation(propertyType, location);                 // Filtering by Type and Location
 
+        filter = findByPriceAndSize(filter,minPrice, maxPrice, priceSlider, minSize, maxSize, sizeSlider);        // Filtering by Price and Size
 
-        List<Property> property_results = switch (propertyType) {
-            case "House" -> houseRepository.findCommonProperties(area);
-            case "Commercial Property" -> commercialPropertyRepository.findCommonProperties(area);
-            case "Parking" -> parkingRepository.findCommonProperties(area);
-            default -> landRepository.findAllProperties();
-        };
+        System.out.println(filter);
 
-        List<Property> price_results = new ArrayList<>();
+        filter = findByBuildingFees(filter, propertyType, buildingFees);                          // Filtering by Building fees
 
-        if(priceSlider == null) {
-            price_results = propertyRepository.findPropertiesWithinPriceRange(minPrice,maxPrice);
+        System.out.println(filter);
+
+        filter = findByConstructionDate(filter, propertyType, constructionDate);        // Filtering by construction date
+
+        return filter;
+    }
+
+    private List<Property> findByTypeAndLocation(String type,String location) {
+        List<Property> property_results = List.of();
+
+        if (location.equals("All")) {
+            switch (type) {
+                case "All" -> property_results = propertyRepository.findAll();
+                case "House" -> property_results = houseRepository.findAllProperties();
+                case "CommercialProperty" -> property_results = commercialPropertyRepository.findAllProperties();
+                case "Parking" -> property_results = parkingRepository.findAllProperties();
+                case "Land" -> property_results = landRepository.findAllProperties();
+            }
         } else {
-            price_results = propertyRepository.findByPriceLessThanEqual(priceSlider);
+            // Αν η τοποθεσία δεν είναι "All", πρέπει να αναζητήσουμε με βάση και τον τύπο και την τοποθεσία.
+            switch (type) {
+                case "All" -> property_results = propertyRepository.findAll();
+                case "House" -> property_results = houseRepository.findCommonPropertiesByLocation(location);
+                case "CommercialProperty" -> property_results = commercialPropertyRepository.findCommonPropertiesByLocation(location);
+                case "Parking" -> property_results = parkingRepository.findCommonPropertiesByLocation(location);
+                case "Land" -> property_results = landRepository.findCommonPropertiesByLocation(location);
+            }
         }
+        return property_results;
+    }
 
-        List<Property> size_results = new ArrayList<>();
+    private List<Property> findByPriceAndSize(List<Property> properties, Double minPrice, Double maxPrice, Double priceSlider,Integer minSize, Integer maxSize, Integer sizeSlider) {
+        return properties.stream()
+                .filter(p -> minPrice == null || p.getPrice() >= minPrice) // Φιλτράρισμα με βάση την τιμή
+                .filter(p -> maxPrice == null || p.getPrice() <= maxPrice)
+                .filter(p -> minSize == null || p.getSquareMeter() >= minSize)  // Φιλτράρισμα με βάση το μέγεθος
+                .filter(p -> maxSize == null || p.getSquareMeter() <= maxSize)
+                .filter(p -> priceSlider == null || p.getPrice() <= priceSlider) // Φιλτράρισμα με βάση το slider
+                .filter(p -> sizeSlider == null || p.getSquareMeter() <= sizeSlider)
+                .collect(Collectors.toList()); // Επιστροφή της φιλτραρισμένης λίστας
+    }
 
+    private List<Property> findByBuildingFees(List<Property> properties, String type, Boolean buildingFees) {
+        return properties.stream()
+                .filter(p -> !type.equals("House") || houseRepository.findByHouseId(p.getId()).getBuildingFees().equals(buildingFees))
+                .filter(p -> !type.equals("CommercialProperty") || commercialPropertyRepository.findByCommercialPropertyId(p.getId()).getBuildingFees().equals(buildingFees))
+                .collect(Collectors.toList());
+    }
 
-        if(sizeSlider == null) {
-            size_results = propertyRepository.findPropertiesWithinPriceRange(minSize,maxSize);
-        } else {
-            size_results = propertyRepository.findBySquareMeterLessThanEqual(sizeSlider);
-        }
-
-        List<Property> bf_results = new ArrayList<>();
-        bf_results.addAll(houseRepository.findByBuildingFees(buildingFees));
-        bf_results.addAll(commercialPropertyRepository.findByBuildingFees(buildingFees));
-
-        List<Property> construction_results = new ArrayList<>();
-
-        if(constructionDate != null) {
-            construction_results.addAll(commercialPropertyRepository.findByConstructionDate(constructionDate));
-            construction_results.addAll(houseRepository.findByConstructionDate(constructionDate));
-            construction_results.addAll(parkingRepository.findByConstructionDate(constructionDate));
-        }
-
-
-// Χρησιμοποιούμε Sets για να βρούμε τα κοινά properties
-        Set<Property> commonResults = new HashSet<>(property_results);
-        System.out.println("1. "+ commonResults);
-
-
-        // Κοινά μεταξύ location και  price
-        commonResults.retainAll(price_results); // Κοινά μεταξύ location και price
-
-        System.out.println("2. "+ commonResults);
-
-        // Κοινά μεταξύ location και slider size
-        commonResults.retainAll(size_results); // Κοινά μεταξύ location και  size
-
-        System.out.println("3. "+ commonResults);
-
-        if(constructionDate != null || !propertyType.equals("Land")){
-            commonResults.retainAll(construction_results); // Κοινά μεταξύ location και construction date
-            System.out.println("4. "+ commonResults);
-        }
-
-        if(buildingFees && ( propertyType.equals("House") || propertyType.equals("Commercial Property") )) {
-            commonResults.retainAll(bf_results); // Κοινά μεταξύ location και building fees
-            System.out.println("5. "+ commonResults);
-        }
-
-        System.out.println("common results"+commonResults);
-        System.out.println("property results" + property_results);
-        System.out.println("price results" +price_results);
-        System.out.println("size results" +size_results);
-        System.out.println("bf results" +bf_results);
-        System.out.println("construt results" +construction_results);
-        System.out.println("Properties Found: " + commonResults.size());            // Thelw ena kalutero tropo gia anazhthsh
-
-        return new ArrayList<>(commonResults);
+    private List<Property> findByConstructionDate(List<Property> properties, String type, Date constructionDate) {
+        return properties.stream()
+                .filter(p -> !type.equals("House") || houseRepository.findByHouseId(p.getId()).getConstructionDate().after(constructionDate))
+                .filter(p -> !type.equals("CommercialProperty") || commercialPropertyRepository.findByCommercialPropertyId(p.getId()).getConstructionDate().after(constructionDate))
+                .filter(p -> !type.equals("Parking") || parkingRepository.findByParkingId(p.getId()).getConstructionDate().after(constructionDate))
+                .collect(Collectors.toList());
     }
 
     @Transactional

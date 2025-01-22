@@ -15,14 +15,14 @@ import java.util.List;
 public interface RentalApplicationRepository extends JpaRepository<RentalApplication, Integer> {
 
     @Query("SELECT r FROM RentalApplication r WHERE r.owner.id = :ownerId")
-    List<RentalApplication> findByOwnerId(@Param("ownerId") int ownerId);
+    RentalApplication findByOwnerId(@Param("ownerId") int ownerId);
 
 
     @Query ("SELECT r FROM RentalApplication r WHERE r.renter.id = :renterId")
-    List<RentalApplication> findByRenterId(int renterId);
+    RentalApplication findByRenterId(int renterId);
 
     @Query ("SELECT r FROM RentalApplication r WHERE r.property.id = :propertyId")
-    List<RentalApplication> findByPropertyId(int propertyId);
+    RentalApplication findByPropertyId(int propertyId);
 
     RentalApplication findById(int id);
 

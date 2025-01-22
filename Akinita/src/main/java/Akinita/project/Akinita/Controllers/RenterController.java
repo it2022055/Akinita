@@ -4,10 +4,7 @@ import Akinita.project.Akinita.Entities.*;
 import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Entities.Actors.User;
 import Akinita.project.Akinita.Entities.Properties.Property;
-import Akinita.project.Akinita.Services.FileStorageService;
-import Akinita.project.Akinita.Services.RenterService;
-import Akinita.project.Akinita.Services.PropertyService;
-import Akinita.project.Akinita.Services.UserService;
+import Akinita.project.Akinita.Services.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -18,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Objects;
 
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Controller
@@ -31,13 +29,14 @@ public class RenterController {
     private UserService userService;
     @Autowired
     private FileStorageService fileStorageService;
+    @Autowired
+    private ApplicationService applicationService;
 
     @GetMapping("/rental_application")
     public String RenterRentalApplications(Model model, @RequestParam("property_id") Property property) {
         model.addAttribute("property_id", property.getId());
         return "/renter/rental_application";
     }
-
 
     @PostMapping("/rental_application")
     public String submitRentalApp(@RequestParam("property_id") Integer property_id,
@@ -53,6 +52,12 @@ public class RenterController {
         String email = principal.getName();
         Integer renterId = renterService.findRenterIdByEmail(email);
         User renter = userService.getUser(renterId);
+
+        if(Objects.equals(renter.getId(), applicationService.findByRenter(renter.getId()).getRenter().getId())){
+            model.addAttribute("message", "You have already applied for for rent to this property!");
+            return "redirect:/";
+        }
+
 
         Property property = propertyService.getPropertyById(property_id);
         User owner = userService.getUser(property.getOwnerId());

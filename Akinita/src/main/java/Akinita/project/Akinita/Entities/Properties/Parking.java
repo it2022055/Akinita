@@ -17,7 +17,7 @@ import java.util.Set;
 @Entity
 public class Parking extends Property implements ConstructionDate {
 
-    public Parking(int id, String estateName, String location, int price, String description, Owner owner, Renter renter, Boolean availability, String visibility, Date constructionDate, int squareMeter) {
+    public Parking(int id, String estateName, String location, Double price, String description, Owner owner, Renter renter, Boolean availability, String visibility, Date constructionDate, int squareMeter) {
         super(id, estateName, location, price, description, owner, renter, availability, visibility, squareMeter);
         this.constructionDate = constructionDate;
     }
@@ -32,12 +32,6 @@ public class Parking extends Property implements ConstructionDate {
     @NotNull(message = "Building fees are required")
     @Column(name = "building_fees")
     private Boolean buildingFees;
-
-    @ElementCollection(targetClass = Facilities.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "parking_facilities", joinColumns = @JoinColumn(name = "id"))
-    @Enumerated(EnumType.STRING)
-    @Column(name = "facility")
-    private Set<Facilities> facilities = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column
@@ -74,11 +68,4 @@ public class Parking extends Property implements ConstructionDate {
         this.buildingFees = buildingFees;
     }
 
-    public Set<Facilities> getFacilities() {
-        return facilities;
-    }
-
-    public void setFacilities(Set<Facilities> facilities) {
-        this.facilities = facilities;
-    }
 }

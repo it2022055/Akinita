@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +57,7 @@ public class OwnerService {
     }
 
     public List<RentalApplication> getOwnerRentalApplications(int ownerId) { //Μέθοδος επιστροφής των αιτήσεων ενοικίασης
-        return new ArrayList<>(applicationService.findByOwner(ownerId));
+        return new ArrayList<>((Collection) applicationService.findByOwner(ownerId));
     }
 
     public Owner getOwner(int id) {
