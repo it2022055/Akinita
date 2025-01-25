@@ -71,7 +71,7 @@ public class PropertyService {
         } else {
             // Αν η τοποθεσία δεν είναι "All", πρέπει να αναζητήσουμε με βάση και τον τύπο και την τοποθεσία.
             switch (type) {
-                case "All" -> property_results = propertyRepository.findAll();
+                case "All" -> property_results = propertyRepository.findPropertiesByLocation(location);
                 case "House" -> property_results = houseRepository.findCommonPropertiesByLocation(location);
                 case "CommercialProperty" -> property_results = commercialPropertyRepository.findCommonPropertiesByLocation(location);
                 case "Parking" -> property_results = parkingRepository.findCommonPropertiesByLocation(location);

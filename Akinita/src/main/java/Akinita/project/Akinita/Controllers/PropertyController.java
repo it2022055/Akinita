@@ -22,7 +22,7 @@ public class PropertyController {
     PropertyService propertyService;
 
     @GetMapping("/searchProperties")
-    public String searchProperties(@RequestParam(name = "area", required = false) String area,
+    public String searchProperties(@RequestParam(name = "location", required = false) String location,
                                    @RequestParam(name = "propertyType", required = false) String propertyType,
                                    @RequestParam(name = "minPrice", required = false) Double minPrice,
                                    @RequestParam(name = "maxPrice", required = false) Double maxPrice,
@@ -40,9 +40,9 @@ public class PropertyController {
         }else{
             bf = buildingFees.equals("Yes");
         }
-        String location = (area == null)? "All" : area;
+        String locationT = (location == null)? "All" : location;
 
-        System.out.println("Area: " + area);
+        System.out.println("Location: " + locationT);
         System.out.println("Property Type: " + propertyType);
         System.out.println("Min Price: " + minPrice);
         System.out.println("Max Price: " + maxPrice);
@@ -54,7 +54,7 @@ public class PropertyController {
         System.out.println("Price slider: " + priceSlider);
 
 
-        List<Property> properties = propertyService.findProperties(location, propertyType, minPrice, maxPrice, minSize, maxSize, bf, constructionDate,priceSlider, sizeSlider);
+        List<Property> properties = propertyService.findProperties(locationT, propertyType, minPrice, maxPrice, minSize, maxSize, bf, constructionDate,priceSlider, sizeSlider);
         redirectAttributes.addFlashAttribute("properties", properties);
         return "redirect:/Service/search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
     }

@@ -16,6 +16,10 @@ public interface PropertyRepository extends PropertyGenericRepository<Property,I
             @Param("minPrice") Double minPrice,
             @Param("maxPrice") Double maxPrice);
 
+    @Query("SELECT p FROM Property p  WHERE p.location = :location")
+    List<Property> findPropertiesByLocation(@Param("location") String location);
+
+
     List<Property> findByVisibility(String visibility);
 
 
