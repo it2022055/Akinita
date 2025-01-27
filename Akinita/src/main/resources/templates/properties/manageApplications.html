@@ -36,9 +36,12 @@
 
 <!--                     Εμφάνιση των αρχείων για κάθε αίτηση -->
                     <td>
-                        <ul th:if="${ApplicationFilesMap != null}">
-                            <li th:each="file : ${ApplicationFilesMap}" th:text="${file}"></li>
-                        </ul>
+                        <div th:if="${ApplicationFilesMap != null}">
+                            <form th:action="@{/Owner/pdf_view}" method="post" style="display:inline;">
+                                <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
+                                <button type="submit" class="button-accept">View Files</button>
+                            </form>
+                        </div>
                         <span th:if="${ApplicationFilesMap == null}">No files available</span>
                     </td>
 

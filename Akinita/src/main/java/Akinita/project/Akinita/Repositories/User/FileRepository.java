@@ -20,4 +20,5 @@ public interface FileRepository extends JpaRepository<FileEntity, Integer> {
 
     @Query("SELECT fe FROM FileEntity fe WHERE fe.rentalApplication.id = :appId AND fe.id = :fileId" )
     FileEntity findByIdAndAppId(Integer fileId, Integer appId);
+
 }

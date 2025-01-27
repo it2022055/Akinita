@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -25,6 +26,10 @@ public class FileStorageService {
 
         // Δημιουργία Resource από τα byte[] δεδομένα του αρχείου
         return new ByteArrayResource(fileEntity.getData());
+    }
+
+    public Optional<FileEntity> getFileById(int fileId) {
+        return fileRepository.findById(fileId);
     }
 
     @Transactional
@@ -43,5 +48,9 @@ public class FileStorageService {
         fileEntity.setRentalApplication(application); // Σύνδεση με την αίτηση
 
         fileRepository.save(fileEntity);
+    }
+
+    public List<FileEntity> findAllById(Integer appId) {
+        return fileRepository.findAllById(appId);
     }
 }
