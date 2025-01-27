@@ -13,7 +13,11 @@ import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.PropertyService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -263,7 +267,7 @@ public class OwnerController {
         return "redirect:/Owner/Listings";
     }
 
-
+    @Transactional
     @GetMapping("/manageApplications")
     public String manageApplications(Model model, Principal principal) {
         // Λήψη του email του συνδεδεμένου χρήστη
@@ -275,15 +279,17 @@ public class OwnerController {
         // Βρες τις αιτήσεις για τον ιδιοκτήτη
         List<RentalApplication> applications = applicationService.findByOwner(ownerId);
 
-        Map<RentalApplication, List<FileEntity>> applicationFilesMap = new HashMap<>();
+        Map<RentalApplication, List<Integer>> applicationFilesMap = new HashMap<>();
 
         for (RentalApplication app : applications) {
-            List<FileEntity> files = fileStorageService.findById(app.getId());
+            List<Integer> files = fileStorageService.findId(app.getId());
             applicationFilesMap.put(app, files);
         }
 
         model.addAttribute("ApplicationFilesMap", applicationFilesMap);
         model.addAttribute("Applications", applications);
+
+        System.out.println(applications);
 
         return "properties/manageApplications";
     }

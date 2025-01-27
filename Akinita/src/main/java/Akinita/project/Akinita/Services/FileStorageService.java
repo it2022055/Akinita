@@ -3,6 +3,7 @@ package Akinita.project.Akinita.Services;
 import Akinita.project.Akinita.Entities.FileEntity;
 import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Repositories.User.FileRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-import static com.fasterxml.jackson.databind.type.LogicalType.Collection;
-
 @Service
+
 public class FileStorageService {
 
     @Autowired
@@ -27,10 +27,14 @@ public class FileStorageService {
         return new ByteArrayResource(fileEntity.getData());
     }
 
-    public List<FileEntity> findById (int appId) {
-        return fileRepository.findAllById(appId);
+    @Transactional
+    public List<Integer> findId (int appId) {
+        return fileRepository.findAllTheId(appId);
     }
 
+    public FileEntity getFileByIdAndAppId(Integer fileId, Integer appId) {
+        return fileRepository.findByIdAndAppId(fileId, appId);
+    }
     public void saveFile(MultipartFile file, RentalApplication application) throws IOException {
         FileEntity fileEntity = new FileEntity();
         fileEntity.setFileName(file.getOriginalFilename());

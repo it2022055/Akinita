@@ -10,9 +10,6 @@ import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Entities.Role;
 import Akinita.project.Akinita.Entities.Actors.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -82,30 +78,6 @@ public class UserController {
             return "redirect:/Renter/applicationSubmitted";
         }
     }
-
-    @GetMapping("/users/rentalApplication/zip")
-    public ResponseEntity<String> downloadFilesAsZip(@RequestParam("application_id") int appId) throws IOException {
-        List<FileEntity> fileEntities = fileStorageService.findById(appId);
-
-        // Δημιουργία ενός ByteArrayOutputStream για να γράψεις το zip
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
-            for (FileEntity fileEntity : fileEntities) {
-                // Δημιουργία ZipEntry για κάθε αρχείο
-                ZipEntry zipEntry = new ZipEntry(fileEntity.getFileName());
-                zipOutputStream.putNextEntry(zipEntry);
-                zipOutputStream.write(fileEntity.getData());
-                zipOutputStream.closeEntry();
-            }
-        }
-
-        // Μετατροπή του zip σε Base64
-        String zipBase64 = Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
-
-        // Επιστροφή του Base64 zip αρχείου
-        return ResponseEntity.ok(zipBase64);
-    }
-
 
     @GetMapping("/users")
     public String showUsers(Model model){ //Μέθοδος προβολής όλων των users

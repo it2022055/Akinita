@@ -22,10 +22,10 @@
                     <th>Rental Duration</th>
                     <th>Renter Job</th>
                     <th>Renter Pets</th>
-                    <th>Actions</th>
                     <th>Files</th>
                 </tr>
                 </thead>
+
                 <tbody>
                 <tr th:each="RentalApplication : ${Applications}">
                     <td th:text="${RentalApplication.getProperty().getEstateName()}"></td>
@@ -34,22 +34,22 @@
                     <td th:text="${RentalApplication.getRenterJob()}"></td>
                     <td th:text="${RentalApplication.getRenterPets()}"></td>
 
-                    <!-- Εμφάνιση των αρχείων για κάθε αίτηση -->
+<!--                     Εμφάνιση των αρχείων για κάθε αίτηση -->
                     <td>
-                        <ul>
-                            <li th:each="file : ${ApplicationFilesMap[RentalApplication]}" th:text="${file.fileName}"></li>
+                        <ul th:if="${ApplicationFilesMap != null}">
+                            <li th:each="file : ${ApplicationFilesMap}" th:text="${file}"></li>
                         </ul>
+                        <span th:if="${ApplicationFilesMap == null}">No files available</span>
                     </td>
-                </tr>
-                </tbody>
-                    <td th:if="${RentalApplication.getId()}">
-                        <form th:action="@{/Owner/manageRentalApplications/setstatus}" method="post" style="display:inline;">
+
+                    <td>
+                        <form th:action="@{/Owner/manageRentalApplications/setstatus}" method="post" style="display:inline;">  <!-- na bgalw to set status -->
                             <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
                             <input type="hidden" name="status" value="accept" />
                             <button type="submit" class="button-accept">Accept</button>
                         </form>
                     </td>
-                    <td th:if="${RentalApplication.getId()}">
+                    <td>
                         <!-- Decline Form -->
                         <form th:action="@{/Owner/manageRentalApplications/setstatus}" method="post" style="display:inline;">
                             <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
