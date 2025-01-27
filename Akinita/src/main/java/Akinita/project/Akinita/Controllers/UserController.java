@@ -1,7 +1,5 @@
 package Akinita.project.Akinita.Controllers;
 
-import Akinita.project.Akinita.Entities.FileEntity;
-import Akinita.project.Akinita.Services.FileStorageService;
 import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.RenterService;
 import Akinita.project.Akinita.Services.UserService;
@@ -10,17 +8,9 @@ import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Entities.Role;
 import Akinita.project.Akinita.Entities.Actors.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Base64;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Controller
@@ -33,9 +23,6 @@ public class UserController {
 
     @Autowired
     private RenterService renterService; //Δήλωση του Renter Service
-
-    @Autowired
-    private FileStorageService fileStorageService;
 
     @PostMapping("/register") //Μέθοδος για registration
     public String register(@RequestParam("role") String role, Model model) {

@@ -4,7 +4,6 @@ import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Entities.Properties.CommercialProperty;
 import Akinita.project.Akinita.Entities.Properties.House;
 import Akinita.project.Akinita.Entities.RentalApplication;
-import Akinita.project.Akinita.Interfaces.FileEntityRepository;
 import Akinita.project.Akinita.Repositories.RealEstate.CommercialPropertyGenericRepository;
 import Akinita.project.Akinita.Repositories.RealEstate.HouseGenericRepository;
 import Akinita.project.Akinita.Repositories.RealEstate.PropertyRepository;
@@ -55,8 +54,7 @@ public class UserService implements UserDetailsService {
     private CommercialPropertyGenericRepository commercialPropertyGenericRepository;
     @Autowired
     private OwnerRepository ownerRepository;
-    @Autowired
-    private FileEntityRepository fileEntityRepository;
+
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -124,10 +122,6 @@ public class UserService implements UserDetailsService {
             // Βρες όλες τις αιτήσεις ενοικίασης του renter
             List<RentalApplication> rentalApplications = rentalApplicationRepository.findByRenterId1(id);
 
-            // Διαγραφή των αρχείων που σχετίζονται με τις αιτήσεις ενοικίασης
-            rentalApplications.forEach(rentalApplication -> {
-                fileEntityRepository.deleteByRentalApplicationId(rentalApplication.getId());
-            });
             // Διαγραφή των αιτήσεων ενοικίασης
             rentalApplicationRepository.deleteByRenterId(id);
             // Διαγραφή του renter

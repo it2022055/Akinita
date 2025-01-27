@@ -30,18 +30,6 @@
         <label for="applicationDescription">Description for Rental Application:</label>
         <textarea id="applicationDescription" name="description" rows="5" required></textarea>
 
-        <!-- Photocopy of the last tax statement -->
-        <label for="taxStatement">Photocopy of the last tax statement (PDF):</label>
-        <input type="file" id="taxStatement" name="taxStatement" accept=".pdf" required>
-
-        <!-- Identity Document -->
-        <label for="identityDocument">Copy of ID/Passport (PDF):</label>
-        <input type="file" id="identityDocument" name="identityDocument" accept=".pdf" required>
-
-        <!-- Terms Acceptance Document -->
-        <label for="termsAcceptance">Terms Acceptance Document (PDF):</label>
-        <input type="file" id="termsAcceptance" name="termsAcceptance" accept=".pdf" required>
-
         <!-- Κρυφό πεδίο για το property_id -->
         <input type="hidden" name="property_id" th:value="${property_id}" />
 

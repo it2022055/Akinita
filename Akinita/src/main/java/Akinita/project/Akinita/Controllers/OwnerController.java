@@ -3,27 +3,20 @@ package Akinita.project.Akinita.Controllers;
 import Akinita.project.Akinita.Entities.Actors.Owner;
 import Akinita.project.Akinita.Entities.Enums.EnergyClass;
 import Akinita.project.Akinita.Entities.Enums.Facilities;
-import Akinita.project.Akinita.Entities.FileEntity;
 import Akinita.project.Akinita.Entities.Properties.*;
 import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import Akinita.project.Akinita.Services.ApplicationService;
-import Akinita.project.Akinita.Services.FileStorageService;
 import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.PropertyService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
 import java.security.Principal;
 import java.util.*;
 
@@ -38,9 +31,6 @@ public class OwnerController {
     private OwnerService ownerService; //Δήλωση του owner Service
     @Autowired
     private ApplicationService applicationService; //Δήλωση του application Service
-    @Autowired
-    private FileStorageService fileStorageService;
-
     @GetMapping("/submitProperty") //Μέθοδος επιστροφής φόρμας για εισαγωγή γενικών πληροφοριών ιδιοκτησίας
     public String submitProperty() {
         return "properties/submitProperty";
@@ -280,17 +270,6 @@ public class OwnerController {
         // Βρες τις αιτήσεις για τον ιδιοκτήτη
         List<RentalApplication> applications = applicationService.findByOwner(ownerId);
 
-        Map<RentalApplication, List<FileEntity>> applicationFilesMap = new HashMap<>();
-
-//        for (RentalApplication app : applications) {
-//            List<Integer> files = fileStorageService.findId(app.getId());
-//            applicationFilesMap.put(app, files);
-//        }
-
-//        Optional<FileEntity> files = fileStorageService.getFileById(1);  den dexetai ena file pdf
-
-
-//        model.addAttribute("Pdf", files);
         model.addAttribute("Applications", applications);
 
         System.out.println(applications);

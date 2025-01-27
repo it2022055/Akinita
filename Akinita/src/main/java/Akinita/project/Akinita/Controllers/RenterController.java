@@ -28,8 +28,6 @@ public class RenterController {
     @Autowired
     private UserService userService;
     @Autowired
-    private FileStorageService fileStorageService;
-    @Autowired
     private ApplicationService applicationService;
 
     @GetMapping("/rental_application")
@@ -41,9 +39,6 @@ public class RenterController {
     @PostMapping("/rental_application")
     public String submitRentalApp(@RequestParam("property_id") Integer property_id,
                                   @RequestParam("jobSituation") String jobSituation,
-                                  @RequestParam("taxStatement") MultipartFile taxStatement,
-                                  @RequestParam("identityDocument") MultipartFile identityDocument,
-                                  @RequestParam("termsAcceptance") MultipartFile termsAcceptance,
                                   @RequestParam("rentalDuration") int rentalDuration,
                                   @RequestParam("description") String description,
                                   @RequestParam(value = "pets", defaultValue = "false") boolean pets,
@@ -53,13 +48,6 @@ public class RenterController {
         Integer renterId = renterService.findRenterIdByEmail(email);
         User renter = userService.getUser(renterId);
 
-        if(applicationService.findByProperty(property_id) != null) {
-            if (Objects.equals(renter.getId(), applicationService.findByProperty(property_id).getRenter().getId())) {
-                model.addAttribute("message", "You have already applied for for rent to this property!");
-                return "redirect:/";
-            }
-        }
-
 
         Property property = propertyService.getPropertyById(property_id);
         User owner = userService.getUser(property.getOwnerId());
@@ -67,9 +55,6 @@ public class RenterController {
         System.out.println("RenterId: " + renterId);
         System.out.println("PropertyId: " + property_id);
         System.out.println("JobSituation: " + jobSituation);
-        System.out.println("TaxStatement: " + taxStatement);
-        System.out.println("IdentityDocument: " + identityDocument);
-        System.out.println("TermsAcceptance: " + termsAcceptance);
         System.out.println("RentalDuration: " + rentalDuration);
         System.out.println("Description: " + description);
         System.out.println("Pets: " + pets);
@@ -77,6 +62,12 @@ public class RenterController {
 
         // Δημιουργία του αντικειμένου αίτησης ενοικίασης
         RentalApplication application = new RentalApplication();
+
+        if (Objects.equals(renter.getId(), applicationService.findByProperty(property_id).getRenter().getId())) {
+            model.addAttribute("message", "You have already applied for for rent to this property!");
+            return "redirect:/";
+        }
+
         application.setRenter(renter);
         application.setProperty(property);
         application.setOwner(owner);
@@ -85,27 +76,6 @@ public class RenterController {
         application.setRentalDuration(rentalDuration);
         application.setDescription(description);
         application.setRenterPets(pets);
-
-
-        renterService.saveApplication(application);            // part 1
-
-        // Αποθήκευση των αρχείων
-        try {
-            if (taxStatement != null && !taxStatement.isEmpty()) {
-                fileStorageService.saveFile(taxStatement, application);
-            }
-            if (identityDocument != null && !identityDocument.isEmpty()) {
-                fileStorageService.saveFile(identityDocument, application);
-            }
-            if (termsAcceptance != null && !termsAcceptance.isEmpty()) {
-                fileStorageService.saveFile(termsAcceptance, application);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            model.addAttribute("message", "Παρουσιάστηκε σφάλμα κατά την αποθήκευση των αρχείων.");
-            // na baloume enhmerwtikh selida
-            return "redirect:/Renter/RentalApplications";  // Ανακατεύθυνση αν υπάρχει σφάλμα
-        }
 
         // Αποθήκευση της αίτησης (μπορείς να την αποθηκεύσεις στη βάση μέσω του Service)
         renterService.saveApplication(application);
