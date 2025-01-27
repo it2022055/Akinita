@@ -26,4 +26,7 @@ public interface HouseGenericRepository extends PropertyGenericRepository<House,
 
     List<Property> findByConstructionDateBefore(@Param("construction_date") Date construction_date);
 
+    @Query("SELECT h FROM House h WHERE h.owner.userId = :userId")
+    List<House> findByOwnerId(@Param("userId") int userId);
+
 }

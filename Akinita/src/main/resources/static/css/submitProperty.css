@@ -18,6 +18,8 @@
     box-sizing: border-box;
     height: 800px; /* Αυξάνει το ύψος της φόρμας με το περιεχόμενο */
     overflow: visible; /* Αφαιρεί την κύλιση */
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 .parking-form {
@@ -39,6 +41,8 @@
     box-sizing: border-box;
     height: 800px; /* Αυξάνει το ύψος της φόρμας με το περιεχόμενο */
     overflow: visible; /* Αφαιρεί την κύλιση */
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 /* Heading */

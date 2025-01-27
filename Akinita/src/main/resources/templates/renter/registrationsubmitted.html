@@ -3,16 +3,15 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{page_layout/layout}">
-
 <head>
     <meta charset="UTF-8">
-    <title>Rental Application Submitted</title>
+    <title>Registration submitted</title>
     <link th:href="@{/css/propertySubmitted.css}" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="main-content">
     <form class="form" th:action="@{/}" method="get">
-        <p id="heading">Your rental application has been submitted! Please wait while the owner reviews it</p>
+        <p id="heading">Your register application has been submitted! Please wait while the owner reviews it</p>
         <div class="loader">
             <div class="truckWrapper">
                 <div class="truckBody">
@@ -146,5 +145,4 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
     </form>
 </div>
 </body>
-
 </html>

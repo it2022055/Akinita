@@ -27,4 +27,7 @@ public interface CommercialPropertyGenericRepository extends PropertyGenericRepo
     @Query("SELECT c FROM CommercialProperty c JOIN Property p ON p.id = c.id WHERE p.id = :id")
     House findByCommercialPropertyId(@Param("id") Integer id);
 
+    @Query("SELECT h FROM CommercialProperty h WHERE h.owner.userId = :userId")
+    List<CommercialProperty> findByOwnerId(@Param("userId") int userId);
+
 }

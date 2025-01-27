@@ -9,7 +9,10 @@ import Akinita.project.Akinita.Interfaces.LimitedMethods.ConstructionDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -38,7 +41,10 @@ public class CommercialProperty extends Property implements ConstructionDate, Bu
     @CollectionTable(name = "commercialproperty_facilities", joinColumns = @JoinColumn(name = "id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "facility")
+    @Cascade(CascadeType.ALL)  // Use Hibernate's Cascade here
     private Set<Facilities> facilities = new HashSet<>();
+
+
 
     @Enumerated(EnumType.STRING)
     @Column

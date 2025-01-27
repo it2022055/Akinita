@@ -12,25 +12,38 @@
 </head>
 
 <body>
-<div layout:fragment="main-content" class="container">
-    <form class="form" th:action="@{/Renter/rental_application}" method="get">
+<div layout:fragment="main-content">
+    <form  class="form" th:action="@{/Renter/rental_application}" method="get">
         <p id="heading">Property Search Results</p>
         <div th:if="${#lists.isEmpty(properties)}">
             <p style="color: black; font-size: 1.5em; margin-bottom: 2em;">No properties found matching your criteria.</p>
         </div>
-        <div th:each="property : ${properties}" class="property-card">
-            <h2 th:text="${property.getEstateName()}">Property Name</h2>
-            <p th:text="${property.getDescription()}">Property Description</p>
-            <p th:text="${property.getLocation()}">Property Location</p>
-            <p th:text="${property.getSquareMeter()} + ' m²'">Property Size</p>
-            <p th:text="'€' + ${property.getPrice()}">Property Price</p>
+        <div th:if="${ not#lists.isEmpty(properties)}" style="color: rgba(45,45,48,0.90)">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Estate Name</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Square meters</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="property : ${properties}">
+                    <td th:text="${property.getEstateName()}"></td>
+                    <td th:text="${property.getDescription()}"></td>
+                    <td th:text="${property.getLocation()}"></td>
+                    <td th:text="${property.getSquareMeter()}"></td>
+                    <td th:text="${property.getPrice()}"></td>
+                    <td>
+                        <button type="submit" class="button1" sec:authorize="hasRole('ROLE_RENTER')">Apply for Renting</button>
+                        <input type="hidden" name="property_id" th:value="${property.id}"/>
+                    </td>
+                </tr>
+                </tbody>
 
-            <!-- Κρυφό πεδίο για το property.id -->
-            <input type="hidden" name="property_id" th:value="${property.id}" />
-
-            <!-- Εμφάνιση κουμπιού μόνο αν ο ρόλος είναι ROLE_RENTER -->
-            <button type="submit" class="button1" sec:authorize="hasRole('ROLE_RENTER')">Apply for Renting</button>
-
+            </table>
         </div>
     </form>
 </div>

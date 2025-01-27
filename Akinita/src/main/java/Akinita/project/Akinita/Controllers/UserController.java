@@ -150,6 +150,19 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/delete/{user_id}")
+    public String deleteUser(@PathVariable int user_id, Model model){ //Μέθοδος διαγραφής ρόλου
+        User user = (User) userService.getUser(user_id); //Ανάκτηση user
+        System.out.println("User id" + user_id);
+        try{
+            userService.deleteUser(user,user.getId());
+        }catch (Exception e){
+            throw new RuntimeException("Updating user failed");
+        }
+        return "auth/users";
+
+    }
+
     @GetMapping("/user/role/add/{user_id}/{role_id}")
     public String addRoletoUser(@PathVariable int user_id, @PathVariable Integer role_id, Model model){ //Μέθοδος προσθήκης ρόλου
         User user = (User) userService.getUser(user_id); //Ανάκτηση user

@@ -115,11 +115,15 @@ public class RenterController {
 
         // Ανακατεύθυνση ή επιστροφή στη σελίδα
         return "redirect:/Renter/applicationSubmitted";  // Ανακατεύθυνση στη σελίδα με τις αιτήσεις
+    }
 
+    @GetMapping("/registrationSubmitted")
+    public String RegistrationApplicationsSub() {
+        return "/renter/registrationsubmitted";
     }
 
     @GetMapping("/applicationSubmitted")
-    public String RentalApplicationsSub(Model model, Principal principal) {
+    public String RentalApplicationsSub() {
         return "/renter/applicationSubmitted";
     }
 
