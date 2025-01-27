@@ -53,9 +53,11 @@ public class RenterController {
         Integer renterId = renterService.findRenterIdByEmail(email);
         User renter = userService.getUser(renterId);
 
-        if(Objects.equals(renter.getId(), applicationService.findByRenter(renter.getId()).getRenter().getId())){
-            model.addAttribute("message", "You have already applied for for rent to this property!");
-            return "redirect:/";
+        if(applicationService.findByRenter(renter.getId()) != null) {
+            if (Objects.equals(renter.getId(), applicationService.findByRenter(renter.getId()).getRenter().getId())) {
+                model.addAttribute("message", "You have already applied for for rent to this property!");
+                return "redirect:/";
+            }
         }
 
 
@@ -101,6 +103,7 @@ public class RenterController {
         } catch (IOException e) {
             e.printStackTrace();
             model.addAttribute("message", "Παρουσιάστηκε σφάλμα κατά την αποθήκευση των αρχείων.");
+            // na baloume enhmerwtikh selida
             return "redirect:/Renter/RentalApplications";  // Ανακατεύθυνση αν υπάρχει σφάλμα
         }
 

@@ -79,6 +79,13 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>8.0.2.Final</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.webjars/jszip -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jszip</artifactId>
+			<version>3.10.1</version>
+		</dependency>
+
 
 	</dependencies>
 

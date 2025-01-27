@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Path;
 import jakarta.validation.constraints.Past;
 import org.springframework.format.annotation.DateTimeFormat;

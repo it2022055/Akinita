@@ -5,6 +5,9 @@ import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
@@ -14,7 +17,7 @@ public class ApplicationService {
     @Autowired
     private RentalApplicationRepository rentalApplicationRepository;
 
-    public RentalApplication findByOwner(int owner_id) {
+    public List<RentalApplication> findByOwner(int owner_id) {
         return rentalApplicationRepository.findByOwnerId(owner_id);
     }
 
@@ -30,9 +33,16 @@ public class ApplicationService {
         return rentalApplicationRepository.save(rentalApplication);
     }
 
-    public RentalApplication getApplication(int rpId) {
-        return  rentalApplicationRepository.findById(rpId);
+    public void acceptApplication(int appId){
+        rentalApplicationRepository.setStatus(true, appId);
     }
 
-    public void SetRentalApplicationStatus(Boolean status) {rentalApplicationRepository.setStatus(status);} //Μέθοδος για προσθήκη status στη βάση δεδομένων
+    public void declineApplication(int appId){
+        rentalApplicationRepository.setStatus(false, appId);
+    }
+
+    public void setDateCurrDate(int applicationId) {
+        Date currDate = new Date();
+        rentalApplicationRepository.setDateCurrDate(applicationId, currDate);
+    }
 }

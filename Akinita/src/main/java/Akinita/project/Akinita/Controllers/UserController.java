@@ -1,5 +1,7 @@
 package Akinita.project.Akinita.Controllers;
 
+import Akinita.project.Akinita.Entities.FileEntity;
+import Akinita.project.Akinita.Services.FileStorageService;
 import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.RenterService;
 import Akinita.project.Akinita.Services.UserService;
@@ -8,9 +10,22 @@ import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Entities.Role;
 import Akinita.project.Akinita.Entities.Actors.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Controller
 public class UserController {
@@ -23,14 +38,8 @@ public class UserController {
     @Autowired
     private RenterService renterService; //Δήλωση του Renter Service
 
-
-    public UserController(UserService userService,OwnerService ownerService,RenterService renterService) {
-        this.userService = userService;
-        this.ownerService = ownerService;
-        this.renterService = renterService;
-    }
-
-
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @PostMapping("/register") //Μέθοδος για registration
     public String register(@RequestParam("role") String role, Model model) {
@@ -74,9 +83,27 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/rentalApplication") //Μέθοδος επιστροφής rental application
-    public String rentalApplication() {
-        return "auth/rentalApplication";
+    @GetMapping("/users/rentalApplication/zip")
+    public ResponseEntity<String> downloadFilesAsZip(@RequestParam("application_id") int appId) throws IOException {
+        List<FileEntity> fileEntities = fileStorageService.findById(appId);
+
+        // Δημιουργία ενός ByteArrayOutputStream για να γράψεις το zip
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
+            for (FileEntity fileEntity : fileEntities) {
+                // Δημιουργία ZipEntry για κάθε αρχείο
+                ZipEntry zipEntry = new ZipEntry(fileEntity.getFileName());
+                zipOutputStream.putNextEntry(zipEntry);
+                zipOutputStream.write(fileEntity.getData());
+                zipOutputStream.closeEntry();
+            }
+        }
+
+        // Μετατροπή του zip σε Base64
+        String zipBase64 = Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
+
+        // Επιστροφή του Base64 zip αρχείου
+        return ResponseEntity.ok(zipBase64);
     }
 
 

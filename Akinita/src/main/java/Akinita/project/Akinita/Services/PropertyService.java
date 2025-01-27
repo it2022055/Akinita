@@ -25,11 +25,6 @@ public class PropertyService {
     CommercialPropertyGenericRepository commercialPropertyRepository;
 
 
-    public int SaveProperty(Property property) { //Δες αν το θελεις αυτό- Ζαχος
-        propertyRepository.save(property);
-        return propertyRepository.findIdByProperty(property);
-    }
-
     public List<Property> findProperties(String location, String propertyType, Double minPrice, Double maxPrice, Integer minSize, Integer maxSize, Boolean buildingFees, Date constructionDate, Double priceSlider, Integer sizeSlider, Boolean availability) {
 
         List<Property> filter = findByTypeAndLocation(propertyType, location);                 // Filtering by Type and Location

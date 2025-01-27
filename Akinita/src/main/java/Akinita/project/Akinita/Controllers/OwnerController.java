@@ -3,10 +3,12 @@ package Akinita.project.Akinita.Controllers;
 import Akinita.project.Akinita.Entities.Actors.Owner;
 import Akinita.project.Akinita.Entities.Enums.EnergyClass;
 import Akinita.project.Akinita.Entities.Enums.Facilities;
+import Akinita.project.Akinita.Entities.FileEntity;
 import Akinita.project.Akinita.Entities.Properties.*;
 import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import Akinita.project.Akinita.Services.ApplicationService;
+import Akinita.project.Akinita.Services.FileStorageService;
 import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.PropertyService;
 import jakarta.transaction.Transactional;
@@ -18,9 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @SuppressWarnings({"DuplicatedCode", "SpringJavaAutowiredFieldsWarningInspection"})
 @Controller
@@ -33,6 +33,8 @@ public class OwnerController {
     private OwnerService ownerService; //Δήλωση του owner Service
     @Autowired
     private ApplicationService applicationService; //Δήλωση του application Service
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @GetMapping("/submitProperty") //Μέθοδος επιστροφής φόρμας για εισαγωγή γενικών πληροφοριών ιδιοκτησίας
     public String submitProperty() {
@@ -221,8 +223,6 @@ public class OwnerController {
     }
 
 
-
-
     @GetMapping("/propertySubmitted") //Επιστροφή φόρμας επιτυχίας προσθήκης ιδιοκτησίας στη βάση δεδομένων
     public String propertySubmitted() {
         return "properties/propertySubmitted";
@@ -263,38 +263,42 @@ public class OwnerController {
         return "redirect:/Owner/Listings";
     }
 
-    @GetMapping("/manageApplications") //Μέθοδος διαχείρισης φορμών ενοικίασης
+
+    @GetMapping("/manageApplications")
     public String manageApplications(Model model, Principal principal) {
+        // Λήψη του email του συνδεδεμένου χρήστη
         String email = principal.getName();
+
+        // Βρες το ID του ιδιοκτήτη με βάση το email
         Integer ownerId = ownerService.findOwnerIdByEmail(email);
-        model.addAttribute("Applications", ownerService.getOwnerRentalApplications(ownerId)); //Επιστροφή των applications
+
+        // Βρες τις αιτήσεις για τον ιδιοκτήτη
+        List<RentalApplication> applications = applicationService.findByOwner(ownerId);
+
+        Map<RentalApplication, List<FileEntity>> applicationFilesMap = new HashMap<>();
+
+        for (RentalApplication app : applications) {
+            List<FileEntity> files = fileStorageService.findById(app.getId());
+            applicationFilesMap.put(app, files);
+        }
+
+        model.addAttribute("ApplicationFilesMap", applicationFilesMap);
+        model.addAttribute("Applications", applications);
+
         return "properties/manageApplications";
     }
 
-    @Transactional
-    @GetMapping("/manageRentalApplications/setstatus/{rentalApplication_id}") //Μέθοδος αποδοχής/απόρριψης application
-    public String SetStatus(@PathVariable("rentalApplication_id") Integer rentalApplication_id,
-                            @RequestParam("status") String status) {
-        RentalApplication the_rentalApplication = applicationService.getApplication(rentalApplication_id);
-        try {
-            if ("accept".equalsIgnoreCase(status)) {
-                applicationService.SetRentalApplicationStatus(true); //Αποδοχή
-
-            } else if ("decline".equalsIgnoreCase(status)) {
-                applicationService.SetRentalApplicationStatus(false); //Απόρριψη
-            } else {
-                throw new IllegalArgumentException("Invalid status value: " + status);
-            }
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid status value: " + status);
-        }
-        try{
-            applicationService.save(the_rentalApplication); //Αποθήκευση αλλαγής στη Βάση Δεδομένων
-        }catch (Exception e){
-            throw new RuntimeException("Error updating rental application");
-        }
-        return "redirect:/Owner/manageApplications";
+    @GetMapping("/accept_application")
+    public String acceptApplication(@RequestParam("application_id") int applicationId, Principal principal) {;
+        applicationService.acceptApplication(applicationId);
+        applicationService.setDateCurrDate(applicationId);
+        return "redirect:/Owner/Listings";
     }
 
+    @GetMapping("/decline_application")
+    public String declineApplication(@RequestParam("application_id") int applicationId, Principal principal) {;
+        applicationService.declineApplication(applicationId);
+        return "redirect:/Owner/Listings";
+    }
 
 }

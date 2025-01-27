@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Applications</title>
+    <link th:href="@{/css/manageApplications.css}" rel="stylesheet">
+</head>
+
+<body>
+<div layout:fragment="main-content">
+    <div th:if="${not #lists.isEmpty(Applications)}" style="color: black">
+        <div th:each="RentalApplication : ${Applications}" class="application-card">
+            <h2 th:text="'Application for: ' + ${RentalApplication.getProperty().getEstateName()}">Property Name</h2>
+            <p th:text="'Renter: ' + ${RentalApplication.getRenter().getUsername()}">Renter Name</p>
+            <p th:text="'Rental Duration: ' + ${RentalApplication.getRentalDuration()}">Rental Duration</p>
+            <p th:text="'Job: ' + ${RentalApplication.getRenterJob()}">Renter Job</p>
+            <p th:text="'Pets: ' + ${RentalApplication.getRenterPets()}">Renter Pets</p>
+
+            <!-- Κρυφό πεδίο για το application.id -->
+            <input type="hidden" name="application_id" th:value="${RentalApplication.getId()}" />
+
+            <!-- Κουμπιά Accept και Decline -->
+            <form th:action="@{/Owner/manageRentalApplications/setstatus}" method="post" style="display:inline;">
+                <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
+                <input type="hidden" name="status" value="accept" />
+                <button type="submit" class="button-accept">Accept</button>
+            </form>
+            <form th:action="@{/Owner/manageRentalApplications/setstatus}" method="post" style="display:inline;">
+                <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
+                <input type="hidden" name="status" value="decline" />
+                <button type="submit" class="button-decline">Decline</button>
+            </form>
+
+            <!-- Εμφάνιση των αρχείων PDF -->
+            <div th:each="file : ${RentalApplication.getFiles()}">
+                <p th:text="'File: ' + ${file.fileName}"
+                   onclick="openPdfViewer('${file.fileUrl}')">File: </p>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(Applications)}" style="color: black">
+        No rental applications were found!
+    </div>
+</div>
+
+<script>
+    // Λειτουργία για άνοιγμα του PDF σε νέο παράθυρο pop-up
+    function openPdfViewer(fileUrl) {
+        // Δημιουργεί νέο παράθυρο με το συγκεκριμένο URL του PDF
+        const popupWindow = window.open(fileUrl, 'pdfViewer', 'width=800,height=600,scrollbars=yes,resizable=no');
+
+        // Αν θέλεις να έχεις και κάποιες άλλες ρυθμίσεις (π.χ. διαχείριση ελέγχου της οθόνης)
+        // μπορείς να προσθέσεις περισσότερες παραμέτρους στο δεύτερο όρισμα της window.open().
+    }
+
+    // Η λειτουργία closePdfViewer δεν χρειάζεται, γιατί το PDF ανοίγει σε νέο pop-up παράθυρο
+</script>
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 package Akinita.project.Akinita.Entities;
 
+import groovy.transform.builder.Builder;
 import jakarta.persistence.*;
 
 @Entity
