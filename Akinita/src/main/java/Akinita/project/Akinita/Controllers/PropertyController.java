@@ -40,7 +40,7 @@ public class PropertyController {
         }else{
             bf = buildingFees.equals("Yes");
         }
-        String locationT = (location == null)? "All" : location;
+        String locationT = (location.isEmpty())? "All" : location;
 
         System.out.println("Location: " + locationT);
         System.out.println("Property Type: " + propertyType);
