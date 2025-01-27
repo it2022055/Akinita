@@ -40,11 +40,15 @@ public class PropertyService {
 
         filter = findByBuildingFees(filter, propertyType, buildingFees);                          // Filtering by Building fees
 
+        System.out.println("2" + filter);
+
         filter = findByConstructionDate(filter, propertyType, constructionDate);        // Filtering by construction date
+
+        System.out.println("3" + filter);
 
         filter = findByAvailability(filter, availability);
 
-        System.out.println(filter);
+        System.out.println("4" +  filter);
 
         return filter;
     }

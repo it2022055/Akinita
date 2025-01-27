@@ -30,16 +30,11 @@ public class PropertyController {
                                    @RequestParam(name = "minSize", required = false) Integer minSize,
                                    @RequestParam(name = "maxSize", required = false) Integer maxSize,
                                    @RequestParam(name = "sizeSlider", required = false) Integer sizeSlider,
-                                   @RequestParam(name = "buildingFees", required = false) String buildingFees,
+                                   @RequestParam(name = "buildingFees", required = false) Boolean buildingFees,
                                    @RequestParam(name = "constructionDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date constructionDate,
                                    RedirectAttributes redirectAttributes) {
 
-        boolean bf ;
-        if (buildingFees == null ){
-            bf = false;
-        }else{
-            bf = buildingFees.equals("Yes");
-        }
+
         String locationT = (location.isEmpty())? "All" : location;
 
         Boolean availability = true;
@@ -50,13 +45,13 @@ public class PropertyController {
         System.out.println("Max Price: " + maxPrice);
         System.out.println("Min Size: " + minSize);
         System.out.println("Max Size: " + maxSize);
-        System.out.println("Building Fees: " + bf);
+        System.out.println("Building Fees: " + buildingFees);
         System.out.println("Construction Date: " + constructionDate);
         System.out.println("Size slider: " + sizeSlider);
         System.out.println("Price slider: " + priceSlider);
 
 
-        List<Property> properties = propertyService.findProperties(locationT, propertyType, minPrice, maxPrice, minSize, maxSize, bf, constructionDate,priceSlider, sizeSlider, availability);
+        List<Property> properties = propertyService.findProperties(locationT, propertyType, minPrice, maxPrice, minSize, maxSize, buildingFees, constructionDate,priceSlider, sizeSlider, availability);
         redirectAttributes.addFlashAttribute("properties", properties);
         return "redirect:/Service/search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
     }
