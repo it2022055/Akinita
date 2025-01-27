@@ -25,10 +25,6 @@ public class RenterService {
         return renter != null ? renter.getUserId() : null;
     }
 
-    public List<RentalApplication> getRenterRentalApplications(int renterId) {
-        return new ArrayList<>((Collection) applicationService.findByRenter(renterId));
-    }
-
     public RentalApplication saveApplication(RentalApplication rentalApplication) {
         return applicationService.save(rentalApplication);
     }

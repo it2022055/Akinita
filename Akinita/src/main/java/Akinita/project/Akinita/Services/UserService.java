@@ -120,7 +120,7 @@ public class UserService implements UserDetailsService {
     public void deleteUser(User user, int id) {
         if (user.getRoles().stream().anyMatch(role -> role.toString().equals("ROLE_RENTER"))) {
             // Βρες όλες τις αιτήσεις ενοικίασης του renter
-            List<RentalApplication> rentalApplications = rentalApplicationRepository.findByRenterId1(id);
+            List<RentalApplication> rentalApplications = rentalApplicationRepository.findByRenterId(id);
 
             // Διαγραφή των αιτήσεων ενοικίασης
             rentalApplicationRepository.deleteByRenterId(id);

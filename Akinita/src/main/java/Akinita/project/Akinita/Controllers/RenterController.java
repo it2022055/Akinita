@@ -63,10 +63,12 @@ public class RenterController {
         // Δημιουργία του αντικειμένου αίτησης ενοικίασης
         RentalApplication application = new RentalApplication();
 
-        if (Objects.equals(renter.getId(), applicationService.findByProperty(property_id).getRenter().getId())) {
+
+        if(!applicationService.findByRenter(renter.getId()).contains(applicationService.findByProperty(property_id))  ) {
             model.addAttribute("message", "You have already applied for for rent to this property!");
             return "redirect:/";
         }
+
 
         application.setRenter(renter);
         application.setProperty(property);

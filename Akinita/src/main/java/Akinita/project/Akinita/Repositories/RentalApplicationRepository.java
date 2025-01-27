@@ -20,10 +20,7 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
     List<RentalApplication> findByOwnerId(@Param("ownerId") Integer ownerId);
 
     @Query("SELECT r FROM RentalApplication r WHERE r.renter.id = :renterId")
-    RentalApplication findByRenterId(int renterId);
-
-    @Query("SELECT r FROM RentalApplication r WHERE r.renter.id = :renterId")
-    List<RentalApplication> findByRenterId1(int renterId);
+    List<RentalApplication> findByRenterId(int renterId);
 
     @Query("SELECT r FROM RentalApplication r WHERE r.property.id = :propertyId")
     RentalApplication findByPropertyId(int propertyId);

@@ -21,7 +21,7 @@ public class ApplicationService {
         return rentalApplicationRepository.findByOwnerId(owner_id);
     }
 
-    public RentalApplication findByRenter(int renter_id) {
+    public List<RentalApplication> findByRenter(int renter_id) {
         return rentalApplicationRepository.findByRenterId(renter_id);
     }
 
