@@ -32,6 +32,7 @@
                         <span th:each="role : ${roles}">
                         <a  class="btn btn-success" th:href="@{/user/role/add/{id}/{role_id}(id=${user.id},role_id=${role.id})}" th:if="${! user.roles.contains(role)}" th:utext="'Add ' + ${role.name}"></a>
                     </span>
+                        <a class="btn btn-danger" th:href="@{/user/delete/{user_id}(user_id=${user.id})}" th:text="'Delete ' + ${user.username}">Delete</a>
                     </td>
                 </tr>
                 </tbody>
@@ -40,6 +41,7 @@
         <div th:if="${ #lists.isEmpty(users)}">
             No users found!
         </div>
+        <a href="/roleselection" class="btn btn-primary" role="button">Create new User</a>
     </form>
 </div>
 </body>

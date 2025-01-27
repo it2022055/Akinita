@@ -31,7 +31,6 @@ public class UserController {
     }
 
 
-
     @PostMapping("/register") //Μέθοδος για registration
     public String register(@RequestParam("role") String role, Model model) {
         User user = new User();
@@ -70,7 +69,7 @@ public class UserController {
             }catch (Exception e){
                 throw new RuntimeException("Saving renter failed");
             }
-            return "redirect:/Renter/applicationSubmitted";
+            return "redirect:/Renter/registrationSubmitted";
         }
     }
 
@@ -119,6 +118,19 @@ public class UserController {
         }
         model.addAttribute("users", userService.getUsers()); //Προσθήκη users στο model
         model.addAttribute("roles", userService.getRoles()); //Προσθήκη ρόλων στο model
+        return "auth/users";
+
+    }
+
+    @GetMapping("/user/delete/{user_id}")
+    public String deleteUser(@PathVariable int user_id, Model model){ //Μέθοδος διαγραφής ρόλου
+        User user = (User) userService.getUser(user_id); //Ανάκτηση user
+        System.out.println("User id" + user_id);
+        try{
+            userService.deleteUser(user,user.getId());
+        }catch (Exception e){
+            throw new RuntimeException("Updating user failed");
+        }
         return "auth/users";
 
     }

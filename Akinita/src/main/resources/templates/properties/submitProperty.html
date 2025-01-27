@@ -29,8 +29,8 @@
 <body>
 <div layout:fragment="main-content">
     <form class="form default-form" th:action="@{/Owner/submitNewProperty}" method="post">
-        <p id="heading">Property Submission</p>
         <div class="field">
+            <p id="heading">Property Submission</p>
             <label>
                 <input autocomplete="off" placeholder="Estate Name" name="estateName" class="input-field" type="text">
             </label>
@@ -52,7 +52,7 @@
         </div>
         <div class="field">
             <label>
-                <input autocomplete="off" placeholder="Square meters" name="SqMeters" class="input-field" type="text">
+                <input autocomplete="off" placeholder="Square meters" name="SqMeters" class="input-field" type="number">
             </label>
         </div>
 

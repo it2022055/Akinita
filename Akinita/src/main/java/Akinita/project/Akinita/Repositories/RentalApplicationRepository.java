@@ -18,10 +18,13 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
     RentalApplication findByOwnerId(@Param("ownerId") int ownerId);
 
 
-    @Query ("SELECT r FROM RentalApplication r WHERE r.renter.id = :renterId")
+    @Query("SELECT r FROM RentalApplication r WHERE r.renter.id = :renterId")
     RentalApplication findByRenterId(int renterId);
 
-    @Query ("SELECT r FROM RentalApplication r WHERE r.property.id = :propertyId")
+    @Query("SELECT r FROM RentalApplication r WHERE r.renter.id = :renterId")
+    List<RentalApplication> findByRenterId1(int renterId);
+
+    @Query("SELECT r FROM RentalApplication r WHERE r.property.id = :propertyId")
     RentalApplication findByPropertyId(int propertyId);
 
     RentalApplication findById(int id);
@@ -30,4 +33,18 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
     @Transactional
     @Query("UPDATE RentalApplication ra SET ra.Status = :status")
     void setStatus(@Param("status") Boolean status);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM RentalApplication r WHERE r.owner.id = :ownerId")
+    void deleteByOwnerId(@Param("ownerId") int ownerId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM RentalApplication r WHERE r.renter.id = :renterId")
+    void deleteByRenterId(@Param("renterId") int renterId);
+
+
+
+
 }

@@ -1,6 +1,15 @@
 package Akinita.project.Akinita.Services;
 
 import Akinita.project.Akinita.Entities.Actors.Renter;
+import Akinita.project.Akinita.Entities.Properties.CommercialProperty;
+import Akinita.project.Akinita.Entities.Properties.House;
+import Akinita.project.Akinita.Entities.RentalApplication;
+import Akinita.project.Akinita.Interfaces.FileEntityRepository;
+import Akinita.project.Akinita.Repositories.RealEstate.CommercialPropertyGenericRepository;
+import Akinita.project.Akinita.Repositories.RealEstate.HouseGenericRepository;
+import Akinita.project.Akinita.Repositories.RealEstate.PropertyRepository;
+import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
+import Akinita.project.Akinita.Repositories.User.OwnerRepository;
 import Akinita.project.Akinita.Repositories.User.RenterRepository;
 import Akinita.project.Akinita.Repositories.User.RoleRepository;
 import Akinita.project.Akinita.Repositories.User.UserRepository;
@@ -32,8 +41,23 @@ public class UserService implements UserDetailsService {
     @Autowired
     private RenterRepository renterRepository; //Δήλωση του renter repository
 
+    @Autowired
+    private RentalApplicationRepository rentalApplicationRepository;
 
     private BCryptPasswordEncoder passwordEncoder; //Δήλωση του password Encoder
+    @Autowired
+    private PropertyService propertyService;
+    @Autowired
+    private PropertyRepository propertyRepository;
+    @Autowired
+    private HouseGenericRepository houseGenericRepository;
+    @Autowired
+    private CommercialPropertyGenericRepository commercialPropertyGenericRepository;
+    @Autowired
+    private OwnerRepository ownerRepository;
+    @Autowired
+    private FileEntityRepository fileEntityRepository;
+
     public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -93,6 +117,52 @@ public class UserService implements UserDetailsService {
             );
         }
     }
+
+    @Transactional
+    public void deleteUser(User user, int id) {
+        if (user.getRoles().stream().anyMatch(role -> role.toString().equals("ROLE_RENTER"))) {
+            // Βρες όλες τις αιτήσεις ενοικίασης του renter
+            List<RentalApplication> rentalApplications = rentalApplicationRepository.findByRenterId1(id);
+
+            // Διαγραφή των αρχείων που σχετίζονται με τις αιτήσεις ενοικίασης
+            rentalApplications.forEach(rentalApplication -> {
+                fileEntityRepository.deleteByRentalApplicationId(rentalApplication.getId());
+            });
+            // Διαγραφή των αιτήσεων ενοικίασης
+            rentalApplicationRepository.deleteByRenterId(id);
+            // Διαγραφή του renter
+            renterRepository.deleteById(id);
+        } else {
+            // Διαγραφή από τον πίνακα house_facilities πριν από τη διαγραφή του House
+            List<House> houses = houseGenericRepository.findByOwnerId(id);
+            if(!houses.isEmpty()) {
+                for (House house : houses) {
+                    house.getFacilities().clear();  // Καθαρισμός της συλλογής facilities
+                    try{
+                        houseGenericRepository.delete(house);  // Διαγραφή του house
+                    }catch (Exception e){
+                        throw  new RuntimeException(e.getMessage());
+                    }
+
+                }
+            }
+            List<CommercialProperty> commercialProperties = commercialPropertyGenericRepository.findByOwnerId(id);
+            if(!commercialProperties.isEmpty()){
+                for (CommercialProperty commercialProperty : commercialProperties) {
+                    commercialProperty.getFacilities().clear();
+                    try{
+                        commercialPropertyGenericRepository.delete(commercialProperty);
+                    }catch (Exception e){
+                        throw  new RuntimeException(e.getMessage());
+                    }
+                }
+            }
+            ownerRepository.deleteById(id);
+        }
+        // Διαγραφή του user
+        userRepository.delete(user);
+    }
+
 
 
 

@@ -1,6 +1,8 @@
 package Akinita.project.Akinita.Repositories.RealEstate;
 
 import Akinita.project.Akinita.Entities.Properties.Property;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -22,5 +24,8 @@ public interface PropertyRepository extends PropertyGenericRepository<Property,I
 
     List<Property> findByVisibility(String visibility);
 
-
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Property p WHERE p.owner.id = :ownerId")
+    void deleteByOwnerId(@Param("ownerId") Integer ownerId);
 }
