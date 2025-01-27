@@ -30,17 +30,7 @@ public class PropertyService {
         return propertyRepository.findIdByProperty(property);
     }
 
-    public List<? extends Property> findAllPropertiesByLocation(String location, String propertyType) { //Δες αν το θελεις αυτό- Ζαχος
-        return switch (propertyType) {
-            case "House" -> houseRepository.findByLocation(location);
-            case "Land" -> landRepository.findByLocation(location);
-            case "Parking" -> parkingRepository.findByLocation(location);
-            case "CommercialProperty" -> commercialPropertyRepository.findByLocation(location);
-            default -> throw new IllegalArgumentException("Invalid property type");
-        };
-    }
-
-    public List<Property> findProperties(String location, String propertyType, Double minPrice, Double maxPrice, Integer minSize, Integer maxSize, Boolean buildingFees, Date constructionDate, Double priceSlider, Integer sizeSlider) {
+    public List<Property> findProperties(String location, String propertyType, Double minPrice, Double maxPrice, Integer minSize, Integer maxSize, Boolean buildingFees, Date constructionDate, Double priceSlider, Integer sizeSlider, Boolean availability) {
 
         List<Property> filter = findByTypeAndLocation(propertyType, location);                 // Filtering by Type and Location
 
@@ -50,9 +40,11 @@ public class PropertyService {
 
         filter = findByBuildingFees(filter, propertyType, buildingFees);                          // Filtering by Building fees
 
-        System.out.println(filter);
-
         filter = findByConstructionDate(filter, propertyType, constructionDate);        // Filtering by construction date
+
+        filter = findByAvailability(filter, availability);
+
+        System.out.println(filter);
 
         return filter;
     }
@@ -94,16 +86,22 @@ public class PropertyService {
 
     private List<Property> findByBuildingFees(List<Property> properties, String type, Boolean buildingFees) {
         return properties.stream()
-                .filter(p -> !type.equals("House") || houseRepository.findByHouseId(p.getId()).getBuildingFees().equals(buildingFees))
-                .filter(p -> !type.equals("CommercialProperty") || commercialPropertyRepository.findByCommercialPropertyId(p.getId()).getBuildingFees().equals(buildingFees))
+                .filter(p -> !type.equals("House") || buildingFees == null || houseRepository.findByHouseId(p.getId()).getBuildingFees().equals(buildingFees))
+                .filter(p -> !type.equals("CommercialProperty") || buildingFees == null  || commercialPropertyRepository.findByCommercialPropertyId(p.getId()).getBuildingFees().equals(buildingFees))
                 .collect(Collectors.toList());
     }
 
     private List<Property> findByConstructionDate(List<Property> properties, String type, Date constructionDate) {
         return properties.stream()
-                .filter(p -> !type.equals("House") || houseRepository.findByHouseId(p.getId()).getConstructionDate().after(constructionDate))
-                .filter(p -> !type.equals("CommercialProperty") || commercialPropertyRepository.findByCommercialPropertyId(p.getId()).getConstructionDate().after(constructionDate))
-                .filter(p -> !type.equals("Parking") || parkingRepository.findByParkingId(p.getId()).getConstructionDate().after(constructionDate))
+                .filter(p -> !type.equals("House") || constructionDate == null || houseRepository.findByHouseId(p.getId()).getConstructionDate().after(constructionDate))
+                .filter(p -> !type.equals("CommercialProperty") || constructionDate == null || commercialPropertyRepository.findByCommercialPropertyId(p.getId()).getConstructionDate().after(constructionDate))
+                .filter(p -> !type.equals("Parking") || constructionDate == null || parkingRepository.findByParkingId(p.getId()).getConstructionDate().after(constructionDate))
+                .collect(Collectors.toList());
+    }
+
+    private List<Property> findByAvailability(List<Property> properties, Boolean availability) {
+        return properties.stream()
+                .filter(p -> availability == null || p.getAvailability().equals(availability))
                 .collect(Collectors.toList());
     }
 

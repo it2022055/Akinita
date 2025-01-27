@@ -42,6 +42,8 @@ public class PropertyController {
         }
         String locationT = (location.isEmpty())? "All" : location;
 
+        Boolean availability = true;
+
         System.out.println("Location: " + locationT);
         System.out.println("Property Type: " + propertyType);
         System.out.println("Min Price: " + minPrice);
@@ -54,7 +56,7 @@ public class PropertyController {
         System.out.println("Price slider: " + priceSlider);
 
 
-        List<Property> properties = propertyService.findProperties(locationT, propertyType, minPrice, maxPrice, minSize, maxSize, bf, constructionDate,priceSlider, sizeSlider);
+        List<Property> properties = propertyService.findProperties(locationT, propertyType, minPrice, maxPrice, minSize, maxSize, bf, constructionDate,priceSlider, sizeSlider, availability);
         redirectAttributes.addFlashAttribute("properties", properties);
         return "redirect:/Service/search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
     }
