@@ -2,6 +2,7 @@ package Akinita.project.Akinita.Services;
 
 import Akinita.project.Akinita.Entities.Properties.*;
 import Akinita.project.Akinita.Repositories.RealEstate.*;
+import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class PropertyService {
     ParkingGenericRepository parkingRepository;
     @Autowired
     CommercialPropertyGenericRepository commercialPropertyRepository;
+    @Autowired
+    RentalApplicationRepository rentalApplicationRepository;
 
 
     public List<Property> findProperties(String location, String propertyType, Double minPrice, Double maxPrice, Integer minSize, Integer maxSize, Boolean buildingFees, Date constructionDate, Double priceSlider, Integer sizeSlider, Boolean availability) {
@@ -129,7 +132,9 @@ public class PropertyService {
 
     public CommercialProperty SaveCommercialProperty(CommercialProperty commercialProperty){return commercialPropertyRepository.save(commercialProperty);} //Μέθοδος αποθήκευσης commercial property
 
-    public void DeleteProperty(Property property) {propertyRepository.delete(property);} //Μέθοδος διαγραφής property
+    public void DeleteProperty(Property property, int propertyId) {
+        rentalApplicationRepository.deleteByPropertyId(propertyId);
+        propertyRepository.delete(property);} //Μέθοδος διαγραφής property
 
 
     public Integer findOwnerIdByPropertyId(int propertyId) { //Δες αν το θελεις αυτό- Ζαχος

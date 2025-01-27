@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
@@ -59,16 +61,15 @@ public class RenterController {
         System.out.println("Description: " + description);
         System.out.println("Pets: " + pets);
 
-
         // Δημιουργία του αντικειμένου αίτησης ενοικίασης
         RentalApplication application = new RentalApplication();
 
-
-        if(!applicationService.findByRenter(renter.getId()).contains(applicationService.findByProperty(property_id))  ) {
-            model.addAttribute("message", "You have already applied for for rent to this property!");
-            return "redirect:/";
+        List<RentalApplication> applicationServices = applicationService.findByRenter(renter.getId());
+        for (RentalApplication applicationService : applicationServices) {
+            if (Objects.equals(applicationService.getProperty().getId(), property.getId())) {
+                throw new RuntimeException("EXEIS MPEI IDI VLAKA");
+            }
         }
-
 
         application.setRenter(renter);
         application.setProperty(property);

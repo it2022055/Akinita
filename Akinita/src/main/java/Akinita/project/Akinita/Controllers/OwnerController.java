@@ -250,7 +250,7 @@ public class OwnerController {
     public String DeleteProperty(@PathVariable("property_id") Integer property_id){
         Property the_property=  propertyService.getPropertyById(property_id);
         try{
-            propertyService.DeleteProperty(the_property); //Διαγραφή από βάση δεδομένων
+            propertyService.DeleteProperty(the_property,the_property.getId()); //Διαγραφή από βάση δεδομένων
         }catch (Exception e){
             throw new RuntimeException("Error deleting property");
         }

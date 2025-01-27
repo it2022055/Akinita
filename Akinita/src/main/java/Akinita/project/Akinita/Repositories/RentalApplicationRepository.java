@@ -42,6 +42,11 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
     @Query("DELETE FROM RentalApplication r WHERE r.renter.id = :renterId")
     void deleteByRenterId(@Param("renterId") int renterId);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM RentalApplication r WHERE r.property.id = :propertyId")
+    void deleteByPropertyId(@Param("propertyId") int propertyId);
+
 
 
 
