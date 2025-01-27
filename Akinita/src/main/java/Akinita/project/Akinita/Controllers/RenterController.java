@@ -53,8 +53,8 @@ public class RenterController {
         Integer renterId = renterService.findRenterIdByEmail(email);
         User renter = userService.getUser(renterId);
 
-        if(applicationService.findByRenter(renter.getId()) != null) {
-            if (Objects.equals(renter.getId(), applicationService.findByRenter(renter.getId()).getRenter().getId())) {
+        if(applicationService.findByProperty(property_id) != null) {
+            if (Objects.equals(renter.getId(), applicationService.findByProperty(property_id).getRenter().getId())) {
                 model.addAttribute("message", "You have already applied for for rent to this property!");
                 return "redirect:/";
             }
