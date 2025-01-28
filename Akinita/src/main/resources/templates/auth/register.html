@@ -11,8 +11,8 @@
 </head>
 <body>
 <div layout:fragment="main-content">
-    <div th:if="${param.error}">
-        Username already exists.
+    <div th:if="${isError}" style="background-color: rgba(255, 0, 0, 0.8); border-radius: 25px; padding: 15px; font-weight: bold; color: white;">
+        <p th:text="${error}" style="margin: 0;"></p>
     </div>
     <form class="form" th:action="@{/saveUser}" method="post" th:object="${user}">
         <p id="heading">Sign Up</p>

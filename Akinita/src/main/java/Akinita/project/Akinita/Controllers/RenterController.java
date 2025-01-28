@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -44,7 +45,7 @@ public class RenterController {
                                   @RequestParam("rentalDuration") int rentalDuration,
                                   @RequestParam("description") String description,
                                   @RequestParam(value = "pets", defaultValue = "false") boolean pets,
-                                  Model model, Principal principal) {
+                                  Model model, Principal principal, RedirectAttributes redirectAttributes) {
 
         String email = principal.getName();
         Integer renterId = renterService.findRenterIdByEmail(email);
@@ -67,7 +68,9 @@ public class RenterController {
         List<RentalApplication> applicationServices = applicationService.findByRenter(renter.getId());
         for (RentalApplication applicationService : applicationServices) {
             if (Objects.equals(applicationService.getProperty().getId(), property.getId())) {
-                throw new RuntimeException("EXEIS MPEI IDI VLAKA");
+                redirectAttributes.addFlashAttribute("isError", true);
+                redirectAttributes.addFlashAttribute("errorMessage", "Έχετε ήδη υποβάλει αίτηση για αυτό το ακίνητο.");
+                return "redirect:/"; // Η σελίδα των αποτελεσμάτων αναζήτησης
             }
         }
 
@@ -92,7 +95,7 @@ public class RenterController {
 
     @GetMapping("/registrationSubmitted")
     public String RegistrationApplicationsSub() {
-        return "/renter/registrationsubmitted";
+        return "renter/registrationsubmitted";
     }
 
     @GetMapping("/applicationSubmitted")
@@ -132,13 +135,21 @@ public class RenterController {
     }
 
     @PostMapping("/RentalApplications/{rentalApplication_id}")
-    public String deleteApplications(@PathVariable Integer applicationId) {
+    public String deleteApplications(@PathVariable("rentalApplication_id") Integer applicationId,RedirectAttributes redirectAttributes) {
+        try {
 
-        RentalApplication r = applicationService.findById(applicationId);
+            applicationService.deleteApplication(applicationId);
 
-        applicationService.deleteApplication(r.getProperty().getId());
+            redirectAttributes.addFlashAttribute("isSuccess", true);
+            redirectAttributes.addFlashAttribute("success", "Application deleted successfully");
 
-        return "redirect:/Renter/RentalApplications";    // deletion successful page
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("isError", true);
+            redirectAttributes.addFlashAttribute("error", "Error while deleting application");
+        }
+
+
+        return "redirect:/Renter/RentalApplications"; // Redirect to the same page after deletion
     }
 
     @GetMapping("/RentedProperties")

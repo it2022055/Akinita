@@ -254,11 +254,17 @@ public class OwnerController {
 
     @Transactional
     @GetMapping("/Listings/Delete/{property_id}")  //Μέθοδος διαγραφής ιδιοκτησίας
-    public String DeleteProperty(@PathVariable("property_id") Integer property_id){
+    public String DeleteProperty(@PathVariable("property_id") Integer property_id, RedirectAttributes redirectAttributes){
         Property the_property=  propertyService.getPropertyById(property_id);
+
         try{
+            redirectAttributes.addFlashAttribute("isSuccess", true);
+            redirectAttributes.addFlashAttribute("success", "Property deleted successfully");
             propertyService.DeleteProperty(the_property,the_property.getId()); //Διαγραφή από βάση δεδομένων
         }catch (Exception e){
+            redirectAttributes.addFlashAttribute("isError", true);
+            redirectAttributes.addFlashAttribute("error", "Error while deleting property");
+
             throw new RuntimeException("Error deleting property");
         }
 
@@ -283,10 +289,9 @@ public class OwnerController {
     }
 
     @PostMapping("/evaluate_application")
-    public String evaluateApplication(@RequestParam("rentalApplication_id") int applicationId, @RequestParam("decision") String decision ,Principal principal) {
+    public String evaluateApplication(@RequestParam("rentalApplication_id") int applicationId, @RequestParam("decision") String decision ) {
 
         if(decision.equals("accept")){
-            applicationService.acceptApplication(applicationId);
             applicationService.setDateCurrDate(applicationId);
 
             RentalApplication r = applicationService.findById(applicationId);
@@ -305,7 +310,7 @@ public class OwnerController {
 
             applicationService.setApplicationStatus(applicationId,false);
         }
-        return "redirect:/manageApplications";
+        return "redirect:/Owner/manageApplications";
     }
 
 }

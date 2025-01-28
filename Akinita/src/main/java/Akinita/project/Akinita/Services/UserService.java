@@ -187,4 +187,10 @@ public class UserService implements UserDetailsService {
     public Object getRole(Integer roleId) {
         return roleRepository.findById(roleId).get();
     }
+
+    public boolean existsEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+
 }

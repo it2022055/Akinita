@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Controller
@@ -29,6 +30,7 @@ public class UserController {
         User user = new User();
         model.addAttribute("user", user); //Προώθηση του user στη φόρμα
         model.addAttribute("role", role); //Προώθηση του ρόλου στη φόρμα
+        model.addAttribute("isError",false);
         System.out.println(role);
         return "auth/register";
     }
@@ -40,29 +42,70 @@ public class UserController {
 
 
     @PostMapping("/saveUser") //Αποθήκευση καινούργιου χρήστη
-    public String saveUser(@ModelAttribute User user, @RequestParam("role") String role,  @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname,@RequestParam("telephone") String telephone, Model model) {
+    public String saveUser(@ModelAttribute User user, @RequestParam("role") String role, @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("telephone") String telephone, Model model) {
+
+        model.addAttribute("isError",false);
+
+        model.addAttribute("role", role);
+        model.addAttribute("user", user);
 
         if (userService.existsUser(user.getUsername())){ //Έλεγχος αν το username υπάρχει ήδη
-            System.out.println("Username is taken");
-            return "redirect:/";
+            model.addAttribute("isError",true);
+            model.addAttribute("error", "Username already exists!");
+            return "auth/register";
         }
-        User saveduser = userService.saveUser(user, role); //Αποθήκευση user στη Βάση Δεδομένων
+
+        if(!user.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
+            model.addAttribute("isError",true);
+            model.addAttribute("error", "Email must be of the format name@service.domain");
+            return "auth/register";
+        }
+
+        if(userService.existsEmail(user.getEmail())){
+            model.addAttribute("isError",true);
+            model.addAttribute("error", "Email already exists!");
+            return "auth/register";
+        }
+
+        if(telephone.length() != 10){
+            model.addAttribute("isError",true);
+            model.addAttribute("error", "Telephone must be 10 digits");
+            return "auth/register";
+        }
+
         if (role.equals("ROLE_OWNER")){ //Αν ο ρόλος που έχει επιλεχθεί είναι Owner
+
+            if(ownerService.existsTelephone(telephone)){
+                model.addAttribute("isError",true);
+                model.addAttribute("error", "Telephone already exists!");
+                return "auth/register";
+            }
+
+            User saveduser = userService.saveUser(user, role); //Αποθήκευση user στη Βάση Δεδομένων
             Owner newOwner=new Owner(saveduser,firstname,lastname,telephone); //Δημιουργία αντικειμένου Owner
             try{
                 ownerService.save(newOwner); //Αποθήκευση owner στη βάση δεδομένων
             }catch (Exception e){
                 throw new RuntimeException("Saving owner failed");
             }
+
             return "redirect:/login";
         }else{ //Αν ο ρόλος που έχει επιλεχθεί είναι Renter
+
+            if(ownerService.existsTelephone(telephone)){
+                model.addAttribute("isError",true);
+                model.addAttribute("error", "Telephone already exists!");
+                return "auth/register";
+            }
+
+            User saveduser = userService.saveUser(user, role); //Αποθήκευση user στη Βάση Δεδομένων
             Renter newRenter=new Renter(saveduser,firstname,lastname,telephone); //Δημιουργία αντικειμένου Renter
             try{
                 renterService.save(newRenter); //Αποθήκευση renter στη βάση δεδομένων
             }catch (Exception e){
                 throw new RuntimeException("Saving renter failed");
             }
-            return "redirect:/Renter/applicationSubmitted";
+            return "redirect:/Renter/registrationSubmitted";
         }
     }
 

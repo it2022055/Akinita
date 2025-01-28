@@ -42,8 +42,10 @@ public class RenterService {
         return renterRepository.findAllUnacceptedRenters();
     }
 
-
-
     @Transactional
     public void UpdateRenter(Renter renter) {renterRepository.save(renter);} //Μέθοδος ενημέρωσης Renters
+
+    public boolean existsTelephone(String telephone) {
+        return renterRepository.existsByTelephoneNumber(telephone);
+    }
 }

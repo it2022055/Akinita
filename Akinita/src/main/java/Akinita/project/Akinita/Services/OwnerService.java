@@ -69,4 +69,8 @@ public class OwnerService {
     public void save(Owner newowner){ //Μέθοδος αποθήκευσης του Owner
         ownerRepository.saveOwnerCustom(newowner.getUserId(), newowner.getFirstName(), newowner.getLastName(), newowner.getTelephoneNumber());
     }
+
+    public boolean existsTelephone(String telephone) {
+        return ownerRepository.existsByTelephoneNumber(telephone);
+    }
 }

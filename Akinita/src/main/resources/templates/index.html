@@ -58,6 +58,9 @@
 
 <body>
 <div layout:fragment="main-content" class="container">
+    <div th:if="${isError}">
+        <p th:text="${error}" style="color: red;"></p>
+    </div>
     <form class="form" th:action="@{/Service/searchProperties}" method="get">
         <!-- Location and Property Type in the same row -->
         <div class="field-row">

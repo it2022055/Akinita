@@ -29,4 +29,6 @@ public interface RenterRepository extends JpaRepository<Renter, Integer> {
     @Query("SELECT r FROM Renter r WHERE r.acceptance = 'Unaccepted'")
     List<Renter> findAllUnacceptedRenters();
 
+    Boolean existsByTelephoneNumber(String telephoneNumber);
+
 }

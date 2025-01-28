@@ -26,8 +26,8 @@ public class ApplicationService {
         return rentalApplicationRepository.findByRenterId(renter_id);
     }
 
-    public void deleteApplication(int property_id) {
-         rentalApplicationRepository.deleteByPropertyId(property_id);
+    public void deleteApplication(int appId) {
+         rentalApplicationRepository.deleteById(appId);
     }
 
     public RentalApplication save(RentalApplication rentalApplication) {
@@ -45,18 +45,6 @@ public class ApplicationService {
 
     public RentalApplication findById(int applicationId) {
         return rentalApplicationRepository.findById(applicationId);
-    }
-
-    public void acceptApplication(int appId){
-        rentalApplicationRepository.setStatus(true, appId);
-    }
-
-    public void declineApplication(int appId) {
-        RentalApplication rentalApplication = rentalApplicationRepository.findById(appId);
-
-        rentalApplication.setStatus(false);
-
-        rentalApplicationRepository.save(rentalApplication);
     }
 
     public void setApplicationStatus(int applicationId, Boolean status) {
