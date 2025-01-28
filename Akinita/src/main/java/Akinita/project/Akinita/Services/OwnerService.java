@@ -39,10 +39,11 @@ public class OwnerService {
         List<RealEstate> ownerProperties = new ArrayList<>();
 
         //Ανάκτηση ακινήτων για κάθε τύπο
-        ownerProperties.addAll(houseRepository.findByVisibilityAndOwner_UserId("Visible",ownerId));
-        ownerProperties.addAll(landRepository.findByVisibilityAndOwner_UserId("Visible", ownerId));
-        ownerProperties.addAll(parkingRepository.findByVisibilityAndOwner_UserId("Visible", ownerId));
-        ownerProperties.addAll(commercialPropertyRepository.findByVisibilityAndOwner_UserId("Visible",ownerId));
+        ownerProperties.addAll(houseRepository.findByVisibilityOrVisibilityAndOwner_UserId("Visible", "Occupied", ownerId));
+        ownerProperties.addAll(landRepository.findByVisibilityOrVisibilityAndOwner_UserId("Visible", "Occupied", ownerId));
+        ownerProperties.addAll(parkingRepository.findByVisibilityOrVisibilityAndOwner_UserId("Visible", "Occupied", ownerId));
+        ownerProperties.addAll(commercialPropertyRepository.findByVisibilityOrVisibilityAndOwner_UserId("Visible", "Occupied", ownerId));
+
         return ownerProperties;
     }
 

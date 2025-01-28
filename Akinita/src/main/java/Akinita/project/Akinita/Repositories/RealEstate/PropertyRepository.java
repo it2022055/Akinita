@@ -26,6 +26,9 @@ public interface PropertyRepository extends PropertyGenericRepository<Property,I
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Property p WHERE p.owner.id = :ownerId")
+    @Query("DELETE FROM Property p WHERE p.owner.userId = :ownerId")
     void deleteByOwnerId(@Param("ownerId") Integer ownerId);
+
+    @Query("SELECT r FROM Property r WHERE r.renter.userId=:renterId")
+    List<Property> findByRenterId(@Param("renterId") Integer renterId);
 }

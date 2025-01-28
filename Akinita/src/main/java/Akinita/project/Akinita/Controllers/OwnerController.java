@@ -1,14 +1,18 @@
 package Akinita.project.Akinita.Controllers;
 
 import Akinita.project.Akinita.Entities.Actors.Owner;
+import Akinita.project.Akinita.Entities.Actors.Renter;
+import Akinita.project.Akinita.Entities.Actors.User;
 import Akinita.project.Akinita.Entities.Enums.EnergyClass;
 import Akinita.project.Akinita.Entities.Enums.Facilities;
 import Akinita.project.Akinita.Entities.Properties.*;
 import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Interfaces.RealEstate;
+import Akinita.project.Akinita.Repositories.User.RenterRepository;
 import Akinita.project.Akinita.Services.ApplicationService;
 import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.PropertyService;
+import Akinita.project.Akinita.Services.RenterService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,6 +35,9 @@ public class OwnerController {
     private OwnerService ownerService; //Δήλωση του owner Service
     @Autowired
     private ApplicationService applicationService; //Δήλωση του application Service
+    @Autowired
+    private RenterService renterService;
+
     @GetMapping("/submitProperty") //Μέθοδος επιστροφής φόρμας για εισαγωγή γενικών πληροφοριών ιδιοκτησίας
     public String submitProperty() {
         return "properties/submitProperty";
@@ -276,28 +283,28 @@ public class OwnerController {
     }
 
     @PostMapping("/evaluate_application")
-    public String evaluateApplication(@RequestParam("rentalApplication_id") int applicationId, @RequestParam("decision") String decision ,Principal principal) {;
-
-        System.out.println("Application ID: " + applicationId);
-        System.out.println("Decision: " + decision);
-
+    public String evaluateApplication(@RequestParam("rentalApplication_id") int applicationId, @RequestParam("decision") String decision ,Principal principal) {
 
         if(decision.equals("accept")){
             applicationService.acceptApplication(applicationId);
             applicationService.setDateCurrDate(applicationId);
 
             RentalApplication r = applicationService.findById(applicationId);
-
-            r.getProperty().setAvailability(false);
-
-            propertyService.updateProperty(r.getProperty());                // accept successful page
+            applicationService.setApplicationStatus(applicationId,true);
+            int renterId=r.getRenter().getId();
+            Renter renter=renterService.getRenterById(renterId);
+            r.getProperty().setVisibility("Occupied");
+            r.getProperty().setRenter(renter);
+            try{
+                propertyService.updateProperty(r.getProperty());
+            }catch (Exception e){
+                throw new RuntimeException("Error updating property");
+            }
         }else{
 
-            applicationService.declineApplication(applicationId);           // decline successful page
+            applicationService.setApplicationStatus(applicationId,false);
         }
-
-
-        return "redirect:/";
+        return "redirect:/manageApplications";
     }
 
 }

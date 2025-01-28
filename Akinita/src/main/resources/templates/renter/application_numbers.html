@@ -6,39 +6,33 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Listings</title>
+    <title>Rental Applications</title>
     <link th:href="@{/css/application_numbers.css}" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="main-content" class="container">
     <form class="form"  th:action="@{/Renter/RentalApplications}" method="post">
         <p id="heading">Your Rental Applications</p>
-        <div th:if="${ not#lists.isEmpty(Renters)}" style="color: black">
+        <div th:if="${ not#lists.isEmpty(RentalApplications)}" style="color: black">
             <table class="table">
                 <thead>
                 <tr>
                     <th>Estate Name</th>
-                    <th>Description</th>
+                    <th>Application's description</th>
                     <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="rentalApplication : ${Renters}">
+                <tr th:each="rentalApplication : ${RentalApplications}">
                     <td th:text="${rentalApplication.getProperty().getEstateName()}"></td>
                     <td th:text="${rentalApplication.getDescription()}"></td>
                     <td th:text="${rentalApplication.getStatus() == null ? 'Pending' : (rentalApplication.getStatus() ? 'Accepted' : 'Declined')}"></td>
-
-                    <td th:if="${RentalApplication.getStatus() == 'Declined'}">
-                        <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
-                        <button type="submit" class="button-delete">Delete</button>
-
-                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <div th:if="${ #lists.isEmpty(Listings)}" style="color: black">
-            No listings were found!
+        <div th:if="${ #lists.isEmpty(RentalApplications)}" style="color: black">
+            No submitted rental applications were found!
         </div>
     </form>
 </div>

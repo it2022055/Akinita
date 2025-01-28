@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rented Properties</title>
+    <link th:href="@{/css/search_results.css}" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="main-content">
+    <form class="form">
+        <p id="heading">Rented Properties</p>
+        <div th:if="${ not#lists.isEmpty(Properties)}" style="color: rgba(45,45,48,0.90)">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Estate Name</th>
+                    <th>SqMetes</th>
+                    <th>Location</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="properties : ${Properties}">
+                    <td th:text="${properties.getEstateName()}"></td>
+                    <td th:text="${properties.getSquareMeter()}"></td>
+                    <td th:text="${properties.getLocation()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${ #lists.isEmpty(Properties)}">
+            No rented properties found!
+        </div>
+    </form>
+</div>
+</body>
+</html>

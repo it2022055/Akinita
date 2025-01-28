@@ -30,4 +30,7 @@ public interface CommercialPropertyGenericRepository extends PropertyGenericRepo
     @Query("SELECT h FROM CommercialProperty h WHERE h.owner.userId = :userId")
     List<CommercialProperty> findByOwnerId(@Param("userId") int userId);
 
+    List<CommercialProperty> findByVisibilityOrVisibilityAndOwner_UserId(String visibility1, String visibility2, int ownerId);
+
+
 }

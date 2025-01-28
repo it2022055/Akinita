@@ -48,8 +48,9 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
     @Query("DELETE FROM RentalApplication r WHERE r.property.id = :propertyId")
     void deleteByPropertyId(@Param("propertyId") int propertyId);
 
-    @Query("SELECT a FROM RentalApplication a WHERE a.Status = null AND a.renter.id = :renterId")
-    List<RentalApplication> findAllUnacceptedApps(@Param("renterId") int renterId);
+    @Query("SELECT a FROM RentalApplication a WHERE a.renter.id = :renterId")
+    List<RentalApplication> findAllApps(@Param("renterId") int renterId);
+
 
     @Transactional
     @Modifying
@@ -58,8 +59,9 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
 
     @Modifying
     @Transactional
-    @Query("UPDATE RentalApplication ra SET ra.Status = :status WHERE ra.property.id = :appId")             // den dexetai to false gia kapoio logo
+    @Query(value = "UPDATE rental_application SET status = :status WHERE property_id = :appId", nativeQuery = true)
     void setStatus(@Param("status") Boolean status, @Param("appId") Integer appId);
+
 
 
 }

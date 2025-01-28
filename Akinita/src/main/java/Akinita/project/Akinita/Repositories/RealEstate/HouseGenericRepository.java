@@ -1,5 +1,6 @@
 package Akinita.project.Akinita.Repositories.RealEstate;
 
+import Akinita.project.Akinita.Entities.Properties.CommercialProperty;
 import Akinita.project.Akinita.Entities.Properties.Property;
 import Akinita.project.Akinita.Entities.Properties.House;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,5 @@ public interface HouseGenericRepository extends PropertyGenericRepository<House,
     @Query("SELECT h FROM House h WHERE h.owner.userId = :userId")
     List<House> findByOwnerId(@Param("userId") int userId);
 
+    List<House> findByVisibilityOrVisibilityAndOwner_UserId(String visibility1, String visibility2, int ownerId);
 }

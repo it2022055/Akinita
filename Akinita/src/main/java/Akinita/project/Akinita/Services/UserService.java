@@ -3,6 +3,7 @@ package Akinita.project.Akinita.Services;
 import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Entities.Properties.CommercialProperty;
 import Akinita.project.Akinita.Entities.Properties.House;
+import Akinita.project.Akinita.Entities.Properties.Property;
 import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Repositories.RealEstate.CommercialPropertyGenericRepository;
 import Akinita.project.Akinita.Repositories.RealEstate.HouseGenericRepository;
@@ -126,6 +127,11 @@ public class UserService implements UserDetailsService {
             rentalApplicationRepository.deleteByRenterId(id);
             // Διαγραφή του renter
             renterRepository.deleteById(id);
+            List<Property> rentedProperties = propertyRepository.findByRenterId(id);
+            for (Property property : rentedProperties) {
+                property.setRenter(null);
+                propertyRepository.save(property);
+            }
         } else {
             // Διαγραφή από τον πίνακα house_facilities πριν από τη διαγραφή του House
             List<House> houses = houseGenericRepository.findByOwnerId(id);

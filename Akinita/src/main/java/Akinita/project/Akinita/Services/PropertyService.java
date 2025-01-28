@@ -133,4 +133,8 @@ public class PropertyService {
     public Integer findOwnerIdByPropertyId(int propertyId) { //Δες αν το θελεις αυτό- Ζαχος
         return propertyRepository.findOwnerIdByPropertyId(propertyId);
     }
+
+    public List<Property> findPropertiesByRenterId(int renterId) {
+        return propertyRepository.findByRenterId(renterId);
+    }
 }

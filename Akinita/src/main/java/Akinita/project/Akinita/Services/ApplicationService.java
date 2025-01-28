@@ -39,8 +39,8 @@ public class ApplicationService {
         rentalApplicationRepository.setDateCurrDate(applicationId, currDate);
     }
 
-    public List<RentalApplication> findAllUnacceptedApps(Integer renterId){
-        return rentalApplicationRepository.findAllUnacceptedApps(renterId);
+    public List<RentalApplication> findAllApps(Integer renterId){
+        return rentalApplicationRepository.findAllApps(renterId);
     }
 
     public RentalApplication findById(int applicationId) {
@@ -56,6 +56,12 @@ public class ApplicationService {
 
         rentalApplication.setStatus(false);
 
+        rentalApplicationRepository.save(rentalApplication);
+    }
+
+    public void setApplicationStatus(int applicationId, Boolean status) {
+        RentalApplication rentalApplication = rentalApplicationRepository.findById(applicationId);
+        rentalApplication.setStatus(status);
         rentalApplicationRepository.save(rentalApplication);
     }
 }

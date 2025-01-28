@@ -33,24 +33,29 @@
                 <td th:text="${RentalApplication.getRenterJob()}"></td>
                 <td th:text="${RentalApplication.getRenterPets()}"></td>
 
+                <!-- Accept Form -->
                 <td th:if="${RentalApplication.getStatus() == null}">
+                    <form th:action="@{/Owner/evaluate_application}" method="post" style="display:inline;">
                         <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
                         <input type="hidden" name="decision" value="accept" />
-                        <button type="submit" class="button-accept">Accept</button>
-
+                        <button type="submit" class="button1">Accept</button>
+                    </form>
                 </td>
+
                 <!-- Decline Form -->
                 <td th:if="${RentalApplication.getStatus() == null}">
+                    <form th:action="@{/Owner/evaluate_application}" method="post" style="display:inline;">
                         <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
                         <input type="hidden" name="decision" value="decline" />
-                        <button type="submit" class="button-decline">Decline</button>
-
+                        <button type="submit" class="button1">Decline</button>
+                    </form>
                 </td>
 
                 <td th:if="${RentalApplication.getStatus() != null}">
                     <span>Status already decided</span>
                 </td>
             </tr>
+
             </tbody>
         </table>
     </div>

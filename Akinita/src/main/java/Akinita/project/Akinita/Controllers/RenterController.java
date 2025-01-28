@@ -127,7 +127,7 @@ public class RenterController {
         String email = principal.getName();
         Integer renterId = renterService.findRenterIdByEmail(email);
 
-        model.addAttribute("Renters",applicationService.findAllUnacceptedApps(renterId));
+        model.addAttribute("RentalApplications",applicationService.findAllApps(renterId));
         return "renter/application_numbers";
     }
 
@@ -139,5 +139,13 @@ public class RenterController {
         applicationService.deleteApplication(r.getProperty().getId());
 
         return "redirect:/Renter/RentalApplications";    // deletion successful page
+    }
+
+    @GetMapping("/RentedProperties")
+    public String RentedProperties(Model model, Principal principal) {
+        String email = principal.getName();
+        Integer renterId = renterService.findRenterIdByEmail(email);
+        model.addAttribute("Properties", propertyService.findPropertiesByRenterId(renterId));
+        return "renter/rentedProperties";
     }
  }
