@@ -55,6 +55,7 @@ public class OwnerController {
         if (principal == null) { //Στην περίπτωση που δεν είναι logged in ο Owner τον επιστέφει στη σελίδα του log in
             return "redirect:/login";
         }
+
         String email = principal.getName(); //Εξαγωγή email
         Integer ownerId = ownerService.findOwnerIdByEmail(email); //Επιστροφή Id του owner μέσω της findOwnerByEmail
         Owner owner=ownerService.findById(ownerId); //Δημιουργία αντικειμένου Owner μέσω της findById(Επιστροφή του

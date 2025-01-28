@@ -8,23 +8,8 @@
     <meta charset="UTF-8">
     <title>Submit new property</title>
     <link th:href="@{/css/submitProperty.css}" rel="stylesheet">
-    <script>
-        function toggleSharedExpenses() {
-            const propertyType = document.querySelector('select[name="propertyType"]').value;
-            const sharedExpensesField = document.getElementById('shared-expenses-field');
-            const form = document.querySelector('.form'); // Το κύριο form
+    <script th:src="@{/js/submit_property.js}"></script>
 
-            if (propertyType === "Parking") {
-                sharedExpensesField.style.display = "block";
-                form.classList.remove('default-form'); // Αφαιρεί την αρχική εμφάνιση
-                form.classList.add('parking-form'); // Προσθέτει την εμφάνιση για "Parking"
-            } else {
-                sharedExpensesField.style.display = "none"; // Απόκρυψη του shared-expenses-field
-                form.classList.remove('parking-form'); // Αφαιρεί την εμφάνιση για "Parking"
-                form.classList.add('default-form');  // Επαναφέρει την αρχική εμφάνιση
-            }
-        }
-    </script>
 </head>
 <body>
 <div layout:fragment="main-content">
@@ -32,27 +17,37 @@
         <div class="field">
             <p id="heading">Property Submission</p>
             <label>
-                <input autocomplete="off" placeholder="Estate Name" name="estateName" class="input-field" type="text">
+                <input autocomplete="off" placeholder="Estate Name" name="estateName" class="input-field" type="text" required>
             </label>
         </div>
         <div class="field">
             <label>
-                <input autocomplete="off" placeholder="Location"  name="location"  class="input-field" type="text">
+                <input autocomplete="off" placeholder="Location"  name="location"  class="input-field" type="text" required>
             </label>
         </div>
         <div class="field">
             <label>
-                <input autocomplete="off" placeholder="Price" name="price" class="input-field"  type="number">
+                <input autocomplete="off" placeholder="Price" name="price" class="input-field"  type="number"
+                       min="1"
+                       max="10000000"
+                       step="1" required>
             </label>
         </div>
         <div class="field">
             <label>
-                <input autocomplete="off" placeholder="Description" name="description"  class="input-field" type="text">
+                <input autocomplete="off" placeholder="Description" name="description"  class="input-field" type="text" required>
             </label>
         </div>
         <div class="field">
             <label>
-                <input autocomplete="off" placeholder="Square meters" name="SqMeters" class="input-field" type="number">
+                <input autocomplete="off"
+                       placeholder="Square meters"
+                       name="SqMeters"
+                       class="input-field"
+                       type="number"
+                       min="1"
+                       max="100000"
+                       step="1" required>
             </label>
         </div>
 
@@ -71,7 +66,7 @@
 
             <div class="date-field">
             <span class="checkbox-text" style="font-weight: 500;">Construction Date</span>
-            <input  autocomplete="off" type="date" id="constructionDate" name="constructionDate" value="2004-02-10">
+            <input  autocomplete="off" type="date" id="constructionDate" name="constructionDate" value="2004-02-10" required>
             </div>
             <div class="extra-field">
                 <label class="container">
