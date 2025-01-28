@@ -1,6 +1,5 @@
 package Akinita.project.Akinita.Entities.Actors;
 
-import Akinita.project.Akinita.Entities.Favorite;
 import Akinita.project.Akinita.Entities.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
