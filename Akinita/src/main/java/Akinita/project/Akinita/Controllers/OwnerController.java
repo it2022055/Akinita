@@ -294,6 +294,7 @@ public class OwnerController {
             int renterId=r.getRenter().getId();
             Renter renter=renterService.getRenterById(renterId);
             r.getProperty().setVisibility("Occupied");
+            r.getProperty().setAvailability(false);
             r.getProperty().setRenter(renter);
             try{
                 propertyService.updateProperty(r.getProperty());

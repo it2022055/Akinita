@@ -145,8 +145,9 @@ public class Property implements RealEstate {
 
     @Override
     public int getRenterId() {
-        return renter.getUserId();
+        return (renter != null) ? renter.getUserId() : 0; // Αν είναι null, επιστρέφει 0 αντί για σφάλμα.
     }
+
 
     public void setRenter(Renter renter) {
         this.renter = renter;

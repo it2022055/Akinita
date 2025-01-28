@@ -29,7 +29,9 @@
                     <td th:text="${property.getDescription()}"></td>
                     <td th:text="${property.getPrice()}"></td>
                     <td th:text="${property.isAvailableForSale() ? 'Available' : 'Unavailable'}"></td>
-                    <td th:if="${property.getId()}"><a class="button1" th:href="@{/Owner/Listings/ChangeAvailability/{property_id}(property_id=${property.id})}">Change Availability</a>
+                    <td th:if="${property.id != null} and ${property.renterId == 0}">
+                        <a class="button1" th:href="@{/Owner/Listings/ChangeAvailability/{property_id}(property_id=${property.id})}">Change Availability</a>
+                    </td>
                     <td th:if="${property.getId()}"><a class="button1" th:href="@{/Owner/Listings/Delete/{property_id}(property_id=${property.id})}">Delete</a>
                     </td>
                 </tr>
