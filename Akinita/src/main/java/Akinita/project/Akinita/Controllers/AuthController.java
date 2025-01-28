@@ -40,15 +40,15 @@ public class AuthController {
         roleRepository.updateOrInsert(role_renter); //Προσθήκη ρόλου user στον πίνακα με τους ρόλους
         roleRepository.updateOrInsert(role_admin); //Προσθήκη ρόλου user στον πίνακα με τους ρόλους
 
-        //User user = new User(); //Δημιουργία admin
-        //user.setUsername("admin"); //Username admin
-        //String encodedPassword = passwordEncoder.encode("admin"); //Password admin
-        //user.setPassword(encodedPassword);
-        //user.setEmail("admin@example.com"); //Email admin
-        //Set<Role> roles = new HashSet<>();
-        //roles.add(role_admin); //Εισαγωγή του ρόλου admin
-        //user.setRoles(roles);
-        //userRepository.save(user); //Αποθήκευση του admin
+//        User user = new User(); //Δημιουργία admin
+//        user.setUsername("admin"); //Username admin
+//        String encodedPassword = passwordEncoder.encode("admin"); //Password admin
+//        user.setPassword(encodedPassword);
+//        user.setEmail("admin@example.com"); //Email admin
+//        Set<Role> roles = new HashSet<>();
+//        roles.add(role_admin); //Εισαγωγή του ρόλου admin
+//        user.setRoles(roles);
+//        userRepository.save(user); //Αποθήκευση του admin
 
     }
 

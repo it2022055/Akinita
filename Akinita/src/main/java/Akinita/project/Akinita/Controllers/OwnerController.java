@@ -272,22 +272,28 @@ public class OwnerController {
 
         model.addAttribute("Applications", applications);
 
-        System.out.println(applications);
-
         return "properties/manageApplications";
     }
 
-    @GetMapping("/accept_application")
-    public String acceptApplication(@RequestParam("application_id") int applicationId, Principal principal) {;
-        applicationService.acceptApplication(applicationId);
-        applicationService.setDateCurrDate(applicationId);
-        return "redirect:/Owner/Listings";
-    }
+    @PostMapping("/evaluate_application")
+    public String evaluateApplication(@RequestParam("rentalApplication_id") int applicationId, @RequestParam("decision") String decision ,Principal principal) {;
 
-    @GetMapping("/decline_application")
-    public String declineApplication(@RequestParam("application_id") int applicationId, Principal principal) {;
-        applicationService.declineApplication(applicationId);
-        return "redirect:/Owner/Listings";
+        System.out.println("Application ID: " + applicationId);
+        System.out.println("Decision: " + decision);
+        if(decision.equals("accept")){
+            applicationService.acceptApplication(applicationId);
+            applicationService.setDateCurrDate(applicationId);
+
+            RentalApplication r = applicationService.findById(applicationId);
+            r.getProperty().setVisibility("Occupied");
+
+            propertyService.updateProperty(r.getProperty());
+        }else{
+            applicationService.declineApplication(applicationId);
+        }
+
+
+        return "redirect:/";
     }
 
 }

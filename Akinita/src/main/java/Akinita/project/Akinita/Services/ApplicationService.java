@@ -1,5 +1,6 @@
 package Akinita.project.Akinita.Services;
 
+import Akinita.project.Akinita.Entities.Properties.Property;
 import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,10 @@ public class ApplicationService {
     public void setDateCurrDate(int applicationId) {
         Date currDate = new Date();
         rentalApplicationRepository.setDateCurrDate(applicationId, currDate);
+    }
+
+
+    public RentalApplication findById(int applicationId) {
+        return rentalApplicationRepository.findById(applicationId);
     }
 }

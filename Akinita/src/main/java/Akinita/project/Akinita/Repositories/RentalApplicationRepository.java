@@ -49,7 +49,8 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
 
 
 
-
+    @Transactional
+    @Modifying
     @Query ("UPDATE RentalApplication ra SET ra.rentalDate = :currDate WHERE ra.id = :applicationId")
     void setDateCurrDate(@Param("applicationId") Integer applicationId, @Param("currDate") Date currDate);
 

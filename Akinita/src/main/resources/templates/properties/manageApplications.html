@@ -12,62 +12,49 @@
 
 <body>
 <div layout:fragment="main-content">
-    <form class="form" th:action="@{/Owner/manageApplications}" th:object="${application}" method="get">
-        <div th:if="${not #lists.isEmpty(Applications)}" style="color: black">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Property Name</th>
-                    <th>Renter Name</th>
-                    <th>Rental Duration</th>
-                    <th>Renter Job</th>
-                    <th>Renter Pets</th>
-                    <th>Files</th>
-                </tr>
-                </thead>
+    <div th:if="${not #lists.isEmpty(Applications)}" style="color: black">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Property Name</th>
+                <th>Renter Name</th>
+                <th>Rental Duration</th>
+                <th>Renter Job</th>
+                <th>Renter Pets</th>
+                <th>Files</th>
+            </tr>
+            </thead>
 
-                <tbody>
-                <tr th:each="RentalApplication : ${Applications}">
-                    <td th:text="${RentalApplication.getProperty().getEstateName()}"></td>
-                    <td th:text="${RentalApplication.getRenter().getUsername()}"></td>
-                    <td th:text="${RentalApplication.getRentalDuration()}"></td>
-                    <td th:text="${RentalApplication.getRenterJob()}"></td>
-                    <td th:text="${RentalApplication.getRenterPets()}"></td>
+            <tbody>
+            <tr th:each="RentalApplication : ${Applications}">
+                <td th:text="${RentalApplication.getProperty().getEstateName()}"></td>
+                <td th:text="${RentalApplication.getRenter().getUsername()}"></td>
+                <td th:text="${RentalApplication.getRentalDuration()}"></td>
+                <td th:text="${RentalApplication.getRenterJob()}"></td>
+                <td th:text="${RentalApplication.getRenterPets()}"></td>
 
-<!--                     Εμφάνιση των αρχείων για κάθε αίτηση -->
-                    <td>
-                        <div th:if="${ApplicationFilesMap != null}">
-                            <form th:action="@{/Owner/pdf_view}" method="post" style="display:inline;">
-                                <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
-                                <button type="submit" class="button-accept">View Files</button>
-                            </form>
-                        </div>
-                        <span th:if="${ApplicationFilesMap == null}">No files available</span>
-                    </td>
-
-                    <td>
-                        <form th:action="@{/Owner/manageRentalApplications/setstatus}" method="post" style="display:inline;">  <!-- na bgalw to set status -->
-                            <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
-                            <input type="hidden" name="status" value="accept" />
-                            <button type="submit" class="button-accept">Accept</button>
-                        </form>
-                    </td>
-                    <td>
-                        <!-- Decline Form -->
-                        <form th:action="@{/Owner/manageRentalApplications/setstatus}" method="post" style="display:inline;">
-                            <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
-                            <input type="hidden" name="status" value="decline" />
-                            <button type="submit" class="button-decline">Decline</button>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div th:if="${#lists.isEmpty(Applications)}" style="color: black">
-            No rental applications were found!
-        </div>
-    </form>
+                <td>
+                    <form th:action="@{/Owner/evaluate_application}" method="post" style="display:inline;">
+                        <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
+                        <input type="hidden" name="decision" value="accept" />
+                        <button type="submit" class="button-accept">Accept</button>
+                    </form>
+                </td>
+                <!-- Decline Form -->
+                <td>
+                    <form th:action="@{/Owner/evaluate_application}" method="post" style="display:inline;">
+                        <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
+                        <input type="hidden" name="decision" value="decline" />
+                        <button type="submit" class="button-decline">Decline</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(Applications)}" style="color: black">
+        No rental applications were found!
+    </div>
 </div>
 </body>
 </html>
