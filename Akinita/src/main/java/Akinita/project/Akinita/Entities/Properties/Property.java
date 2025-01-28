@@ -2,7 +2,6 @@ package Akinita.project.Akinita.Entities.Properties;
 
 import Akinita.project.Akinita.Entities.Actors.Owner;
 import Akinita.project.Akinita.Entities.Actors.Renter;
-import Akinita.project.Akinita.Entities.Enums.EnergyClass;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

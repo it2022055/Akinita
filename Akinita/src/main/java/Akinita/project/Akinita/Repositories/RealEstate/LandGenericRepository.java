@@ -1,6 +1,5 @@
 package Akinita.project.Akinita.Repositories.RealEstate;
 
-import Akinita.project.Akinita.Entities.Properties.CommercialProperty;
 import Akinita.project.Akinita.Entities.Properties.Land;
 import Akinita.project.Akinita.Entities.Properties.Property;
 import org.springframework.data.jpa.repository.Query;

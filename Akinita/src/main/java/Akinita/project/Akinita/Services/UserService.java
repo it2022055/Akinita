@@ -34,16 +34,14 @@ import java.util.stream.Collectors;
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Service
 public class UserService implements UserDetailsService {
-
+    @Autowired
     private UserRepository userRepository; //Δήλωση του user repository
-
+    @Autowired
     private RoleRepository roleRepository; //Δήλωση του role repository
     @Autowired
     private RenterRepository renterRepository; //Δήλωση του renter repository
-
     @Autowired
     private RentalApplicationRepository rentalApplicationRepository;
-
     private BCryptPasswordEncoder passwordEncoder; //Δήλωση του password Encoder
     @Autowired
     private PropertyService propertyService;
@@ -55,7 +53,6 @@ public class UserService implements UserDetailsService {
     private CommercialPropertyGenericRepository commercialPropertyGenericRepository;
     @Autowired
     private OwnerRepository ownerRepository;
-
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -163,9 +160,6 @@ public class UserService implements UserDetailsService {
         userRepository.delete(user);
     }
 
-
-
-
     @Transactional
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -177,7 +171,6 @@ public class UserService implements UserDetailsService {
 
     public boolean existsUser(String username) {
         return userRepository.existsByUsername(username);
-
     }
 
     public Object getRoles() {
@@ -191,6 +184,5 @@ public class UserService implements UserDetailsService {
     public boolean existsEmail(String email) {
         return userRepository.existsByEmail(email);
     }
-
 
 }

@@ -1,6 +1,5 @@
 package Akinita.project.Akinita.Controllers;
 
-import Akinita.project.Akinita.Entities.Actors.User;
 import Akinita.project.Akinita.Repositories.User.RoleRepository;
 import Akinita.project.Akinita.Entities.Role;
 import Akinita.project.Akinita.Repositories.User.UserRepository;
@@ -10,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Controller

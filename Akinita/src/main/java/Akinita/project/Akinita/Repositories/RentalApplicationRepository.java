@@ -1,7 +1,5 @@
 package Akinita.project.Akinita.Repositories;
 
-
-import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Entities.RentalApplication;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 
-
 @Repository
 public interface RentalApplicationRepository extends JpaRepository<RentalApplication, Integer> {
 
@@ -23,20 +20,7 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
     @Query("SELECT r FROM RentalApplication r WHERE r.renter.id = :renterId")
     List<RentalApplication> findByRenterId(int renterId);
 
-    @Query("SELECT r FROM RentalApplication r WHERE r.property.id = :propertyId")
-    RentalApplication findByPropertyId(int propertyId);
-
     RentalApplication findById(int id);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE RentalApplication ra SET ra.Status = :status")
-    void setStatus(@Param("status") Boolean status);
-
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM RentalApplication r WHERE r.owner.id = :ownerId")
-    void deleteByOwnerId(@Param("ownerId") int ownerId);
 
     @Modifying
     @Transactional
@@ -51,16 +35,11 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
     @Query("SELECT a FROM RentalApplication a WHERE a.renter.id = :renterId")
     List<RentalApplication> findAllApps(@Param("renterId") int renterId);
 
-
     @Transactional
     @Modifying
     @Query ("UPDATE RentalApplication ra SET ra.rentalDate = :currDate WHERE ra.id = :applicationId")
     void setDateCurrDate(@Param("applicationId") Integer applicationId, @Param("currDate") Date currDate);
 
-    @Modifying
-    @Transactional
-    @Query(value = "UPDATE rental_application SET status = :status WHERE property_id = :appId", nativeQuery = true)
-    void setStatus(@Param("status") Boolean status, @Param("appId") Integer appId);
 
 
 

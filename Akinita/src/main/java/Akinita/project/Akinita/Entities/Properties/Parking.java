@@ -3,16 +3,12 @@ package Akinita.project.Akinita.Entities.Properties;
 import Akinita.project.Akinita.Entities.Actors.Owner;
 import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Entities.Enums.EnergyClass;
-import Akinita.project.Akinita.Entities.Enums.Facilities;
 import Akinita.project.Akinita.Interfaces.LimitedMethods.ConstructionDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Parking extends Property implements ConstructionDate {

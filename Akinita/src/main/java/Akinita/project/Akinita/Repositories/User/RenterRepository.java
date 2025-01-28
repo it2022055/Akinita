@@ -12,9 +12,6 @@ import java.util.List;
 @Repository
 public interface RenterRepository extends JpaRepository<Renter, Integer> {
 
-    @Query("SELECT o FROM Owner o WHERE o.user.username = :username")
-    Renter findByUsername(String username);
-
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO Renter (user_id, first_name, last_name, telephone_number,acceptance) " +

@@ -34,22 +34,9 @@ public class PropertyController {
                                    @RequestParam(name = "constructionDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date constructionDate,
                                    RedirectAttributes redirectAttributes) {
 
-
         String locationT = (location.isEmpty())? "All" : location;
 
         Boolean availability = true;
-
-        System.out.println("Location: " + locationT);
-        System.out.println("Property Type: " + propertyType);
-        System.out.println("Min Price: " + minPrice);
-        System.out.println("Max Price: " + maxPrice);
-        System.out.println("Min Size: " + minSize);
-        System.out.println("Max Size: " + maxSize);
-        System.out.println("Building Fees: " + buildingFees);
-        System.out.println("Construction Date: " + constructionDate);
-        System.out.println("Size slider: " + sizeSlider);
-        System.out.println("Price slider: " + priceSlider);
-
 
         List<Property> properties = propertyService.findProperties(locationT, propertyType, minPrice, maxPrice, minSize, maxSize, buildingFees, constructionDate,priceSlider, sizeSlider, availability);
         redirectAttributes.addFlashAttribute("properties", properties);

@@ -2,13 +2,11 @@ package Akinita.project.Akinita.Controllers;
 
 import Akinita.project.Akinita.Entities.Actors.Owner;
 import Akinita.project.Akinita.Entities.Actors.Renter;
-import Akinita.project.Akinita.Entities.Actors.User;
 import Akinita.project.Akinita.Entities.Enums.EnergyClass;
 import Akinita.project.Akinita.Entities.Enums.Facilities;
 import Akinita.project.Akinita.Entities.Properties.*;
 import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Interfaces.RealEstate;
-import Akinita.project.Akinita.Repositories.User.RenterRepository;
 import Akinita.project.Akinita.Services.ApplicationService;
 import Akinita.project.Akinita.Services.OwnerService;
 import Akinita.project.Akinita.Services.PropertyService;

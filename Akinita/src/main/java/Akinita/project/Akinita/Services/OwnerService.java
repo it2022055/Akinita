@@ -31,10 +31,7 @@ public class OwnerService {
     private CommercialPropertyGenericRepository commercialPropertyRepository; //Δήλωση του commercial property repository
    @Autowired
     private OwnerRepository ownerRepository; //Δήλωση του owner repository
-    @Autowired
-    private ApplicationService applicationService; //Δήλωση του application service
-
-
+    
     public List<RealEstate> getOwnerProperties(int ownerId) { //Μέθοδος που επιστρέφει τα ακίνητα του ιδιοκτήτη
         List<RealEstate> ownerProperties = new ArrayList<>();
 
@@ -55,14 +52,6 @@ public class OwnerService {
     public Owner findById(int ownerId) { //Μέθοδος ανάκτησης Owner από το ID
         Optional<Owner> optionalOwner = ownerRepository.findById(ownerId);
         return optionalOwner.orElse(null);
-    }
-
-    public List<RentalApplication> getOwnerRentalApplications(int ownerId) { //Μέθοδος επιστροφής των αιτήσεων ενοικίασης
-        return new ArrayList<>((Collection) applicationService.findByOwner(ownerId));
-    }
-
-    public Owner getOwner(int id) {
-        return ownerRepository.findByOwnerId(id);
     }
 
     @Transactional

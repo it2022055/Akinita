@@ -11,12 +11,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,16 +48,8 @@ public class RenterController {
         Integer renterId = renterService.findRenterIdByEmail(email);
         User renter = userService.getUser(renterId);
 
-
         Property property = propertyService.getPropertyById(property_id);
-        User owner = userService.getUser(property.getOwnerId());
-
-        System.out.println("RenterId: " + renterId);
-        System.out.println("PropertyId: " + property_id);
-        System.out.println("JobSituation: " + jobSituation);
-        System.out.println("RentalDuration: " + rentalDuration);
-        System.out.println("Description: " + description);
-        System.out.println("Pets: " + pets);
+        User owner = userService.getUser(property.getOwnerId());                // Βρες τον Owner απο το Property
 
         // Δημιουργία του αντικειμένου αίτησης ενοικίασης
         RentalApplication application = new RentalApplication();

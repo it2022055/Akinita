@@ -101,12 +101,8 @@ public class PropertyService {
     }
 
     @Transactional
-    public Integer updateProperty(Property property) { //Μέθοδος ενημέρωσης property
-        property=propertyRepository.save(property);
-        return property.getId();
-    }
-    public List findAllProperties() { //Δες αν το θελεις αυτό- Ζαχος
-        return propertyRepository.findByAvailability(true);
+    public void updateProperty(Property property) { //Μέθοδος ενημέρωσης property
+        propertyRepository.save(property);
     }
 
     public List<Property> findAllInvisibleProperties(){return propertyRepository.findByVisibility("Invisible");} //Μέθοδος επιστροφής μη αποδεχτών properties
@@ -115,24 +111,25 @@ public class PropertyService {
         return propertyRepository.findPropertyById(id);
     }
 
-    public Land SaveLandProperty(Land land) {
-        return landRepository.save(land);
+    public void SaveLandProperty(Land land) {
+        landRepository.save(land);
     } //Μέθοδος αποθήκευσης Land
 
-    public House SaveHouseProperty(House house){return houseRepository.save(house);} //Μέθοδος αποθήκευσης house
+    public void SaveHouseProperty(House house){
+        houseRepository.save(house);
+    } //Μέθοδος αποθήκευσης house
 
-    public Parking SaveParkingProperty(Parking parking){return parkingRepository.save(parking);} //Μέθοδος αποθήκευσης parking
+    public void SaveParkingProperty(Parking parking){
+        parkingRepository.save(parking);
+    } //Μέθοδος αποθήκευσης parking
 
-    public CommercialProperty SaveCommercialProperty(CommercialProperty commercialProperty){return commercialPropertyRepository.save(commercialProperty);} //Μέθοδος αποθήκευσης commercial property
+    public void SaveCommercialProperty(CommercialProperty commercialProperty){
+        commercialPropertyRepository.save(commercialProperty);
+    } //Μέθοδος αποθήκευσης commercial property
 
     public void DeleteProperty(Property property, int propertyId) {
         rentalApplicationRepository.deleteByPropertyId(propertyId);
         propertyRepository.delete(property);} //Μέθοδος διαγραφής property
-
-
-    public Integer findOwnerIdByPropertyId(int propertyId) { //Δες αν το θελεις αυτό- Ζαχος
-        return propertyRepository.findOwnerIdByPropertyId(propertyId);
-    }
 
     public List<Property> findPropertiesByRenterId(int renterId) {
         return propertyRepository.findByRenterId(renterId);

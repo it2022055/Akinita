@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OwnerRepository extends JpaRepository<Owner, Integer> {
-    @Query("SELECT o FROM Owner o WHERE o.user.username = :username")
-    Owner findByUsername(String username);
 
     @Modifying
     @Transactional
@@ -20,9 +18,6 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 
     @Query("SELECT o FROM Owner o WHERE o.user.email = :email")
     Owner findByEmail(String email);
-
-    @Query("SELECT o FROM Owner o WHERE o.user.id = :ownerId")
-    Owner findByOwnerId(Integer ownerId);
 
     boolean existsByTelephoneNumber(String telephone);
 }

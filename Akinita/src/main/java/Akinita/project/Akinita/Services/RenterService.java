@@ -7,8 +7,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
@@ -25,8 +23,8 @@ public class RenterService {
         return renter != null ? renter.getUserId() : null;
     }
 
-    public RentalApplication saveApplication(RentalApplication rentalApplication) {
-        return applicationService.save(rentalApplication);
+    public void saveApplication(RentalApplication rentalApplication) {
+        applicationService.save(rentalApplication);
     }
 
     public Renter getRenterById(Integer renterId) {

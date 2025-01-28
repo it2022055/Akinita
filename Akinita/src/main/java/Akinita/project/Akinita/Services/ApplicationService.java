@@ -1,13 +1,10 @@
 package Akinita.project.Akinita.Services;
 
-import Akinita.project.Akinita.Entities.Properties.Property;
 import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
