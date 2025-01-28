@@ -1,6 +1,7 @@
 package Akinita.project.Akinita.Repositories;
 
 
+import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Entities.RentalApplication;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -47,7 +48,8 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
     @Query("DELETE FROM RentalApplication r WHERE r.property.id = :propertyId")
     void deleteByPropertyId(@Param("propertyId") int propertyId);
 
-
+    @Query("SELECT a FROM RentalApplication a WHERE a.Status = null AND a.renter.id = :renterId")
+    List<RentalApplication> findAllUnacceptedApps(@Param("renterId") int renterId);
 
     @Transactional
     @Modifying
@@ -56,8 +58,8 @@ public interface RentalApplicationRepository extends JpaRepository<RentalApplica
 
     @Modifying
     @Transactional
-    @Query("UPDATE RentalApplication ra SET ra.Status = :status WHERE ra.property.id = :prId")
-    void setStatus(@Param("status") Boolean status, Integer prId);
+    @Query("UPDATE RentalApplication ra SET ra.Status = :status WHERE ra.property.id = :appId")             // den dexetai to false gia kapoio logo
+    void setStatus(@Param("status") Boolean status, @Param("appId") Integer appId);
 
 
 }

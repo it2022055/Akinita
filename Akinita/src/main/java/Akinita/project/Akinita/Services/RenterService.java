@@ -42,6 +42,8 @@ public class RenterService {
         return renterRepository.findAllUnacceptedRenters();
     }
 
+
+
     @Transactional
     public void UpdateRenter(Renter renter) {renterRepository.save(renter);} //Μέθοδος ενημέρωσης Renters
 }

@@ -120,4 +120,24 @@ public class RenterController {
         }
         return "redirect:/Renter/AcceptRenters";
     }
-}
+
+    @GetMapping("/RentalApplications")
+    public String RentalApplications(Model model, Principal principal) {
+
+        String email = principal.getName();
+        Integer renterId = renterService.findRenterIdByEmail(email);
+
+        model.addAttribute("Renters",applicationService.findAllUnacceptedApps(renterId));
+        return "renter/application_numbers";
+    }
+
+    @PostMapping("/RentalApplications/{rentalApplication_id}")
+    public String deleteApplications(@PathVariable Integer applicationId) {
+
+        RentalApplication r = applicationService.findById(applicationId);
+
+        applicationService.deleteApplication(r.getProperty().getId());
+
+        return "redirect:/Renter/RentalApplications";    // deletion successful page
+    }
+ }

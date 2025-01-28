@@ -26,20 +26,12 @@ public class ApplicationService {
         return rentalApplicationRepository.findByRenterId(renter_id);
     }
 
-    public RentalApplication findByProperty(int property_id) {
-        return rentalApplicationRepository.findByPropertyId(property_id);
+    public void deleteApplication(int property_id) {
+         rentalApplicationRepository.deleteByPropertyId(property_id);
     }
 
     public RentalApplication save(RentalApplication rentalApplication) {
         return rentalApplicationRepository.save(rentalApplication);
-    }
-
-    public void acceptApplication(int appId){
-        rentalApplicationRepository.setStatus(true, appId);
-    }
-
-    public void declineApplication(int appId){
-        rentalApplicationRepository.setStatus(false, appId);
     }
 
     public void setDateCurrDate(int applicationId) {
@@ -47,8 +39,23 @@ public class ApplicationService {
         rentalApplicationRepository.setDateCurrDate(applicationId, currDate);
     }
 
+    public List<RentalApplication> findAllUnacceptedApps(Integer renterId){
+        return rentalApplicationRepository.findAllUnacceptedApps(renterId);
+    }
 
     public RentalApplication findById(int applicationId) {
         return rentalApplicationRepository.findById(applicationId);
+    }
+
+    public void acceptApplication(int appId){
+        rentalApplicationRepository.setStatus(true, appId);
+    }
+
+    public void declineApplication(int appId) {
+        RentalApplication rentalApplication = rentalApplicationRepository.findById(appId);
+
+        rentalApplication.setStatus(false);
+
+        rentalApplicationRepository.save(rentalApplication);
     }
 }

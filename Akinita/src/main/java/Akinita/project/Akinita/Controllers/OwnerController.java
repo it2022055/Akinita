@@ -280,16 +280,20 @@ public class OwnerController {
 
         System.out.println("Application ID: " + applicationId);
         System.out.println("Decision: " + decision);
+
+
         if(decision.equals("accept")){
             applicationService.acceptApplication(applicationId);
             applicationService.setDateCurrDate(applicationId);
 
             RentalApplication r = applicationService.findById(applicationId);
+
             r.getProperty().setAvailability(false);
 
-            propertyService.updateProperty(r.getProperty());
+            propertyService.updateProperty(r.getProperty());                // accept successful page
         }else{
-            applicationService.declineApplication(applicationId); // delete to application vbasika
+
+            applicationService.declineApplication(applicationId);           // decline successful page
         }
 
 
