@@ -21,7 +21,6 @@
                 <th>Rental Duration</th>
                 <th>Renter Job</th>
                 <th>Renter Pets</th>
-                <th>Files</th>
             </tr>
             </thead>
 
@@ -33,7 +32,7 @@
                 <td th:text="${RentalApplication.getRenterJob()}"></td>
                 <td th:text="${RentalApplication.getRenterPets()}"></td>
 
-                <td>
+                <td th:if="${RentalApplication.getStatus() != true}">
                     <form th:action="@{/Owner/evaluate_application}" method="post" style="display:inline;">
                         <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
                         <input type="hidden" name="decision" value="accept" />
@@ -41,7 +40,7 @@
                     </form>
                 </td>
                 <!-- Decline Form -->
-                <td>
+                <td th:if="${RentalApplication.getStatus() != true}">
                     <form th:action="@{/Owner/evaluate_application}" method="post" style="display:inline;">
                         <input type="hidden" name="rentalApplication_id" th:value="${RentalApplication.getId()}" />
                         <input type="hidden" name="decision" value="decline" />

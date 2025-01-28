@@ -34,19 +34,12 @@ public class PropertyService {
 
         filter = findByPriceAndSize(filter,minPrice, maxPrice, priceSlider, minSize, maxSize, sizeSlider);        // Filtering by Price and Size
 
-        System.out.println(filter);
-
         filter = findByBuildingFees(filter, propertyType, buildingFees);                          // Filtering by Building fees
 
-        System.out.println("2" + filter);
 
         filter = findByConstructionDate(filter, propertyType, constructionDate);        // Filtering by construction date
 
-        System.out.println("3" + filter);
-
         filter = findByAvailability(filter, availability);
-
-        System.out.println("4" +  filter);
 
         return filter;
     }

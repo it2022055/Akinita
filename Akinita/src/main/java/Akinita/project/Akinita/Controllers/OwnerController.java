@@ -285,11 +285,11 @@ public class OwnerController {
             applicationService.setDateCurrDate(applicationId);
 
             RentalApplication r = applicationService.findById(applicationId);
-            r.getProperty().setVisibility("Occupied");
+            r.getProperty().setAvailability(false);
 
             propertyService.updateProperty(r.getProperty());
         }else{
-            applicationService.declineApplication(applicationId);
+            applicationService.declineApplication(applicationId); // delete to application vbasika
         }
 
 
