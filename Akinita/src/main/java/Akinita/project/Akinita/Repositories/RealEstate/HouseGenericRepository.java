@@ -1,5 +1,7 @@
 package Akinita.project.Akinita.Repositories.RealEstate;
 
+import Akinita.project.Akinita.Entities.Enums.EnergyClass;
+import Akinita.project.Akinita.Entities.Enums.Facilities;
 import Akinita.project.Akinita.Entities.Properties.Property;
 import Akinita.project.Akinita.Entities.Properties.House;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +26,14 @@ public interface HouseGenericRepository extends PropertyGenericRepository<House,
     List<House> findByOwnerId(@Param("userId") int userId);
 
     List<House> findByVisibilityOrVisibilityAndOwner_UserId(String visibility1, String visibility2, int ownerId);
+
+    @Query("SELECT CASE WHEN COUNT(hf) = :facilitiesSize THEN true ELSE false END " +
+            "FROM House h JOIN h.facilities hf " +
+            "WHERE h.id = :houseId AND hf IN :facilities")
+    Boolean hasFacilities(@Param("houseId") Integer houseId, @Param("facilities") List<Facilities> facilities, @Param("facilitiesSize") int facilitiesSize);
+
+    @Query("SELECT CASE WHEN h.energyClass = :energyClass THEN true ELSE false END FROM House h WHERE h.id = :houseId")
+    Boolean hasEnergyClass(@Param("houseId") Integer houseId, @Param("energyClass") EnergyClass energyClass);
+
+
 }

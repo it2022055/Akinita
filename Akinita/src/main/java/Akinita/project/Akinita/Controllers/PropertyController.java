@@ -1,5 +1,7 @@
 package Akinita.project.Akinita.Controllers;
 
+import Akinita.project.Akinita.Entities.Enums.EnergyClass;
+import Akinita.project.Akinita.Entities.Enums.Facilities;
 import Akinita.project.Akinita.Entities.Properties.Property;
 import Akinita.project.Akinita.Services.PropertyService;
 import jakarta.transaction.Transactional;
@@ -11,8 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static Akinita.project.Akinita.Entities.Enums.Facilities.*;
 
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Controller
@@ -32,13 +37,81 @@ public class PropertyController {
                                    @RequestParam(name = "sizeSlider", required = false) Integer sizeSlider,
                                    @RequestParam(name = "buildingFees", required = false) Boolean buildingFees,
                                    @RequestParam(name = "constructionDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date constructionDate,
+                                   @RequestParam(name = "facilities", required = false) List<String> facilitiesRaw,
+                                   @RequestParam(name = "energyClass", required = false) String energyClassRaw,
                                    RedirectAttributes redirectAttributes) {
 
         String locationT = (location.isEmpty())? "All" : location;
 
         Boolean availability = true;
 
-        List<Property> properties = propertyService.findProperties(locationT, propertyType, minPrice, maxPrice, minSize, maxSize, buildingFees, constructionDate,priceSlider, sizeSlider, availability);
+        EnergyClass energyClass = null;
+
+        if(energyClassRaw != null) {
+            energyClass = switch (energyClassRaw) {
+                case "Apls" -> EnergyClass.Apls;
+                case "A" -> EnergyClass.A;
+                case "Bpls" -> EnergyClass.Bpls;
+                case "B" -> EnergyClass.B;
+                case "C" -> EnergyClass.C;
+                case "D" -> EnergyClass.D;
+                case "E" -> EnergyClass.E;
+                case "Z" -> EnergyClass.Z;
+                case "H" -> EnergyClass.H;
+                case "EMPTY" -> EnergyClass.EMPTY;
+                default -> energyClass;
+            };
+        }
+
+        List<Facilities> facilities = new ArrayList<>();
+
+        if (facilitiesRaw != null) {
+            if(facilitiesRaw.contains("All")){
+                facilities.add(ALL);
+
+
+            } else {
+                for (String fc : facilitiesRaw) {
+
+                    switch (fc) {
+                        case "AC":
+                            facilities.add(AC);
+                            break;
+
+                        case "Elevator":
+                            facilities.add(ELEVATOR);
+                            break;
+
+                        case "Parking":
+                            facilities.add(PARKING);
+                            break;
+
+                        case "Garden":
+                            facilities.add(GARDEN);
+                            break;
+
+                        case "Fireplace":
+                            facilities.add(FIREPLACE);
+                            break;
+
+                        case "Pool":
+                            facilities.add(POOL);
+                            break;
+
+                        case "Storage":
+                            facilities.add(STORAGE);
+                            break;
+
+                        case "Alarm":
+                            facilities.add(ALARM);
+                            break;
+                    }
+                }
+            }
+        }
+
+
+        List<Property> properties = propertyService.findProperties(locationT, propertyType, minPrice, maxPrice, minSize, maxSize, buildingFees, constructionDate,priceSlider, sizeSlider, availability,facilities,energyClass);
         redirectAttributes.addFlashAttribute("properties", properties);
         return "redirect:/Service/search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
     }

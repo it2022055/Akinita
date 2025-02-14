@@ -1,5 +1,7 @@
 package Akinita.project.Akinita.Services;
 
+import Akinita.project.Akinita.Entities.Enums.EnergyClass;
+import Akinita.project.Akinita.Entities.Enums.Facilities;
 import Akinita.project.Akinita.Entities.Properties.*;
 import Akinita.project.Akinita.Repositories.RealEstate.*;
 import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static Akinita.project.Akinita.Entities.Enums.Facilities.*;
 
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Service
@@ -28,7 +32,7 @@ public class PropertyService {
     RentalApplicationRepository rentalApplicationRepository;
 
 
-    public List<Property> findProperties(String location, String propertyType, Double minPrice, Double maxPrice, Integer minSize, Integer maxSize, Boolean buildingFees, Date constructionDate, Double priceSlider, Integer sizeSlider, Boolean availability) {
+    public List<Property> findProperties(String location, String propertyType, Double minPrice, Double maxPrice, Integer minSize, Integer maxSize, Boolean buildingFees, Date constructionDate, Double priceSlider, Integer sizeSlider, Boolean availability, List<Facilities> facilities, EnergyClass energyClass) {
 
         List<Property> filter = findByTypeAndLocation(propertyType, location);                 // Filtering by Type and Location
 
@@ -36,10 +40,15 @@ public class PropertyService {
 
         filter = findByBuildingFees(filter, propertyType, buildingFees);                          // Filtering by Building fees
 
-
         filter = findByConstructionDate(filter, propertyType, constructionDate);        // Filtering by construction date
 
         filter = findByAvailability(filter, availability);
+
+        filter = findByFacilities(filter, facilities, propertyType);
+        System.out.println(filter);
+
+        filter = findByEnergyClass(filter, propertyType, energyClass);
+        System.out.println(filter);
 
         return filter;
     }
@@ -97,6 +106,21 @@ public class PropertyService {
     private List<Property> findByAvailability(List<Property> properties, Boolean availability) {
         return properties.stream()
                 .filter(p -> availability == null || p.getAvailability().equals(availability))
+                .collect(Collectors.toList());
+    }
+
+    private List<Property> findByFacilities(List<Property> properties, List<Facilities> facilities, String type) {
+        return properties.stream()
+                .filter(p -> !type.equals("House") || facilities == null || facilities.contains(ALL) || houseRepository.hasFacilities(p.getId(),facilities ,facilities.size()))
+                .filter(p -> !type.equals("CommercialProperty") || facilities == null || facilities.contains(ALL) || commercialPropertyRepository.hasFacilities(p.getId(),facilities,facilities.size()))
+                .collect(Collectors.toList());
+    }
+
+    private List<Property> findByEnergyClass(List<Property> properties, String type, EnergyClass energyClass) {
+        return properties.stream()
+                .filter(p -> !type.equals("House") || energyClass == null || houseRepository.hasEnergyClass(p.getId(),energyClass))
+                .filter(p -> !type.equals("CommercialProperty") || energyClass == null || commercialPropertyRepository.hasEnergyClass(p.getId(),energyClass))
+                .filter(p -> !type.equals("Parking") || energyClass == null || parkingRepository.hasEnergyClass(p.getId(),energyClass))
                 .collect(Collectors.toList());
     }
 
