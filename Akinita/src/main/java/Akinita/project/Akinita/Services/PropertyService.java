@@ -45,10 +45,8 @@ public class PropertyService {
         filter = findByAvailability(filter, availability);
 
         filter = findByFacilities(filter, facilities, propertyType);
-        System.out.println(filter);
 
         filter = findByEnergyClass(filter, propertyType, energyClass);
-        System.out.println(filter);
 
         return filter;
     }
