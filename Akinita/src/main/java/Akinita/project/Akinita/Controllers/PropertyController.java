@@ -111,7 +111,10 @@ public class PropertyController {
         }
 
 
-        List<Property> properties = propertyService.findProperties(locationT, propertyType, minPrice, maxPrice, minSize, maxSize, buildingFees, constructionDate,priceSlider, sizeSlider, availability,facilities,energyClass);
+        List<Property> properties = propertyService.findProperties(locationT, propertyType, minPrice, maxPrice,
+                                                                    minSize, maxSize, buildingFees, constructionDate,priceSlider,
+                                                                    sizeSlider, availability,facilities,energyClass);
+
         redirectAttributes.addFlashAttribute("properties", properties);
         return "redirect:/Service/search_results";  // Επιστρέφει την αντίστοιχη σελίδα αποτελεσμάτων
     }

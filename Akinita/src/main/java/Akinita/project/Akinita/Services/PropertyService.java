@@ -32,7 +32,10 @@ public class PropertyService {
     RentalApplicationRepository rentalApplicationRepository;
 
 
-    public List<Property> findProperties(String location, String propertyType, Double minPrice, Double maxPrice, Integer minSize, Integer maxSize, Boolean buildingFees, Date constructionDate, Double priceSlider, Integer sizeSlider, Boolean availability, List<Facilities> facilities, EnergyClass energyClass) {
+    public List<Property> findProperties(String location, String propertyType, Double minPrice, Double maxPrice,
+                                         Integer minSize, Integer maxSize, Boolean buildingFees, Date constructionDate,
+                                         Double priceSlider, Integer sizeSlider, Boolean availability, List<Facilities> facilities,
+                                         EnergyClass energyClass) {
 
         List<Property> filter = findByTypeAndLocation(propertyType, location);                 // Filtering by Type and Location
 
