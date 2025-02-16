@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import Akinita.project.Akinita.Entities.Properties.House;
+import Akinita.project.Akinita.Entities.Properties.CommercialProperty;
+import Akinita.project.Akinita.Entities.Properties.Parking;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -152,4 +154,26 @@ public class PropertyController {
 
     }
 
+    @GetMapping("/ListingInfo/{property_id}") //Μέθοδος αποδοχής ιδιοκτησίας από τον admin
+    public String PropertyInfo(@ModelAttribute("properties") Property property,@PathVariable int property_id,Model model){
+        Property the_property= propertyService.getPropertyById(property_id);
+        List<Facilities> facilities = propertyService.getPropertyFacilitiesById(property_id);
+        model.addAttribute("the_property", the_property);
+        model.addAttribute("facilities", facilities);
+        // Έλεγχος τύπου property και προσθήκη των ειδικών πεδίων στο Model
+        if (the_property instanceof House house) {
+            model.addAttribute("constructionDate", house.getConstructionDate());
+            model.addAttribute("buildingFees", house.getBuildingFees());
+            model.addAttribute("energyClass", house.getEnergyClass());
+        } else if (the_property instanceof Parking parking) {
+            model.addAttribute("constructionDate", parking.getConstructionDate());
+            model.addAttribute("buildingFees", parking.getBuildingFees());
+            model.addAttribute("energyClass", parking.getEnergyClass());
+        } else if (the_property instanceof CommercialProperty commercial) {
+            model.addAttribute("constructionDate", commercial.getConstructionDate());
+            model.addAttribute("buildingFees", commercial.getBuildingFees());
+            model.addAttribute("facilities", commercial.getFacilities());
+        }
+        return "properties/propertyInformation";
+    }
 }

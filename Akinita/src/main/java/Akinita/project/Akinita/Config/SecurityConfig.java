@@ -17,7 +17,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/home", "/register", "/roleselection", "/saveUser", "/images/**", "/js/**","/css/**","/Service/searchProperties", "/Service/search_results/**", "/Renter/registrationSubmitted","/")
+                        .requestMatchers("/", "/home", "/register", "/roleselection", "/saveUser", "/images/**", "/js/**","/css/**","/Service/searchProperties", "/Service/search_results/**", "/Renter/registrationSubmitted","/","/Service/ListingInfo/**")
                         .permitAll() // Ο χρήστης έχει τη δυνατότητα να αναζητήσει χωρίς λογαριασμό
                         .anyRequest().authenticated()
                 )

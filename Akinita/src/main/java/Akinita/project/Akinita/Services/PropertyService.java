@@ -152,11 +152,26 @@ public class PropertyService {
         commercialPropertyRepository.save(commercialProperty);
     } //Μέθοδος αποθήκευσης commercial property
 
+    @Transactional
     public void DeleteProperty(Property property, int propertyId) {
         rentalApplicationRepository.deleteByPropertyId(propertyId);
         propertyRepository.delete(property);} //Μέθοδος διαγραφής property
 
     public List<Property> findPropertiesByRenterId(int renterId) {
         return propertyRepository.findByRenterId(renterId);
+    }
+
+    public List<Facilities>  getPropertyFacilitiesById(int propertyId) {
+        List<Facilities> facilities = new ArrayList<>();
+        try{
+            facilities.addAll(houseRepository.findFacilitiesByPropertyId(propertyId));
+            if (!facilities.isEmpty()) {
+                return facilities;
+            }
+            facilities.addAll(commercialPropertyRepository.findFacilitiesByPropertyId(propertyId));
+            return facilities;
+        }catch (Exception e){
+            return new ArrayList<>();
+        }
     }
 }

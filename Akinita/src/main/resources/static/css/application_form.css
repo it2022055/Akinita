@@ -1,7 +1,7 @@
 /* Βασική φόρμα */
 .default-form {
     display: grid;
-    grid-template-columns: 1fr 2fr;  /* Δημιουργούμε δύο στήλες με διαφορετικό πλάτος */
+    grid-template-columns: 1fr 2fr;
     gap: 1em;
     padding: 2em;
     background-color: rgba(255, 255, 255, 0.8);
@@ -76,7 +76,7 @@ button:hover {
 /* Responsive βελτιστοποίηση */
 @media (max-width: 768px) {
     form {
-        grid-template-columns: 1fr; /* Ενιαία στήλη για μικρές οθόνες */
+        grid-template-columns: 1fr;
         gap: 0.8em;
         padding: 1em;
     }

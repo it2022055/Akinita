@@ -14,15 +14,15 @@
     left: 50%;
     transform: translate(-50%, -50%);
     box-sizing: border-box;
-    max-height: 80vh; /* Χρησιμοποιείστε vh αντί για % */
+    max-height: 80vh;
 }
 
 /* Heading */
 #heading {
     text-align: center;
-    margin: 0.5em; /* Λιγότερο κενό */
+    margin: 0.5em;
     color: black;
-    font-size: 1.5em; /* Πιο ευδιάκριτο μέγεθος */
+    font-size: 1.5em;
     width: 100%;
 }
 /* From Uiverse.io by vinodjangid07 */

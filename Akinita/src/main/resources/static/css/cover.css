@@ -1,38 +1,27 @@
-/*
- * Globals
- */
-
-/* Links */
 a,
 a:focus,
 a:hover {
     color: #fff;
 }
 
-/* Custom default button */
 .btn-secondary,
 .btn-secondary:hover,
 .btn-secondary:focus {
     color: #333;
-    text-shadow: none; /* Prevent inheritance from `body` */
+    text-shadow: none;
     background-color: #fff;
     border: .05rem solid #fff;
 }
-
-
-/*
- * Base structure
- */
 
 html,
 body {
     height: 100%;
     margin: 0;
-    background-image: url('../images/pixelcut-export.jpeg'); /* Αντικατάστησε με το μονοπάτι της εικόνας */
-    background-size: cover; /* Η εικόνα να καλύπτει ολόκληρη τη σελίδα */
-    background-repeat: no-repeat; /* Η εικόνα να μην επαναλαμβάνεται */
-    background-position: center; /* Κεντράρισμα της εικόνας */
-    background-attachment: fixed; /* Το φόντο παραμένει σταθερό κατά την κύλιση */
+    background-image: url('../images/pixelcut-export.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 
@@ -52,10 +41,6 @@ body {
     max-width: 42em;
 }
 
-
-/*
- * Header
- */
 .masthead {
     margin-bottom: 2rem;
 }

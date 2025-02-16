@@ -35,4 +35,7 @@ public interface CommercialPropertyGenericRepository extends PropertyGenericRepo
     @Query("SELECT CASE WHEN c.energyClass = :energyClass THEN true ELSE false END FROM CommercialProperty c WHERE c.id = :comPropId")
     Boolean hasEnergyClass(@Param("comPropId") Integer comPropId, @Param("energyClass") EnergyClass energyClass);
 
+    @Query("SELECT h.facilities FROM CommercialProperty h WHERE h.id = :propertyId")
+    List<Facilities> findFacilitiesByPropertyId(@Param("propertyId") Integer propertyId);
+
 }

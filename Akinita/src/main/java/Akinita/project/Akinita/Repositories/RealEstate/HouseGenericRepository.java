@@ -35,5 +35,7 @@ public interface HouseGenericRepository extends PropertyGenericRepository<House,
     @Query("SELECT CASE WHEN h.energyClass = :energyClass THEN true ELSE false END FROM House h WHERE h.id = :houseId")
     Boolean hasEnergyClass(@Param("houseId") Integer houseId, @Param("energyClass") EnergyClass energyClass);
 
+    @Query("SELECT h.facilities FROM House h WHERE h.id = :propertyId")
+    List<Facilities> findFacilitiesByPropertyId(@Param("propertyId") Integer propertyId);
 
 }

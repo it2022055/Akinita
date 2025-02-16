@@ -1,15 +1,15 @@
 function toggleSharedExpenses() {
     const propertyType = document.querySelector('select[name="propertyType"]').value;
     const sharedExpensesField = document.getElementById('shared-expenses-field');
-    const form = document.querySelector('.form'); // Το κύριο form
+    const form = document.querySelector('.form');
 
     if (propertyType === "Parking") {
         sharedExpensesField.style.display = "block";
-        form.classList.remove('default-form'); // Αφαιρεί την αρχική εμφάνιση
-        form.classList.add('parking-form'); // Προσθέτει την εμφάνιση για "Parking"
+        form.classList.remove('default-form');
+        form.classList.add('parking-form');
     } else {
-        sharedExpensesField.style.display = "none"; // Απόκρυψη του shared-expenses-field
-        form.classList.remove('parking-form'); // Αφαιρεί την εμφάνιση για "Parking"
-        form.classList.add('default-form');  // Επαναφέρει την αρχική εμφάνιση
+        sharedExpensesField.style.display = "none";
+        form.classList.remove('parking-form');
+        form.classList.add('default-form');
     }
 }

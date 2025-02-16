@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details</title>
+    <link th:href="@{/css/search_results.css}" rel="stylesheet">
+    <style>
+        .container, .field-row span {
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+<div layout:fragment="main-content">
+    <form class="form">
+        <p id="heading"></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <div class="container">
+            <div class="field-row">
+                <label>Property Name:</label>
+                <span th:text="${the_property.getEstateName()}"></span>
+            </div>
+            <div class="field-row">
+                <label>Location:</label>
+                <span th:text="${the_property.location}"></span>
+            </div>
+            <div class="field-row">
+                <label>Price:</label>
+                <span th:text="${the_property.price}"></span> €
+            </div>
+            <div class="field-row">
+                <label>Description:</label>
+                <span th:text="${the_property.description}"></span>
+            </div>
+            <div class="field-row">
+                <label>Availability:</label>
+                <span th:text="${the_property.availability ? 'Available' : 'Not Available'}"></span>
+            </div>
+            <div class="field-row">
+                <label>Square Meter:</label>
+                <span th:text="${the_property.squareMeter}"></span> m²
+            </div>
+
+            <!-- Facilities -->
+            <div th:if="${!facilities.isEmpty()}">
+                <label>Facilities:</label>
+                <ul>
+                    <li th:each="facility : ${facilities}" th:text="${facility}"></li>
+                </ul>
+            </div>
+
+            <!-- Extra fields for specific property types -->
+            <div class="field-row" th:if="${constructionDate != null}">
+                <label>Construction Date:</label>
+                <span th:text="${#dates.format(constructionDate, 'yyyy-MM-dd')}"></span>
+            </div>
+
+            <div class="field-row" th:if="${buildingFees != null}">
+                <label>Building Fees:</label>
+                <span th:text="${buildingFees ? 'Yes' : 'No'}"></span>
+            </div>
+
+            <div class="field-row" th:if="${energyClass != null}">
+                <label>Energy Class:</label>
+                <span th:text="${energyClass}"></span>
+            </div>
+        </div>
+        <button type="submit" class="button1" th:formaction="@{/Renter/rental_application}" sec:authorize="hasRole('ROLE_RENTER')">Apply for Renting</button>
+        <input type="hidden" name="property_id" th:value="${the_property.id}"/>
+    </form>
+</div>
+</body>
+</html>

@@ -1,9 +1,9 @@
 .container {
     display: flex;
-    flex-direction: column; /* Στήλες για καλύτερη διάταξη */
+    flex-direction: column;
     gap: 20px;
     padding: 1em;
-    background-color: rgba(255, 255, 255, 0.8); /* Αυξημένο opacity για πιο έντονο background */
+    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 25px;
     align-items: flex-start;
     width: 100%;
@@ -54,9 +54,9 @@
 }
 
 label {
-    font-weight: 700; /* Πολύ πιο παχιά γραμματοσειρά για το Location label */
+    font-weight: 700;
     color: black;
-    font-size: 1.1em; /* Μπορείς να αυξήσεις και το μέγεθος αν το θέλεις */
+    font-size: 1.1em;
 }
 #heading {
     text-align: center;
@@ -111,10 +111,9 @@ output {
     color: black;
 }
 
-/* Dynamic Fields Grid Layout */
 #dynamicFields {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Δημιουργεί 3 στήλες */
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     width: 100%;
     padding-top: 1em;

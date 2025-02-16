@@ -13,7 +13,7 @@
 
 <body>
 <div layout:fragment="main-content">
-    <form  class="form" th:action="@{/Renter/rental_application}" method="get">
+    <form  class="form"  method="get">
         <p id="heading">Property Search Results</p>
         <div th:if="${#lists.isEmpty(properties)}">
             <p style="color: black; font-size: 1.5em; margin-bottom: 2em;">No properties found matching your criteria.</p>
@@ -37,8 +37,13 @@
                     <td th:text="${property.getSquareMeter()}"></td>
                     <td th:text="${property.getPrice()}"></td>
                     <td>
-                        <button type="submit" class="button1" sec:authorize="hasRole('ROLE_RENTER')">Apply for Renting</button>
+                        <button type="submit" class="button1" th:formaction="@{/Renter/rental_application}" sec:authorize="hasRole('ROLE_RENTER')">Apply for Renting</button>
                         <input type="hidden" name="property_id" th:value="${property.id}"/>
+                    </td>
+                    <td>
+                        <button type="button" class="button1" th:onclick="|window.location.href='@{/Service/ListingInfo/{property_id}(property_id=${property.id})}'|">
+                            Property Information
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -47,8 +52,5 @@
         </div>
     </form>
 </div>
-<footer>
-    <p>&copy; 2025 Property Finder. All rights reserved.</p>
-</footer>
 </body>
 </html>
