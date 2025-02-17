@@ -1,5 +1,6 @@
 package Akinita.project.Akinita.Controllers;
 
+import Akinita.project.Akinita.Entities.Actors.User;
 import Akinita.project.Akinita.Repositories.User.RoleRepository;
 import Akinita.project.Akinita.Entities.Role;
 import Akinita.project.Akinita.Repositories.User.UserRepository;
@@ -9,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Controller
@@ -36,15 +40,15 @@ public class AuthController {
         roleRepository.updateOrInsert(role_renter); //Προσθήκη ρόλου user στον πίνακα με τους ρόλους
         roleRepository.updateOrInsert(role_admin); //Προσθήκη ρόλου user στον πίνακα με τους ρόλους
 
-//        User user = new User(); //Δημιουργία admin
-//        user.setUsername("admin"); //Username admin
-//        String encodedPassword = passwordEncoder.encode("admin"); //Password admin
-//        user.setPassword(encodedPassword);
-//        user.setEmail("admin@example.com"); //Email admin
-//        Set<Role> roles = new HashSet<>();
-//        roles.add(role_admin); //Εισαγωγή του ρόλου admin
-//        user.setRoles(roles);
-//        userRepository.save(user); //Αποθήκευση του admin
+        User user = new User(); //Δημιουργία admin
+        user.setUsername("admin"); //Username admin
+        String encodedPassword = passwordEncoder.encode("admin"); //Password admin
+        user.setPassword(encodedPassword);
+        user.setEmail("admin@example.com"); //Email admin
+        Set<Role> roles = new HashSet<>();
+        roles.add(role_admin); //Εισαγωγή του ρόλου admin
+        user.setRoles(roles);
+        userRepository.save(user); //Αποθήκευση του admin
 
     }
 
