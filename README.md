@@ -18,7 +18,7 @@
 5. [License](#license)
 
 ## Overview
-Akinita is a web-based platform designed to facilitate the management of property rentals. It allows property owners to list their properties, renters to apply for rentals, and an administrator to oversee and validate these transactions. The system is built as part of the Distributed Systems course for the academic year 2024-2025.
+Akinita is a web-based university project platform designed to facilitate the management of property rentals. It allows property owners to list their properties, renters to apply for rentals, and an administrator to oversee and validate these transactions. The system is built as part of the Distributed Systems course for the academic year 2024-2025.
 
 ## Features
 - **Property Listing Submission**: Property owners can submit listings that require approval from the administrator before being displayed on the platform.
