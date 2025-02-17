@@ -1,5 +1,22 @@
 # Akinita - Property Rental Management System
 
+## Table of Contents
+1. [Overview](#overview)
+2. [Features](#features)
+3. [Roles and Functions](#roles-and-functions)
+   - [Administrator](#administrator)
+   - [Owner](#owner)
+   - [Renter](#renter)
+4. [Getting Started](#getting-started)
+   - [Prerequisites](#prerequisites)
+   - [Installation](#installation)
+     - [Clone the Repository](#clone-the-repository)
+     - [Open the Project in IDE](#open-the-project-in-ide)
+     - [Configure the Database](#configure-the-database)
+     - [Run the Application](#run-the-application)
+     - [Access the Web Application](#access-the-web-application)
+5. [License](#license)
+
 ## Overview
 Akinita is a web-based platform designed to facilitate the management of property rentals. It allows property owners to list their properties, renters to apply for rentals, and an administrator to oversee and validate these transactions. The system is built as part of the Distributed Systems course for the academic year 2024-2025.
 
