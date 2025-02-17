@@ -88,15 +88,15 @@ http://localhost:8080/
 When running the application for the first time, the following code should be commented in to ensure the creation of the initial admin user:
 
 ```java
-User user = new User(); // Δημιουργία admin
-user.setUsername("admin"); // Username admin
-String encodedPassword = passwordEncoder.encode("admin"); // Password admin
+User user = new User();
+user.setUsername("admin");
+String encodedPassword = passwordEncoder.encode("admin");
 user.setPassword(encodedPassword);
-user.setEmail("admin@example.com"); // Email admin
+user.setEmail("admin@example.com");
 Set<Role> roles = new HashSet<>();
-roles.add(role_admin); // Εισαγωγή του ρόλου admin
+roles.add(role_admin);
 user.setRoles(roles);
-userRepository.save(user); // Αποθήκευση του admin από το AuthController
+userRepository.save(user);
 ```
 
 After the admin user is created, it is recommended to comment out this code to prevent re-execution.
