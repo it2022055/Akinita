@@ -63,6 +63,7 @@ label {
     margin: 2em;
     color: black;
     font-size: 1.2em;
+    font-weight: 500;
 }
 
 input, select {

@@ -124,11 +124,29 @@ public class UserController {
     @PostMapping("/user/{user_id}")
     public String saveStudent(@PathVariable int user_id, @ModelAttribute("user") User user, Model model) {
         User the_user = (User) userService.getUser(user_id); //Ανάκτηση αντικειμένου user από τη Βάση Δεδομένων
-        the_user.setEmail(user.getEmail()); //Αλλαγή email
-        the_user.setUsername(user.getUsername()); //Αλλαγή username
-        try{
-            userService.updateUser(the_user); //Αποθήκευση αλλαγής στη Βάση Δεδομένων
-        }catch (Exception e){
+        if (!the_user.getUsername().equals(user.getUsername())) {
+            if (userService.existsUser(user.getUsername())) {
+                model.addAttribute("isError", true);
+                model.addAttribute("error", "Username already exists!");
+                return "auth/user";
+            } else {
+                the_user.setUsername(user.getUsername()); // Change username
+            }
+        }
+
+        if (!the_user.getEmail().equals(user.getEmail())) {
+            if (userService.existsEmail(user.getEmail())) {
+                model.addAttribute("isError", true);
+                model.addAttribute("error", "Email already exists!");
+                return "auth/user";
+            } else {
+                the_user.setEmail(user.getEmail()); // Change email
+            }
+        }
+
+        try {
+            userService.updateUser(the_user); // Save changes to the database
+        } catch (Exception e) {
             throw new RuntimeException("Updating user failed");
         }
         model.addAttribute("users", userService.getUsers()); //Προσθήκη των users στο model

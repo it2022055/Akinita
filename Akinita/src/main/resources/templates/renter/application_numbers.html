@@ -47,7 +47,7 @@
         <div th:if="${isError}" style="background-color: rgba(190, 0,0, 0.8); border-radius: 25px; padding: 15px; font-weight: bold; color: white; display: inline-block;">
             <p th:text="${error}" style="margin: 0;"></p>
         </div>
-        <div th:if="${#lists.isEmpty(RentalApplications)}" style="color: black">
+        <div th:if="${#lists.isEmpty(RentalApplications)}" style="color: black; font-size: 1.2em; font-weight: 500">
             No submitted rental applications were found!
         </div>
     </div>

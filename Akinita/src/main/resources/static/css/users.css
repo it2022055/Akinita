@@ -3,12 +3,12 @@
     gap: 20px;
     padding: 2em 1em;
     flex-direction: column;
-    background-color: rgba(255, 255, 255, 0.68);
+    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 25px;
     align-items: center;
     justify-content: center;
-    max-width: 700px;
-    width: 90%;
+    width: fit-content;
+    max-width: 90vw;
     position: fixed;
     top: 10%;
     left: 50%;
@@ -16,6 +16,10 @@
     box-sizing: border-box;
     max-height: 80vh;
     overflow-y: auto;
+}
+
+.table {
+    width: 100%; /* Ensures the table takes up the full width of the form */
 }
 .button1 {
     padding: 0.5em;

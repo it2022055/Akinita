@@ -6,7 +6,7 @@
     padding-left: 2em;
     padding-right: 2em;
     padding-bottom: 0.4em;
-    background-color: rgba(255, 255, 255, 0.68);
+    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 25px;
     transition: .4s ease-in-out;
 }
@@ -15,7 +15,8 @@
     text-align: center;
     margin: 2em;
     color: black;
-    font-size: 1.2em;
+    font-size: 1.5em;
+    font-weight: 500;
 }
 
 .field {
@@ -65,6 +66,24 @@
 }
 
 .button3:hover {
+    background-color: white;
+    color: black;
+}
+
+.button1 {
+    padding: 0.5em;
+    padding-left: 1.1em;
+    padding-right: 1.1em;
+    border-radius: 5px;
+    margin-right: 0.5em;
+    border: none;
+    outline: none;
+    transition: .4s ease-in-out;
+    background-color: #252525;
+    color: white;
+}
+
+.button1:hover {
     background-color: white;
     color: black;
 }
