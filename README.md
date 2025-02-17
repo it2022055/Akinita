@@ -15,10 +15,11 @@
      - [Configure the Database](#configure-the-database)
      - [Run the Application](#run-the-application)
      - [Access the Web Application](#access-the-web-application)
-5. [License](#license)
+5. [First-Time Execution](#first-time-execution)
+6. [License](#license)
 
 ## Overview
-Akinita is a web-based university project platform designed to facilitate the management of property rentals. It allows property owners to list their properties, renters to apply for rentals, and an administrator to oversee and validate these transactions. The system is built as part of the Distributed Systems course for the academic year 2024-2025.
+Akinita is a web-based platform designed to facilitate the management of property rentals. It allows property owners to list their properties, renters to apply for rentals, and an administrator to oversee and validate these transactions. The system is built as part of the Distributed Systems course for the academic year 2024-2025.
 
 ## Features
 - **Property Listing Submission**: Property owners can submit listings that require approval from the administrator before being displayed on the platform.
@@ -82,6 +83,23 @@ Open a web browser and go to:
 ```
 http://localhost:8080/
 ```
+
+## First-Time Execution
+When running the application for the first time, the following code should be commented in to ensure the creation of the initial admin user:
+
+```java
+User user = new User();
+user.setUsername("admin");
+String encodedPassword = passwordEncoder.encode("admin");
+user.setPassword(encodedPassword);
+user.setEmail("admin@example.com");
+Set<Role> roles = new HashSet<>();
+roles.add(role_admin);
+user.setRoles(roles);
+userRepository.save(user);
+```
+
+After the admin user is created, it is recommended to comment out this code to prevent re-execution.
 
 ## License
 This project is for academic purposes and does not have a specific license.
