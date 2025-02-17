@@ -18,4 +18,7 @@ public interface LandGenericRepository extends PropertyGenericRepository<Land, I
     List<Property> findAllProperties();
 
     List<Land> findByVisibilityOrVisibilityAndOwner_UserId(String visibility1, String visibility2, int ownerId);
+
+    @Query("SELECT l FROM Land l WHERE l.owner.userId = :userId")
+    List<Land> findByOwnerId(@Param("userId") int userId);
 }

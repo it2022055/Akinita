@@ -31,7 +31,6 @@ public class PropertyService {
     @Autowired
     RentalApplicationRepository rentalApplicationRepository;
 
-
     public List<Property> findProperties(String location, String propertyType, Double minPrice, Double maxPrice,
                                          Integer minSize, Integer maxSize, Boolean buildingFees, Date constructionDate,
                                          Double priceSlider, Integer sizeSlider, Boolean availability, List<Facilities> facilities,

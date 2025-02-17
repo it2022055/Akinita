@@ -26,4 +26,8 @@ public interface ParkingGenericRepository extends PropertyGenericRepository<Park
 
     @Query("SELECT CASE WHEN p.energyClass = :energyClass THEN true ELSE false END FROM Parking p WHERE p.id = :parkingId")
     Boolean hasEnergyClass(@Param("parkingId") Integer parkingId, @Param("energyClass") EnergyClass energyClass);
+
+    @Query("SELECT p FROM Parking p WHERE p.owner.userId = :userId")
+    List<Parking> findByOwnerId(@Param("userId") int userId);
+
 }

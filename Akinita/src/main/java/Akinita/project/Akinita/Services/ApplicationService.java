@@ -27,8 +27,12 @@ public class ApplicationService {
          rentalApplicationRepository.deleteById(appId);
     }
 
-    public RentalApplication save(RentalApplication rentalApplication) {
-        return rentalApplicationRepository.save(rentalApplication);
+    public void deleteByRenterId(int renter_id) {
+        rentalApplicationRepository.deleteByRenterId(renter_id);
+    }
+
+    public void save(RentalApplication rentalApplication) {
+        rentalApplicationRepository.save(rentalApplication);
     }
 
     public void setDateCurrDate(int applicationId) {

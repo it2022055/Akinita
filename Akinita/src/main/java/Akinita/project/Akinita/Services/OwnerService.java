@@ -1,6 +1,9 @@
 package Akinita.project.Akinita.Services;
 
-import Akinita.project.Akinita.Entities.RentalApplication;
+import Akinita.project.Akinita.Entities.Properties.CommercialProperty;
+import Akinita.project.Akinita.Entities.Properties.House;
+import Akinita.project.Akinita.Entities.Properties.Land;
+import Akinita.project.Akinita.Entities.Properties.Parking;
 import Akinita.project.Akinita.Interfaces.RealEstate;
 import Akinita.project.Akinita.Repositories.RealEstate.CommercialPropertyGenericRepository;
 import Akinita.project.Akinita.Repositories.RealEstate.HouseGenericRepository;
@@ -13,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,12 +46,12 @@ public class OwnerService {
         return ownerProperties;
     }
 
-    public Integer findOwnerIdByEmail(String email) { //Μέθοδος ανάκτησης ID από το email
+    public Integer getOwnerIdByEmail(String email) { //Μέθοδος ανάκτησης ID από το email
         Owner owner = ownerRepository.findByEmail(email);
         return owner != null ? owner.getUserId() : null;
     }
 
-    public Owner findById(int ownerId) { //Μέθοδος ανάκτησης Owner από το ID
+    public Owner getOwnerById(int ownerId) { //Μέθοδος ανάκτησης Owner από το ID
         Optional<Owner> optionalOwner = ownerRepository.findById(ownerId);
         return optionalOwner.orElse(null);
     }
@@ -61,5 +63,54 @@ public class OwnerService {
 
     public boolean existsTelephone(String telephone) {
         return ownerRepository.existsByTelephoneNumber(telephone);
+    }
+
+    public void deleteOwner(int id) {
+        // Διαγραφή από τον πίνακα house_facilities πριν από τη διαγραφή του House
+        List<House> houses = houseRepository.findByOwnerId(id);
+        if(!houses.isEmpty()) {
+            for (House house : houses) {
+                house.getFacilities().clear();  // Καθαρισμός της συλλογής facilities
+                try{
+                    houseRepository.delete(house);  // Διαγραφή του house
+                }catch (Exception e){
+                    throw  new RuntimeException(e.getMessage());
+                }
+
+            }
+        }
+        List<CommercialProperty> commercialProperties = commercialPropertyRepository.findByOwnerId(id);
+        if(!commercialProperties.isEmpty()){
+            for (CommercialProperty commercialProperty : commercialProperties) {
+                commercialProperty.getFacilities().clear();
+                try{
+                    commercialPropertyRepository.delete(commercialProperty);
+                }catch (Exception e){
+                    throw  new RuntimeException(e.getMessage());
+                }
+            }
+        }
+        List<Land> land = landRepository.findByOwnerId(id);
+        if(!land.isEmpty()){
+            for (Land landt : land) {
+                try{
+                    landRepository.delete(landt);
+                }catch (Exception e){
+                    throw  new RuntimeException(e.getMessage());
+                }
+            }
+        }
+
+        List<Parking> parking = parkingRepository.findByOwnerId(id);
+        if(!parking.isEmpty()){
+            for (Parking parkingt : parking) {
+                try{
+                    parkingRepository.delete(parkingt);
+                }catch (Exception e){
+                    throw  new RuntimeException(e.getMessage());
+                }
+            }
+        }
+        ownerRepository.deleteById(id);
     }
 }

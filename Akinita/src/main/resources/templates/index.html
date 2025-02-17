@@ -18,15 +18,19 @@
     </div>
     <form class="form" th:action="@{/Service/searchProperties}" method="get">
         <!-- Location and Property Type in the same row -->
+        <div class="row">
+            <label>Location</label>
+            <label>Property Type</label>
+        </div>
+
         <div class="field-row">
             <div class="field">
-                <label>Location</label>
                 <label>
                     <input autocomplete="off" placeholder="Location" class="input-field" type="text" name="location">
                 </label>
             </div>
             <div class="field">
-                <label for="propertyType">Property Type:</label>
+
                 <select id="propertyType" name="propertyType">
                     <option value="All">All</option>
                     <option value="CommercialProperty">Commercial Property</option>

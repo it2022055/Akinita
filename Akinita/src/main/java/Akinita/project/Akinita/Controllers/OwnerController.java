@@ -57,8 +57,8 @@ public class OwnerController {
         }
 
         String email = principal.getName(); //Εξαγωγή email
-        Integer ownerId = ownerService.findOwnerIdByEmail(email); //Επιστροφή Id του owner μέσω της findOwnerByEmail
-        Owner owner=ownerService.findById(ownerId); //Δημιουργία αντικειμένου Owner μέσω της findById(Επιστροφή του
+        Integer ownerId = ownerService.getOwnerIdByEmail(email); //Επιστροφή Id του owner μέσω της findOwnerByEmail
+        Owner owner=ownerService.getOwnerById(ownerId); //Δημιουργία αντικειμένου Owner μέσω της getOwnerById(Επιστροφή του
         model.addAttribute("estateName", estateName); //Προσθήκη ονόματος ιδιοκτησίας στο model
         model.addAttribute("description", description); //Προσθήκη περιγραφής στο model
         model.addAttribute("price", price); //Προσθήκη τιμής στο model
@@ -233,7 +233,7 @@ public class OwnerController {
     @GetMapping("/Listings") //Μέθοδος επιστροφής των ιδιοκτησιών του Owner
     public String ownerListings(Model model, Principal principal) {
         String email = principal.getName();
-        Integer ownerId = ownerService.findOwnerIdByEmail(email);
+        Integer ownerId = ownerService.getOwnerIdByEmail(email);
         model.addAttribute("Listings", ownerService.getOwnerProperties(ownerId)); //Προσθήκη στο model
         return "properties/ownerListings";
     }
@@ -277,7 +277,7 @@ public class OwnerController {
         String email = principal.getName();
 
         // Βρες το ID του ιδιοκτήτη με βάση το email
-        Integer ownerId = ownerService.findOwnerIdByEmail(email);
+        Integer ownerId = ownerService.getOwnerIdByEmail(email);
 
         // Βρες τις αιτήσεις για τον ιδιοκτήτη
         List<RentalApplication> applications = applicationService.findByOwner(ownerId);

@@ -39,9 +39,8 @@ public class UserController {
         return "auth/roleselection";
     }
 
-
     @PostMapping("/saveUser") //Αποθήκευση καινούργιου χρήστη
-    public String saveUser(@ModelAttribute User user, @RequestParam("role") String role, @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("telephone") String telephone, Model model) {
+    public String registerUser(@ModelAttribute User user, @RequestParam("role") String role, @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("telephone") String telephone, Model model) {
 
         model.addAttribute("isError",false);
 
@@ -122,8 +121,8 @@ public class UserController {
     }
 
     @PostMapping("/user/{user_id}")
-    public String saveStudent(@PathVariable int user_id, @ModelAttribute("user") User user, Model model) {
-        User the_user = (User) userService.getUser(user_id); //Ανάκτηση αντικειμένου user από τη Βάση Δεδομένων
+    public String editUser(@PathVariable int user_id, @ModelAttribute("user") User user, Model model) {
+        User the_user = userService.getUser(user_id); //Ανάκτηση αντικειμένου user από τη Βάση Δεδομένων
         if (!the_user.getUsername().equals(user.getUsername())) {
             if (userService.existsUser(user.getUsername())) {
                 model.addAttribute("isError", true);
@@ -155,11 +154,24 @@ public class UserController {
 
     @GetMapping("/user/role/delete/{user_id}/{role_id}")
     public String deleteRolefromUser(@PathVariable int user_id, @PathVariable Integer role_id, Model model){ //Μέθοδος διαγραφής ρόλου
-        User user = (User) userService.getUser(user_id); //Ανάκτηση user
+        User user = userService.getUser(user_id); //Ανάκτηση user
         Role role = (Role) userService.getRole(role_id); //Ανάκτηση ρόλου
-        user.getRoles().remove(role); //Αφαίρεση ρόλου
         try{
-            userService.updateUser(user); //Αποθήκευση αλλαγής στη Βάση Δεδομένων
+            if (user.getRoles().contains(role)) {      // Αφαίρεση user από το αντίστοιχο table του role
+                if (role.getName().equals("ROLE_OWNER")) {
+
+                    ownerService.deleteOwner(user_id);
+
+                } else if (role.getName().equals("ROLE_RENTER")) {
+
+                    renterService.deleteRenter(user_id);
+
+                }
+
+                user.getRoles().remove(role); //Αφαίρεση ρόλου
+                userService.updateUser(user); //Αποθήκευση αλλαγής στη Βάση Δεδομένων
+            }
+
         }catch (Exception e){
             throw new RuntimeException("Updating user failed");
         }
@@ -170,9 +182,8 @@ public class UserController {
     }
 
     @GetMapping("/user/delete/{user_id}")
-    public String deleteUser(@PathVariable int user_id, Model model){ //Μέθοδος διαγραφής ρόλου
-        User user = (User) userService.getUser(user_id); //Ανάκτηση user
-        System.out.println("User id" + user_id);
+    public String deleteUser(@PathVariable int user_id){ //Μέθοδος διαγραφής ρόλου
+        User user = userService.getUser(user_id); //Ανάκτηση user
         try{
             userService.deleteUser(user,user.getId());
         }catch (Exception e){
@@ -184,11 +195,29 @@ public class UserController {
 
     @GetMapping("/user/role/add/{user_id}/{role_id}")
     public String addRoletoUser(@PathVariable int user_id, @PathVariable Integer role_id, Model model){ //Μέθοδος προσθήκης ρόλου
-        User user = (User) userService.getUser(user_id); //Ανάκτηση user
+        User user = userService.getUser(user_id); //Ανάκτηση user
         Role role = (Role) userService.getRole(role_id); //Ανάκτηση ρόλου
-        user.getRoles().add(role); //Προσθήκη ρόλου
         try{
-            userService.updateUser(user); //Αποθήκευση αλλαγής στη Βάση Δεδομένων
+            if (!user.getRoles().contains(role)) {      // Προσθήκη user στο αντίστοιχο table του role
+                if(role.getName().equals("ROLE_OWNER")){
+
+                    Renter renter = renterService.getRenterById(user_id);
+                    Owner owner_renter = new Owner(user, renter.getFirstName(), renter.getLastName(), user.getEmail());
+                    ownerService.save(owner_renter);
+
+                } else if(role.getName().equals("ROLE_RENTER")){
+
+                    Owner owner = ownerService.getOwnerById(user_id);
+                    Renter renter_owner = new Renter(user, owner.getFirstName(), owner.getLastName(), user.getEmail());
+                    renter_owner.setAcceptance("Accepted");
+                    renterService.save(renter_owner);
+
+                }
+
+                user.getRoles().add(role); //Προσθήκη ρόλου
+                userService.updateUser(user); //Αποθήκευση αλλαγής στη Βάση Δεδομένων
+
+            }
         }catch (Exception e){
             throw new RuntimeException("Updating user failed");
         }
@@ -199,7 +228,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{user_id}/roleselection")
-    public String showRoleSelection(Model model){ //Φόρμα role selection
+    public String showRoleSelection(){ //Φόρμα role selection
         return "auth/roleselection";
     }
 }

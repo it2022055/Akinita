@@ -1,5 +1,6 @@
 package Akinita.project.Akinita.Services;
 
+import Akinita.project.Akinita.Entities.Properties.Property;
 import Akinita.project.Akinita.Entities.RentalApplication;
 import Akinita.project.Akinita.Entities.Actors.Renter;
 import Akinita.project.Akinita.Repositories.User.RenterRepository;
@@ -17,6 +18,8 @@ public class RenterService {
     private RenterRepository renterRepository;
     @Autowired
     private ApplicationService applicationService;
+    @Autowired
+    private PropertyService propertyService;
 
     public Integer findRenterIdByEmail(String email) {
         Renter renter = renterRepository.findByEmail(email);
@@ -45,5 +48,18 @@ public class RenterService {
 
     public boolean existsTelephone(String telephone) {
         return renterRepository.existsByTelephoneNumber(telephone);
+    }
+
+    public void deleteRenter(int id){
+
+        // Διαγραφή των αιτήσεων ενοικίασης από τον renter με βάση το id
+        applicationService.deleteByRenterId(id);
+        // Διαγραφή του renter
+        renterRepository.deleteById(id);
+        List<Property> rentedProperties = propertyService.findPropertiesByRenterId(id);
+        for (Property property : rentedProperties) {
+            property.setRenter(null);
+            propertyService.updateProperty(property);
+        }
     }
 }

@@ -32,7 +32,7 @@
                     <td th:if="${rentalApplication.getStatus() == false}">
                         <!-- Form for each delete -->
                         <form th:action="@{/Renter/RentalApplications/{rentalApplication_id}(rentalApplication_id=${rentalApplication.id})}" method="post">
-                            <button type="submit" class="button-delete">Delete</button>
+                            <button type="submit" class="button1">Delete</button>
                         </form>
                     </td>
 

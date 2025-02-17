@@ -1,15 +1,6 @@
 package Akinita.project.Akinita.Services;
 
 import Akinita.project.Akinita.Entities.Actors.Renter;
-import Akinita.project.Akinita.Entities.Properties.CommercialProperty;
-import Akinita.project.Akinita.Entities.Properties.House;
-import Akinita.project.Akinita.Entities.Properties.Property;
-import Akinita.project.Akinita.Entities.RentalApplication;
-import Akinita.project.Akinita.Repositories.RealEstate.CommercialPropertyGenericRepository;
-import Akinita.project.Akinita.Repositories.RealEstate.HouseGenericRepository;
-import Akinita.project.Akinita.Repositories.RealEstate.PropertyRepository;
-import Akinita.project.Akinita.Repositories.RentalApplicationRepository;
-import Akinita.project.Akinita.Repositories.User.OwnerRepository;
 import Akinita.project.Akinita.Repositories.User.RenterRepository;
 import Akinita.project.Akinita.Repositories.User.RoleRepository;
 import Akinita.project.Akinita.Repositories.User.UserRepository;
@@ -40,19 +31,11 @@ public class UserService implements UserDetailsService {
     private RoleRepository roleRepository; //Δήλωση του role repository
     @Autowired
     private RenterRepository renterRepository; //Δήλωση του renter repository
-    @Autowired
-    private RentalApplicationRepository rentalApplicationRepository;
     private BCryptPasswordEncoder passwordEncoder; //Δήλωση του password Encoder
     @Autowired
-    private PropertyService propertyService;
+    private OwnerService ownerService;
     @Autowired
-    private PropertyRepository propertyRepository;
-    @Autowired
-    private HouseGenericRepository houseGenericRepository;
-    @Autowired
-    private CommercialPropertyGenericRepository commercialPropertyGenericRepository;
-    @Autowired
-    private OwnerRepository ownerRepository;
+    private RenterService renterService;
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -116,45 +99,11 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void deleteUser(User user, int id) {
-        if (user.getRoles().stream().anyMatch(role -> role.toString().equals("ROLE_RENTER"))) {
-            // Βρες όλες τις αιτήσεις ενοικίασης του renter
-            List<RentalApplication> rentalApplications = rentalApplicationRepository.findByRenterId(id);
-
-            // Διαγραφή των αιτήσεων ενοικίασης
-            rentalApplicationRepository.deleteByRenterId(id);
-            // Διαγραφή του renter
-            renterRepository.deleteById(id);
-            List<Property> rentedProperties = propertyRepository.findByRenterId(id);
-            for (Property property : rentedProperties) {
-                property.setRenter(null);
-                propertyRepository.save(property);
-            }
-        } else {
-            // Διαγραφή από τον πίνακα house_facilities πριν από τη διαγραφή του House
-            List<House> houses = houseGenericRepository.findByOwnerId(id);
-            if(!houses.isEmpty()) {
-                for (House house : houses) {
-                    house.getFacilities().clear();  // Καθαρισμός της συλλογής facilities
-                    try{
-                        houseGenericRepository.delete(house);  // Διαγραφή του house
-                    }catch (Exception e){
-                        throw  new RuntimeException(e.getMessage());
-                    }
-
-                }
-            }
-            List<CommercialProperty> commercialProperties = commercialPropertyGenericRepository.findByOwnerId(id);
-            if(!commercialProperties.isEmpty()){
-                for (CommercialProperty commercialProperty : commercialProperties) {
-                    commercialProperty.getFacilities().clear();
-                    try{
-                        commercialPropertyGenericRepository.delete(commercialProperty);
-                    }catch (Exception e){
-                        throw  new RuntimeException(e.getMessage());
-                    }
-                }
-            }
-            ownerRepository.deleteById(id);
+        if (user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_RENTER"))) {  // Διαγραφή από τον αντίστοιχο πίνακα του role
+            renterService.deleteRenter(id);
+        }
+        if(user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_OWNER"))){
+            ownerService.deleteOwner(id);
         }
         // Διαγραφή του user
         userRepository.delete(user);
