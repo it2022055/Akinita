@@ -50,6 +50,7 @@ window.addEventListener('DOMContentLoaded', () => {
         } else if (this.value === 'Parking') {
             buildingFeesField.style.display = 'block'; // Κρύβει το πεδίο για τα Building Fees
             constructionDateField.style.display = 'block'; // Εμφανίζει το πεδίο για το Construction Date
+            facilitiesField.style.display = 'none';
             energyClassField.style.display = 'block';
 
         } else {
