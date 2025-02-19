@@ -52,7 +52,7 @@ Images
 
 ## Getting Started
 ### Prerequisites
-- Java Development Kit (JDK)
+- Java Development Kit (JDK) (Java 22) 
 - Integrated Development Environment (IDE) like IntelliJ IDEA
 - Web Browser (e.g., Chrome)
 - PostgreSQL database (local or cloud-based, e.g., Render)
