@@ -24,9 +24,11 @@ Akinita is university project assignment. It implements a web-based platform des
 
 Images 
    Homepage
+   
    ![image](https://github.com/user-attachments/assets/f1e4bd81-cc79-4fc0-bad9-10a449185879)
    
    Admin view
+   
    ![image](https://github.com/user-attachments/assets/683dd013-ca6b-4d9d-8d1f-98f5b2cebbc8)
 
 ## Features
