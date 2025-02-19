@@ -1,4 +1,4 @@
-#  ![akinita](https://github.com/user-attachments/assets/172f5c28-119b-4cc1-be43-34318618c07b) Akinita - Property Rental Management System
+![image](https://github.com/user-attachments/assets/72f34901-509e-4b04-aa68-3cfd608e118a)#  ![akinita](https://github.com/user-attachments/assets/172f5c28-119b-4cc1-be43-34318618c07b) Akinita - Property Rental Management System
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -20,6 +20,13 @@
 
 ## Overview
 Akinita is university project assignment. It implements a web-based platform designed to facilitate the management of property rentals. It allows property owners to list their properties, renters to apply for rentals, and an administrator to oversee and validate these transactions. The system is built as part of the Distributed Systems course for the academic year 2024-2025.
+
+#Images 
+   #Homepage
+   ![image](https://github.com/user-attachments/assets/f1e4bd81-cc79-4fc0-bad9-10a449185879)
+   
+   #Admin view
+   ![image](https://github.com/user-attachments/assets/683dd013-ca6b-4d9d-8d1f-98f5b2cebbc8)
 
 ## Features
 - **Property Listing Submission**: Property owners can submit listings that require approval from the administrator before being displayed on the platform.
