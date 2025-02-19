@@ -1,4 +1,4 @@
-# Akinita - Property Rental Management System
+# [akinita.pdf](https://github.com/user-attachments/files/18868237/akinita.pdf) Akinita - Property Rental Management System
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -59,6 +59,7 @@ git clone https://github.com/it2022055/Akinita.git
 1. Launch IntelliJ IDEA.
 2. Select **Open** and navigate to the cloned repository directory.
 3. Open the project.
+
 
 #### Configure the Database:
 1. Set up a PostgreSQL database (locally or using a cloud service like Render).
