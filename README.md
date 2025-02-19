@@ -1,4 +1,4 @@
-# ![akinita](https://github.com/user-attachments/assets/3813ada9-babe-47a9-8bad-642cc398c050) Akinita - Property Rental Management System
+#  ![akinita](https://github.com/user-attachments/assets/2c56841e-389c-4107-a8be-4972c922a786) Akinita - Property Rental Management System
 
 ## Table of Contents
 1. [Overview](#overview)
