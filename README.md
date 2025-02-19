@@ -21,11 +21,11 @@
 ## Overview
 Akinita is university project assignment. It implements a web-based platform designed to facilitate the management of property rentals. It allows property owners to list their properties, renters to apply for rentals, and an administrator to oversee and validate these transactions. The system is built as part of the Distributed Systems course for the academic year 2024-2025.
 
-##Images 
-   ##Homepage
+## Images 
+   ## Homepage
    ![image](https://github.com/user-attachments/assets/f1e4bd81-cc79-4fc0-bad9-10a449185879)
    
-   ##Admin view
+   ## Admin view
    ![image](https://github.com/user-attachments/assets/683dd013-ca6b-4d9d-8d1f-98f5b2cebbc8)
 
 ## Features
