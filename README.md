@@ -82,10 +82,6 @@ mvn clean install
 2. Update the `application.properties` file with your database credentials:
 
 ```properties
-spring.application.name=Akinita
-server.port=8080
-
-# Database Configuration
 spring.datasource.username=YOUR_DATABASE_USERNAME
 spring.datasource.password=YOUR_DATABASE_PASSWORD
 spring.datasource.url=jdbc:postgresql://YOUR_DATABASE_HOST:YOUR_DATABASE_PORT/YOUR_DATABASE_NAME
