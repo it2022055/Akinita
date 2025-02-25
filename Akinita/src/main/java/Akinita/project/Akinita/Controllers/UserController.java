@@ -182,13 +182,14 @@ public class UserController {
     }
 
     @GetMapping("/user/delete/{user_id}")
-    public String deleteUser(@PathVariable int user_id){ //Μέθοδος διαγραφής ρόλου
-        User user = userService.getUser(user_id); //Ανάκτηση user
+    public String deleteUser(@PathVariable int user_id, Model model){ //Μέθοδος διαγραφής ρόλου
+        User user = userService.getUser(user_id); //Ανάκτηση userz
         try{
             userService.deleteUser(user,user.getId());
         }catch (Exception e){
             throw new RuntimeException("Updating user failed");
         }
+        model.addAttribute("users", userService.getUsers());
         return "auth/users";
 
     }
