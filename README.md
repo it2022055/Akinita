@@ -65,10 +65,16 @@ Images
 git clone https://github.com/it2022055/Akinita.git
 ```
 
-#### Open the Project in IDE:
-1. Launch IntelliJ IDEA.
-2. Select **Open** and navigate to the cloned repository directory.
-3. Open the project.
+####  Navigate to the Project Directory
+Open a terminal and move into your project folder:
+```sh
+cd /path/to/your/project
+```
+
+#### Build the project:
+```sh
+mvn clean install
+```
 
 
 #### Configure the Database:
@@ -86,8 +92,9 @@ spring.datasource.url=jdbc:postgresql://YOUR_DATABASE_HOST:YOUR_DATABASE_PORT/YO
 ```
 
 #### Run the Application:
-1. Navigate to the main application file.
-2. Run the application.
+```sh
+java -jar target/your-app-name.jar
+```
 
 #### Access the Web Application:
 Open a web browser and go to:
