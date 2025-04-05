@@ -32,25 +32,27 @@ public class AuthController {
 
     @PostConstruct
     public void setup() {
-        Role role_owner = new Role("ROLE_OWNER"); //Δήλωση του ρόλου Owner
-        Role role_renter = new Role("ROLE_RENTER"); //Δήλωση του ρόλου Renter
-        Role role_admin = new Role("ROLE_ADMIN"); // Δήλωση του ρόλου Admin
+        Role role_owner = new Role("ROLE_OWNER");
+        Role role_renter = new Role("ROLE_RENTER");
+        Role role_admin = new Role("ROLE_ADMIN");
 
-        roleRepository.updateOrInsert(role_owner); //Προσθήκη ρόλου user στον πίνακα με τους ρόλους
-        roleRepository.updateOrInsert(role_renter); //Προσθήκη ρόλου user στον πίνακα με τους ρόλους
-        roleRepository.updateOrInsert(role_admin); //Προσθήκη ρόλου user στον πίνακα με τους ρόλους
+        roleRepository.updateOrInsert(role_owner);
+        roleRepository.updateOrInsert(role_renter);
+        roleRepository.updateOrInsert(role_admin);
 
-//        User user = new User(); //Δημιουργία admin
-//        user.setUsername("admin"); //Username admin
-//        String encodedPassword = passwordEncoder.encode("admin"); //Password admin
-//        user.setPassword(encodedPassword);
-//        user.setEmail("admin@example.com"); //Email admin
-//        Set<Role> roles = new HashSet<>();
-//        roles.add(role_admin); //Εισαγωγή του ρόλου admin
-//        user.setRoles(roles);
-//        userRepository.save(user); //Αποθήκευση του admin
-
+        if (!userRepository.existsByUsername("admin")) {
+            User user = new User();
+            user.setUsername("admin");
+            String encodedPassword = passwordEncoder.encode("admin");
+            user.setPassword(encodedPassword);
+            user.setEmail("admin@example.com");
+            Set<Role> roles = new HashSet<>();
+            roles.add(role_admin);
+            user.setRoles(roles);
+            userRepository.save(user);
+        }
     }
+
 
     @GetMapping("/login")
     public String login() { //Μέθοδος επιστροφής φόρμας login
