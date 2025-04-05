@@ -16,7 +16,6 @@ Property Rental Management System
      - [Configure the Database](#configure-the-database)
      - [Run the Application](#run-the-application)
      - [Access the Web Application](#access-the-web-application)
-5. [License](#license)
 
 ## Overview
 Akinita is university project assignment. It implements a web-based platform designed to facilitate the management of property rentals. It allows property owners to list their properties, renters to apply for rentals, and an administrator to oversee and validate these transactions. The system is built as part of the Distributed Systems course for the academic year 2024-2025.
@@ -96,7 +95,3 @@ Open a web browser and go to:
 ```
 http://localhost:8080/
 ```
-
-## License
-This project is for academic purposes and does not have a specific license.
-
